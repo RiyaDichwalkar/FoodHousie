@@ -1,0 +1,6 @@
+{
+    "env":
+    {
+        "MONGO_ATLAS_PW":"m001-mongodb-basics"
+    }
+}

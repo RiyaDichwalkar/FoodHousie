@@ -1,0 +1,39 @@
+<div class="card">
+        <h2 style="text-align: center; padding:20px">Product Edit</h2>
+        <div>
+          <label>Product Name:
+            <input [(ngModel)]="productData.product.prod_name" placeholder="Product Name"/>
+          </label><br>
+          <label>Product Desc:
+            <input [(ngModel)]="productData.product.prod_desc" placeholder="Product Description"/>
+          </label><br>
+          <label>Product Price:
+            <input [(ngModel)]="productData.product.prod_price" placeholder="Product Price"/>
+          </label><br>
+          <div class="container">
+    <div class="avatar-upload">
+        <div class="avatar-edit">
+            <input  #imageInput type='file' id="imageUpload" accept="image/*"
+            (change)="processFile(imageInput)"/>
+            <label for="imageUpload"></label>
+        </div>
+        <div  class="avatar-preview">
+          
+          <div id="imagePreview"  [ngStyle]="{'background-image': this.isSelected ? 'url('+ selectedFile.src + ')' : 'url('+ ImgFile + ')'}">
+          </div>
+            <!-- <div id="imagePreview"  [ngStyle]="{'background-image': 'url('+ selectedFile.src + ')'}">
+            </div> -->
+        </div>
+        <!-- <div #elseblock class="avatar-preview">
+
+
+            <div id="imagePreview"  [ngStyle]="{'background-image': 'url('+ ImgFile + ')'}">
+            </div> -->
+        </div>
+    </div>
+</div>
+<br>
+    
+        <button  class="btn btn-success btn-lg" (click)="updateProduct()">Update</button>
+      </div>
+      

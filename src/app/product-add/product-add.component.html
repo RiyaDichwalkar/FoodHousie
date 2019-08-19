@@ -1,0 +1,139 @@
+<div class="container" >
+<div class="card">
+        <h2 style="text-align: center; padding:20px">Product Add</h2>
+       
+        <div>
+            <div class="form-group">
+          <label>
+            <input [(ngModel)]="productData.prod_name" placeholder="Product Name"/>
+          </label>
+          </div><br>
+          <div class="form-group">
+          <label>
+            <input [(ngModel)]="productData.prod_desc" placeholder="Product Description"/>
+          </label>
+          </div><br>
+          <div class="form-group">
+          <label>
+            <input [(ngModel)]="productData.prod_price" placeholder="Product Price"/>
+          </label>
+          </div><br>
+
+
+          <!-- <div class="container">
+            <input type="file" name="photo" ng2FileSelect [uploader]="uploader" />
+            <button type="button" class="btn btn-success btn-s" 
+              (click)="uploader.uploadAll()" 
+              [disabled]="!uploader.getNotUploadedItems().length" >
+                  Upload an Image
+            </button>
+          </div> -->
+          
+
+
+        
+<!-- 
+          <label class="image-upload-container btn btn-bwm">
+            <span>Select Image</span>
+            <input #imageInput
+                   type="file"
+                   
+                   accept="image/*"
+                   (change)="processFile(imageInput)">
+          </label> -->
+
+          <!-- <div *ngIf="selectedFile" class="img-preview-container">
+
+            <div class="img-preview{{selectedFile.status === 'fail' ? '-error' : ''}}"
+                 [ngStyle]="{'background-image': 'url('+ selectedFile.src + ')'}">
+            </div>
+            </div>
+            <br> -->
+            <div class="container">
+              <div class="avatar-upload">
+                  <div class="avatar-edit">
+                      <input  #imageInput type='file' id="imageUpload" accept="image/*"
+                      (change)="processFile(imageInput)"/>
+                      <label for="imageUpload"></label>
+                  </div>
+                  <div class="avatar-preview">
+          
+          
+                      <div id="imagePreview" *ngIf="selectedFile" [ngStyle]="{'background-image': 'url('+ selectedFile.src + ')'}">
+                      </div>
+                  </div>
+                  <!-- <div #elseblock class="avatar-preview">
+                      <div id="imagePreview"  style="background-image:url('../../assets/product1.png')">
+                      </div>
+                  </div> -->
+              </div>
+          </div>
+          <br>
+      
+            
+
+        
+<!-- 
+          <script>
+              $(document).ready(function() {
+                          var options = {
+                                  beforeSubmit: showRequest, // pre-submit callback 
+                                  success: showResponse // post-submit callback 
+                                }; // bind to the form's submit event 
+                                $('#frmUploader').submit(function () { $(this).ajaxSubmit(options); // always return false to prevent standard browser submit and page navigation
+                                   return false; }); }); // pre-submit callback 
+                                   function showRequest(formData, jqForm, options) 
+                                   { alert('Uploading is starting.'); return true; } 
+                                   // post-submit callback function 
+                                   showResponse(responseText, statusText, xhr, $form) 
+                                   { alert('status: ' + statusText + '\n\nresponseText: \n' + responseText ); }
+                          
+                      
+                          </script>
+
+          <form id="frmUploader" enctype="multipart/form-data" action="api/Upload/" method="post">
+        <input type="file" name="imgUploader" multiple />
+        <input type="submit" name="submit" id="btnSubmit" value="Upload" /> </form> -->
+<!-- 
+              <div class="file-field">
+                <div class="btn btn-primary btn-sm float-left" style="width: 40%; display:inline-block;margin-right:10px;"> -->
+                  <!-- <span>Choose file</span> -->
+                  <!-- <input [(ngModel)]="productData.prod_image" type="file">
+                </div>
+                <div class="file-path-wrapper" style="display:inline-block"> -->
+                  <!-- <input class="file-path validate" style="width: 100%" type="text" placeholder="Upload your file"> -->
+                <!-- </div>
+            </div>
+          <br>    
+          <input type="file" name="photo" ng2FileSelect [uploader]="uploader" />
+
+<button type="button" class="btn btn-success btn-s" 
+  (click)="uploader.uploadAll()" 
+  [disabled]="!uploader.getNotUploadedItems().length" >
+      Upload an Image
+</button>
+           -->
+          
+          
+          
+          <!-- <div class="container">
+
+            <div class="avatar-upload">
+                <div class="avatar-edit">
+                    <input type='file' id="imageUpload" accept=".png, .jpg, .jpeg" />
+                    <label for="imageUpload"></label>
+                </div>
+                <div class="avatar-preview">
+                    <div id="imagePreview" style="background-image:'./assets/avatar';">
+                    </div>
+                </div>
+            </div>
+        </div> -->
+        
+          <div>
+        <button  class="btn btn-success btn-lg" (click)="addProduct()">Save</button>
+      </div>
+</div>
+</div>
+</div>
+

@@ -1,0 +1,28 @@
+<div *ngIf="product" class="products card">
+  <!-- <script>console.log('mmmmmmmmmmmmmmmmm');
+  console.log(product);
+  </script> -->
+        <h2 style="text-align: center; padding:20px">{{product.product.prod_name | uppercase}} Details</h2>
+        <div class='container'>
+        <div class='text'><span>Name: </span>{{product.product.prod_name}}</div> <br>
+        <div class='text'><span>Price: </span>{{product.product.prod_price}}</div> <br>
+        <div class='text'><span>Description: </span>{{product.product.prod_desc}}</div> <br>
+        <!-- <div class='image'><span>Image: </span>{{product.product.prod_image}}</div> -->
+          <div  class="avatar-preview">
+          
+            <div id="imagePreview"  [ngStyle]="{'background-image':'url('+ imageFile + ')'}">
+            </div>
+              <!-- <div id="imagePreview"  [ngStyle]="{'background-image': 'url('+ selectedFile.src + ')'}">
+              </div> -->
+          </div>
+        <div > <br>
+          <button class="btn btn-success btn-lg" routerLink="/product-edit/{{product.product._id}}">
+            Edit
+          </button>
+          <button  class="btn btn-danger btn-lg" routerLink="/products">
+            Get the list
+          </button>
+        </div>
+      </div>
+      </div>
+<!-- <div #elseblock><h1>Nooooo</h1></div> -->
