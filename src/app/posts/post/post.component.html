@@ -1,0 +1,49 @@
+<div class="card" style="width:25rem">
+  <div class="card-body">
+    <form [formGroup]="formTemplate" (submit)="onSubmit(formTemplate.value)">
+      <div class="text-center">
+        <img [src]="imgSrc" width="250px" height="250px" (click)="fileUploader.click()">
+      </div>
+      <div class="form-group">
+        <label>Select file to upload</label>
+        <input type="file" accept="image/*" class="form-control" #fileUploader formControlName="imageUrl"
+          (change)="showPreview($event)">
+        <div class="text-danger" *ngIf="isSubmitted && formControls.imageUrl.errors?.required">This field is required.
+        </div>
+      </div>
+      <div class="form-group">
+        <input class="form-control" formControlName="caption" placeholder="Caption">
+        <div class="text-danger" *ngIf="isSubmitted && formControls.caption.errors?.required">This field is required
+        </div>
+      </div>
+      <div class="form-group">
+        <select formControlName="category" class="form-control">
+          <option value="Animal">Animal</option>
+          <option value="Vehicle">Vehicle</option>
+          <option value="Bird">Bird</option>
+        </select>
+      </div>
+      <div>
+      <mat-form-field class="example-full-width">
+        <input matInput #input="ngModel" [(ngModel)]="date" [ngModelOptions]="{standalone: true}" [min]="minDate" [max]="maxDate" [matDatepicker]="picker">
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+
+        <mat-error *ngIf="input.hasError('matDatepickerMax')">Date should be inferior</mat-error>
+
+      </mat-form-field>
+
+      <br><br><br>
+      {{ input.errors }}
+  </div>
+  <div class="form-row">
+    <div class="form-group col-md-6">
+      <a routerLink="/posts/list" class="btn btn-primary btn-block float-right">Go to Gallery</a>
+    </div>
+    <div class="form-group col-md-6">
+      <button type="submit" class="btn btn-success btn-block float-right">Submit</button>
+    </div>
+  </div>
+  </form>
+</div>
+</div>
