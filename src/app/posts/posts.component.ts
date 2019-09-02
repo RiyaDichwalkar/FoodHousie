@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { PostService } from '../shared/post.service';
+
 declare var $: any;
 @Component({
   selector: 'app-posts',
@@ -17,5 +18,6 @@ export class PostsComponent implements OnInit {
       });
     
   }
+
 
 }

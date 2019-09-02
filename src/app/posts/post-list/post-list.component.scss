@@ -5,12 +5,13 @@
     text-align: center;
     width: 300px;
     height: 300px;
-
+    cursor:pointer;
   }
   
   .imagebox img {
     opacity: 1;
     transition: 0.5s opacity;
+    
   }
   
   .imagebox .imagebox-desc {

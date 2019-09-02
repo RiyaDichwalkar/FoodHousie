@@ -8,9 +8,11 @@
                 </a>
             </div>
             
-            <div class="imagebox" *ngIf="i!=0">
+            <div  class="imagebox" *ngIf="i!=0" (click)="onClick(imageList[3*i-1].key)">
+                    
                 <img [src]="imageList[3*i-1].imageUrl" class="img-fluid">
                 <span class="imagebox-desc">{{imageList[3*i-1].caption}}</span>
+                
             </div>
         </td>
         <td *ngIf="imageList[3*i]">
@@ -18,18 +20,21 @@
                 <img [src]="imageList[3*i].imageUrl" class="img-fluid">
                 <span class="imagebox-desc">{{imageList[3*i].caption}}</span>
             </div> -->
-            <div routerLink='/posts/upload'class="imagebox">
-                    <!-- <a routerLink='/posts/upload'> -->
+            <div class="imagebox" (click)="onClick(imageList[3*i].key)">
+                    <!-- <a routerLink="['/posts/upload','imageList[3*i]','true']"> -->
+                       
                 <img [src]="imageList[3*i].imageUrl" class="img-fluid">
                 <span class="imagebox-desc">{{imageList[3*i].caption}}</span>
-                <!-- </a> -->
+            
             </div>
 
         </td>
-        <td *ngIf="imageList[3*i+1]">
-            <div class="imagebox">
+        <td *ngIf="imageList[3*i+1]" >
+            <div class="imagebox" (click)="onClick(imageList[3*i+1].key)">
+                 
                 <img [src]="imageList[3*i+1].imageUrl" alt="" class="img-fluid">
                 <span class="imagebox-desc">{{imageList[3*i+1].caption}}</span>
+                
             </div>
         </td>
     </tr>

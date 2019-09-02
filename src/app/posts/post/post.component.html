@@ -1,8 +1,48 @@
+<!-- <button mat-raised-button (click)="isLinear = !isLinear" id="toggle-linear">
+  {{!isLinear ? 'Enable linear mode' : 'Disable linear mode'}}
+</button> -->
+<!-- <mat-vertical-stepper [linear]="isLinear" #stepper>
+  <mat-step [stepControl]="firstFormGroup">
+    <form [formGroup]="firstFormGroup">
+      <ng-template matStepLabel>Fill out your name</ng-template>
+      <mat-form-field>
+        <input matInput placeholder="Last name, First name" formControlName="firstCtrl" required>
+      </mat-form-field>
+      <div>
+        <button mat-button matStepperNext>Next</button>
+      </div>
+    </form>
+  </mat-step>
+  <mat-step [stepControl]="secondFormGroup">
+    <form [formGroup]="secondFormGroup">
+      <ng-template matStepLabel>Fill out your address</ng-template>
+      <mat-form-field>
+        <input matInput placeholder="Address" formControlName="secondCtrl" required>
+      </mat-form-field>
+      <div>
+        <button mat-button matStepperPrevious>Back</button>
+        <button mat-button matStepperNext>Next</button>
+      </div>
+    </form>
+  </mat-step>
+  <mat-step>
+    <ng-template matStepLabel>Done</ng-template>
+    You are now done.
+    <div>
+      <button mat-button matStepperPrevious>Back</button>
+      <button mat-button (click)="stepper.reset()">Reset</button>
+    </div>
+  </mat-step>
+</mat-vertical-stepper> -->
+<div *ngIf="isSubmitted" class="spinner">
+    <!-- <div class="spinner"> -->
+    <mat-spinner></mat-spinner>
+</div>
 <div class="card" style="width:25rem">
   <div class="card-body">
-    <form [formGroup]="formTemplate" (submit)="onSubmit(formTemplate.value)">
+    <form  [formGroup]="formTemplate" (submit)="onSubmit(formTemplate.value)">
       <div class="text-center">
-        <img [src]="imgSrc" width="250px" height="250px" (click)="fileUploader.click()">
+        <img [src]="imgUrl" width="250px" height="250px" (click)="fileUploader.click()">
       </div>
       <div class="form-group">
         <label>Select file to upload</label>
@@ -25,7 +65,7 @@
       </div>
       <div>
       <mat-form-field class="example-full-width">
-        <input matInput #input="ngModel" [(ngModel)]="date" [ngModelOptions]="{standalone: true}" [min]="minDate" [max]="maxDate" [matDatepicker]="picker">
+        <input matInput #input="ngModel"  [(ngModel)]="date" [ngModelOptions]="{standalone: true}" [min]="minDate" [max]="maxDate" [matDatepicker]="picker">
         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
         <mat-datepicker #picker></mat-datepicker>
 
@@ -34,16 +74,32 @@
       </mat-form-field>
 
       <br><br><br>
-      {{ input.errors }}
+      {{date|date: 'MM/dd/yyyy'}}
+
   </div>
+  <div>
+    <input  formControlName="starttime"  value="{{selectedTime}}" (click)="open($event)"  >
+   
+        <i class="material-icons">access_time</i>
+     
+  </div>
+ 
+  {{selectedTime}}
+  <!-- <div>
+      <input formControlName="endtime"  value="{{selectedTime}}" (click)="open($event)"  >
+       <i class="material-icons">access_time</i>
+    </div> -->
   <div class="form-row">
     <div class="form-group col-md-6">
       <a routerLink="/posts/list" class="btn btn-primary btn-block float-right">Go to Gallery</a>
     </div>
     <div class="form-group col-md-6">
-      <button type="submit" class="btn btn-success btn-block float-right">Submit</button>
+      <button  type="submit" class="btn btn-success btn-block float-right">Submit</button>
     </div>
   </div>
   </form>
 </div>
 </div>
+
+
+

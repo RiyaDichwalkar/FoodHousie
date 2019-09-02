@@ -1,4 +1,4 @@
-import { MatFormFieldModule,MatButtonModule,MatSelectModule,MatDatepickerModule, MatNativeDateModule } from '@angular/material';
+import { MatFormFieldModule,MatProgressSpinnerModule,MatButtonModule,MatStepperModule, MatSelectModule,MatDatepickerModule, MatNativeDateModule } from '@angular/material';
 import {MatInputModule} from '@angular/material/input';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BrowserModule } from '@angular/platform-browser';
@@ -6,14 +6,17 @@ import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { LoginComponent } from './login/login.component';
+import { RegistrationComponent } from "./auth/registration/registration.component";
+import { LoginComponent } from "./auth/login/login.component";
+
+import { ForgotPasswordComponent } from './auth/forgot-password/forgot-password.component';
+
 import { RegisterComponent } from './register/register.component';
 import { RouterModule, Routes } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 
 import { FileSelectDirective } from 'ng2-file-upload';
 import { HomeComponent } from './home/home.component';
-import { TryComponent } from './try/try.component';
 import { PostsComponent } from './posts/posts.component';
 import { PostComponent } from './posts/post/post.component';
 import { PostListComponent } from './posts/post-list/post-list.component';
@@ -24,7 +27,14 @@ import { AngularFireAuthModule } from "@angular/fire/auth";
 import { AngularFirestoreModule , FirestoreSettingsToken  } from '@angular/fire/firestore';
 import { ReactiveFormsModule } from '@angular/forms';
 import {environment} from '../environments/environment';
+import { AmazingTimePickerModule} from 'amazing-time-picker';
+import { MatFileUploadModule } from 'angular-material-fileupload';
+import { HelpComponent } from './help/help.component';
+
 const appRoutes: Routes = [
+  {
+    path:'posts/upload/:key/:isedited',component:PostComponent
+  },
   {
     path:'',redirectTo:'posts/upload',pathMatch:'full'
   },
@@ -38,6 +48,27 @@ const appRoutes: Routes = [
     path: '',
     component: HomeComponent,
     data: { title: 'Home' }
+  },
+  {
+    path: 'help',
+    component: HelpComponent,
+    data: { title: 'Help' }
+  },
+  {
+    path: "login",
+    component: LoginComponent
+  },
+  {
+    path: "register",
+    component: RegistrationComponent
+  },
+  {
+    path: "home",
+    component: HomeComponent
+  },
+  {
+    path: "forgot-password",
+    component: ForgotPasswordComponent
   },
   // {
   //   path: 'products',
@@ -83,11 +114,13 @@ const appRoutes: Routes = [
     RegisterComponent,
     FileSelectDirective,
     HomeComponent,
-    TryComponent,
     PostsComponent,
     PostComponent,
     PostListComponent,
-  
+    HelpComponent,
+    RegistrationComponent,
+    LoginComponent,
+    ForgotPasswordComponent
   ],
   imports: [
     RouterModule.forRoot(appRoutes),
@@ -107,7 +140,11 @@ const appRoutes: Routes = [
     MatNativeDateModule,        // <----- import for date formating(optional)
     MatSelectModule,
     MatInputModule,
-    MatButtonModule
+    MatButtonModule,
+    AmazingTimePickerModule,
+    MatStepperModule,
+    MatFileUploadModule,
+    MatProgressSpinnerModule
   ],
   providers: [{ provide: FirestoreSettingsToken, useValue: {} }],
   bootstrap: [AppComponent]

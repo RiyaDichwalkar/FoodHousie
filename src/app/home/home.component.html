@@ -1,6 +1,4 @@
 
-	
-
 	<!-- social icon -->
 	<div class="container-fluid info p-3" id="topdisplay">
 		<div class="row">
@@ -14,7 +12,10 @@
 				</div>
 
 				<h2 class="primary-color p-2 text-capitalize">BMAD, MG road, Mulund(west), Mumbai-400080</h2>
-
+				<p *ngIf="user">Logged in as: {{ user?.email }} - {{ user?.displayName }}</p>
+				<button class="btn btn-primary mr-2" *ngIf="!user" (click)="register()">Register</button>
+				<button class="btn btn-primary" *ngIf="user" (click)="logout()">Logout</button>
+				<button class="btn btn-primary" *ngIf="!user" (click)="login()">Login</button>
 			</div>
 		</div>
 	</div>

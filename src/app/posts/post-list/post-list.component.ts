@@ -2,6 +2,7 @@ import { Component, OnInit, Input} from '@angular/core';
 import { PostService } from 'src/app/shared/post.service';
 import { Post } from '../../shared/models/post.model';
 import { map } from 'rxjs/operators';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-post-list',
   templateUrl: './post-list.component.html',
@@ -11,8 +12,9 @@ export class PostListComponent implements OnInit {
 @Input() post: Post;
 imageList:any;
 rowIndexArray:any;
+isedited:boolean=false;
 //posts: any;
-  constructor(private service:PostService) { }
+  constructor(private service:PostService,private _router:Router) { }
 
   ngOnInit() {
     // this.service.imageDetailList.snapshotChanges().subscribe(
@@ -22,6 +24,15 @@ rowIndexArray:any;
     //   }
     // );
     this.getPostsList();
+  }
+  onClick(key:any){
+     this.isedited=true;
+     console.log("TTTTTTTTTTTTTTTTTTTTTTTT");
+     console.log(typeof(key));
+     console.log(key);
+     
+
+     this._router.navigate(['posts/upload',key,this.isedited]);
   }
   getPostsList() {
     this.service.getPostsList().snapshotChanges().pipe(

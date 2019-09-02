@@ -3,4 +3,6 @@ export class Post {
     caption:string;
     category: string;
     imageUrl:string;
+    starttime : string;
+    //endtime:string;
   }
