@@ -25,7 +25,7 @@ export class HomeComponent implements OnInit {
   }
 
   logout() {
-    this.auth.logout();
+    this.auth.SignOut();
   }
 
   register() {

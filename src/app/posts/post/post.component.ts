@@ -1,4 +1,4 @@
-import { Component, OnInit ,Input} from '@angular/core';
+import { Component, OnInit ,Input,NgZone} from '@angular/core';
 import { FormGroup,FormBuilder, FormControl, Validators } from '@angular/forms';
 import { AngularFireAction } from '@angular/fire/database';
 import { AngularFireStorage } from '@angular/fire/storage';
@@ -10,6 +10,7 @@ import {AmazingTimePickerService } from 'amazing-time-picker';
 import { Router,ActivatedRoute, NavigationStart, Event, NavigationEnd} from '@angular/router';
 import { map } from 'rxjs/operators';
 import { throwMatDialogContentAlreadyAttachedError } from '@angular/material';
+import { AuthService } from "../../auth/auth.service";
 declare var $: any;
 @Component({
   selector: 'app-post',
@@ -49,7 +50,10 @@ export class PostComponent implements OnInit {
   private selectedKey:string;
   private isedited:boolean=false;
   private filledData:any;
-  constructor( private _route: ActivatedRoute,private _formBuilder: FormBuilder,private storage : AngularFireStorage,private atp:AmazingTimePickerService, private service :PostService,private datePipe: DatePipe) {
+  constructor(public authService: AuthService,
+    public router: Router,
+    public ngZone: NgZone,
+   private _route: ActivatedRoute,private _formBuilder: FormBuilder,private storage : AngularFireStorage,private atp:AmazingTimePickerService, private service :PostService,private datePipe: DatePipe) {
    // debugger;
     // this._router.events.subscribe((routerEvent:Event)=>{
     //     if(routerEvent instanceof NavigationStart){

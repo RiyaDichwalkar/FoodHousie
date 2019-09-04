@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit ,NgZone} from '@angular/core';
 import { PostService } from '../shared/post.service';
-
+import { Router} from '@angular/router';
+import { AuthService } from "../auth/auth.service";
 declare var $: any;
 @Component({
   selector: 'app-posts',
@@ -9,7 +10,9 @@ declare var $: any;
 })
 export class PostsComponent implements OnInit {
 
-  constructor(private service:PostService) { }
+  constructor(public authService: AuthService,
+    public router: Router,
+    public ngZone: NgZone,private service:PostService) { }
 
   ngOnInit() {
     
