@@ -1,70 +1,35 @@
-<!-- <button mat-raised-button (click)="isLinear = !isLinear" id="toggle-linear">
-  {{!isLinear ? 'Enable linear mode' : 'Disable linear mode'}}
-</button> -->
-<!-- <mat-vertical-stepper [linear]="isLinear" #stepper>
-  <mat-step [stepControl]="firstFormGroup">
-    <form [formGroup]="firstFormGroup">
-      <ng-template matStepLabel>Fill out your name</ng-template>
-      <mat-form-field>
-        <input matInput placeholder="Last name, First name" formControlName="firstCtrl" required>
-      </mat-form-field>
-      <div>
-        <button mat-button matStepperNext>Next</button>
-      </div>
-    </form>
-  </mat-step>
-  <mat-step [stepControl]="secondFormGroup">
-    <form [formGroup]="secondFormGroup">
-      <ng-template matStepLabel>Fill out your address</ng-template>
-      <mat-form-field>
-        <input matInput placeholder="Address" formControlName="secondCtrl" required>
-      </mat-form-field>
-      <div>
-        <button mat-button matStepperPrevious>Back</button>
-        <button mat-button matStepperNext>Next</button>
-      </div>
-    </form>
-  </mat-step>
-  <mat-step>
-    <ng-template matStepLabel>Done</ng-template>
-    You are now done.
-    <div>
-      <button mat-button matStepperPrevious>Back</button>
-      <button mat-button (click)="stepper.reset()">Reset</button>
-    </div>
-  </mat-step>
-</mat-vertical-stepper> -->
-<div *ngIf="isSubmitted" class="spinner">
-    <!-- <div class="spinner"> -->
+<div *ngIf="isSubmitted && valid && formTemplate.valid" class="spinner">
     <mat-spinner></mat-spinner>
 </div>
-<div class="card" style="width:25rem">
+<div class="card" >
   <div class="card-body">
     <form  [formGroup]="formTemplate" (submit)="onSubmit(formTemplate.value)">
-      <div class="text-center">
-        <img [src]="imgUrl" width="250px" height="250px" (click)="fileUploader.click()">
+      <div class="text-center" >
+        <img [src]="imgUrl"  width="250px" height="250px" (click)="fileUploader.click()">
       </div>
-      <div class="form-group">
-        <label>Select file to upload</label>
-        <input type="file" accept="image/*" class="form-control" #fileUploader formControlName="imageUrl"
+      <div class="form-group" style="margin: 5%">
+        <label class=" image-upload-container btn btn-bwm">Select image
+        <input type="file" accept="image/*" class="img_input form-control" #fileUploader formControlName="imageUrl"
           (change)="showPreview($event)">
+        </label>
         <div class="text-danger" *ngIf="isSubmitted && formControls.imageUrl.errors?.required">This field is required.
         </div>
       </div>
-      <div class="form-group">
-        <input class="form-control" formControlName="caption" placeholder="Caption">
-        <div class="text-danger" *ngIf="isSubmitted && formControls.caption.errors?.required">This field is required
+      <textarea rows="4" cols="57" value="{{description}}"  formControlName="description" placeholder=" Description"></textarea>
+          <div class="text-danger" *ngIf="isSubmitted && formControls.description.errors?.required">This field is required
         </div>
-      </div>
-      <div class="form-group">
-        <select formControlName="category" class="form-control">
-          <option value="Animal">Animal</option>
-          <option value="Vehicle">Vehicle</option>
-          <option value="Bird">Bird</option>
-        </select>
-      </div>
+         
+
+        <div>
+          <label>Price</label>
+          <input value="{{price}}" formControlName="price"  placeholder="0">
+          <div class="text-danger" *ngIf="isSubmitted && formControls.price.errors?.required">This field is required
+          </div>
+        </div>
+        {{price}}
       <div>
       <mat-form-field class="example-full-width">
+          <label>Pickup Date</label>
         <input matInput #input="ngModel"  [(ngModel)]="date" [ngModelOptions]="{standalone: true}" [min]="minDate" [max]="maxDate" [matDatepicker]="picker">
         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
         <mat-datepicker #picker></mat-datepicker>
@@ -73,22 +38,39 @@
 
       </mat-form-field>
 
-      <br><br><br>
-      {{date|date: 'MM/dd/yyyy'}}
+      
+      <!-- {{date|date: 'MM/dd/yyyy'}} -->
 
   </div>
   <div>
-    <input  formControlName="starttime"  value="{{selectedTime}}" (click)="open($event)"  >
+      <label>Pickup Time Starts At</label>
+    <input  formControlName="pickuptimestart"  value="{{selectedStartTime}}" (click)="openStartTime($event)"  >
    
         <i class="material-icons">access_time</i>
      
   </div>
  
-  {{selectedTime}}
-  <!-- <div>
-      <input formControlName="endtime"  value="{{selectedTime}}" (click)="open($event)"  >
-       <i class="material-icons">access_time</i>
-    </div> -->
+  <!-- {{selectedStartTime}} -->
+  <div>
+      <label>Pickup Time Ends At</label>
+      <input  formControlName="pickuptimeend"  value="{{selectedEndTime}}" (click)="openEndTime($event)"  >
+     
+          <i class="material-icons">access_time</i>
+       
+    </div>
+   
+    <!-- {{selectedEndTime}} -->
+    
+    <div>
+        <label>Deadline Time To Take Last Order</label>
+        <input  formControlName="deadlinetime"  value="{{selectedDeadLineTime}}" (click)="openDeadLineTime($event)"  >
+       
+            <i class="material-icons">access_time</i>
+         
+      </div>
+     
+      <!-- {{selectedDeadLineTime}} -->
+
   <div class="form-row">
     <div class="form-group col-md-6">
       <a routerLink="/posts/list" class="btn btn-primary btn-block float-right">Go to Gallery</a>

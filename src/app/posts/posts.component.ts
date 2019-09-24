@@ -15,12 +15,5 @@ export class PostsComponent implements OnInit {
     public ngZone: NgZone,private service:PostService) { }
 
   ngOnInit() {
-    
-      $(document).ready(() => {
-        $('#elementId').css({'background-color': 'yellow', 'font-size': '200%'});
-      });
-    
   }
-
-
 }

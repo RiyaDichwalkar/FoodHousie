@@ -1,15 +1,35 @@
 <div class="displayTable">
   <div class="displayTableCell">
-
-    <div class="px-logo">
-      <a href="https://www.positronx.io" target="_blank">
-        <img src="https://www.positronx.io/wp-content/themes/positronx/img/logo-positronx-white.svg" alt="positronX.io - Learn Full Stack Development">
-      </a>
-    </div>
+  
 
     <div class="authBlock">
       <h3>Sign Up</h3>
-
+      <div class="formGroup">
+        <input type="text" class="formControl" placeholder="Name" #userName required>
+      </div>
+      
+      
+      <div class="formGroup">
+        <select  class="formControl" #userGender required >
+          <option >--select---</option>
+          <option value="Male">Male</option>
+          <option value="Female">Female</option>
+          <option value="Other">Other</option>
+        </select>
+      </div>
+      <br>
+      <div class="formGroup">
+          <input type="text" class="formControl" placeholder="AddressLine1" #AddressLine1 required> 
+      </div>
+      <div class="formGroup">
+          <input type="text" class="formControl" placeholder="AddressLine2" #AddressLine2 required> 
+      </div>
+      <div class="formGroup">
+          <input type="text" class="formControl" placeholder="PinCode" #Pincode required> 
+      </div>
+      <div class="formGroup">
+        <input type="text" class="formControl" placeholder="Mobile No" #userMobileNo required> 
+    </div>
       <div class="formGroup">
         <input type="email" class="formControl" placeholder="Email Address" #userEmail required>
       </div>
@@ -18,21 +38,22 @@
         <input type="password" class="formControl" placeholder="Password" #userPwd required>
       </div>
 
+      
       <div class="formGroup">
-        <input type="button" class="btn btnPrimary" value="Sign Up" (click)="authService.SignUp(userEmail.value, userPwd.value)">
+        <input type="button" class="btn btnPrimary" value="Sign Up" (click)="authService.SignUp(userEmail.value, userPwd.value,userName.value,userGender.value,AddressLine1.value,AddressLine2.value,Pincode.value,userMobileNo.value)">
       </div>
 
-      <div class="formGroup">
+      <!-- <div class="formGroup">
         <span class="or"><span class="orInner">Or</span></span>
-      </div>
+      </div> -->
 
       <!-- Continue with Google -->
-      <div class="formGroup">
+      <!-- <div class="formGroup">
         <button type="button" class="btn googleBtn" (click)="authService.GoogleAuth()">
           <i class="fab fa-google-plus-g"></i>
           Continue with Google
         </button>
-      </div>
+      </div> -->
       
     </div>
 

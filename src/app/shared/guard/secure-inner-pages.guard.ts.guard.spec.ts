@@ -1,15 +1,15 @@
 import { TestBed, async, inject } from '@angular/core/testing';
 
-import { SecureInnerPages.Guard.TsGuard } from './secure-inner-pages.guard.ts.guard';
+import { SecureInnerPagesGuard } from './secure-inner-pages.guard.ts.guard';
 
 describe('SecureInnerPages.Guard.TsGuard', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [SecureInnerPages.Guard.TsGuard]
+      providers: [SecureInnerPagesGuard]
     });
   });
 
-  it('should ...', inject([SecureInnerPages.Guard.TsGuard], (guard: SecureInnerPages.Guard.TsGuard) => {
+  it('should ...', inject([SecureInnerPagesGuard], (guard: SecureInnerPagesGuard) => {
     expect(guard).toBeTruthy();
   }));
 });

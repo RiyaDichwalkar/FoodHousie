@@ -17,21 +17,10 @@ isedited:boolean=false;
   constructor(private service:PostService,private _router:Router) { }
 
   ngOnInit() {
-    // this.service.imageDetailList.snapshotChanges().subscribe(
-    //   list=>{
-    //     this.imageList=list.map(item=>{return item.payload.val();});
-    //     this.rowIndexArray=Array.from(Array(Math.ceil((this.imageList.length+1)/3)).keys());
-    //   }
-    // );
     this.getPostsList();
   }
   onClick(key:any){
      this.isedited=true;
-     console.log("TTTTTTTTTTTTTTTTTTTTTTTT");
-     console.log(typeof(key));
-     console.log(key);
-     
-
      this._router.navigate(['posts/upload',key,this.isedited]);
   }
   getPostsList() {

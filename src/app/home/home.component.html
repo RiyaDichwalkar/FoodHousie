@@ -11,11 +11,14 @@
 					<a href="#" class="mr-2 primary-color"><i class="fa fa-yelp fa-2x"></i></a>
 				</div>
 
-				<h2 class="primary-color p-2 text-capitalize">BMAD, MG road, Mulund(west), Mumbai-400080</h2>
+				<!-- <h2 class="primary-color p-2 text-capitalize">BMAD, MG road, Mulund(west), Mumbai-400080</h2> -->
 				<p *ngIf="user">Logged in as: {{ user?.email }} - {{ user?.displayName }}</p>
-				<button class="btn btn-primary mr-2" *ngIf="!user" (click)="register()">Register</button>
+				<button class="btn btn-primary mr-2" *ngIf="!user" routerLink='/sign-in' >Sell Food</button>
+				<button class="btn btn-primary mr-2" *ngIf="!user" routerLink='/sign-in'>Order Food</button>
+				<button class="btn btn-primary mr-2" *ngIf="user" routerLink='/dashboard'>Go To Dashboard</button>
+				
 				<button class="btn btn-primary" *ngIf="user" (click)="logout()">Logout</button>
-				<button class="btn btn-primary" *ngIf="!user" (click)="login()">Login</button>
+				
 			</div>
 		</div>
 	</div>
@@ -31,9 +34,9 @@
 
 					<div class="banner text-center">
 						<h1 class="display-1 text-capitalize w-50 mx-auto">
-							<small>sushi</small> <strong class="primary-color">monster</strong>
+							<small>Food</small> <strong class="primary-color">Housie</strong>
 						</h1>
-						<a href="" class="btn main-btn sushi-btn  my-4 text-capitalize">order online</a>
+						<!-- <a href="" class="btn main-btn sushi-btn  my-4 text-capitalize">order online</a> -->
 
 					</div>
 
@@ -48,7 +51,7 @@
 
 
 	<!-- navbar -->
-	<nav class="navbar navbar-expand-lg">
+	<!-- <nav class="navbar navbar-expand-lg">
 		<a href="#" class="navbar-brand text-uppercase primary-color">Sushi Monster</a>
 		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#myNavbar">
 			<div class="toggler-btn">
@@ -57,7 +60,7 @@
 				<div class="bar bar-3"></div>
 			</div>
 		</button>
-		<!--     links         -->
+		
 		<div class="collapse navbar-collapse" id="myNavbar">
 			<ul class="navbar-nav mx-auto">
 				<li class="nav-item">
@@ -86,43 +89,46 @@
 
 
 		</div>
-	</nav>
+	</nav> -->
 
 
 	<!-- end of navbar -->
 	<!-- menu items -->
 	<section class="py-5" id="special-items">
 		<div class="container my-5">
-			<div class="row parent-container">
+			<div class="row parent-container " *ngFor="let i of rowIndexArray">
 				<!-- menu-items -->
-				<div class="col-10 mx-auto col-sm-6 col-lg-4 my-3">
-					<div class="item-container">
-						<img src="../../assets/home_images/item-1.jpg" class="img-fluid img-thumbnail item-img" alt="item-1">
-						<a href="../../assets/home_images/item-1.jpg">
+				<div class="col-10 mx-auto col-sm-6 col-lg-4 my-3" *ngIf="imageList[3*i]">
+					<div class="imagebox item-container" (click)="onClick(imageList[3*i].key)" >
+						<img [src]="imageList[3*i].imageUrl" class="img-fluid">
+            
+                
 							<h1 class="text-uppercase text-center item-link px-3">item-1</h1>
-						</a>
+						
 					</div>
 				</div>
 
-				<div class="col-10 mx-auto col-sm-6 col-lg-4 my-3">
-					<div class="item-container">
-						<img src="../../assets/home_images/item-2.jpg" class="img-fluid img-thumbnail item-img" alt="item-2">
-						<a href="../../assets/home_images/item-2.jpg">
+				<div class="col-10 mx-auto col-sm-6 col-lg-4 my-3" *ngIf="imageList[3*i+1]">
+					<div class="imagebox item-container" (click)="onClick(imageList[3*i+1].key)">
+						<img [src]="imageList[3*i+1].imageUrl" class="img-fluid">
+					
+					  
 							<h1 class="text-uppercase text-center item-link px-3">item-2</h1>
-						</a>
+						
 					</div>
 				</div>
 
-				<div class="col-10 mx-auto col-sm-6 col-lg-4 my-3">
-					<div class="item-container">
-						<img src="../../assets/home_images/item-3.jpg" class="img-fluid img-thumbnail item-img" alt="item-3">
-						<a href="../../assets/home_images/item-3.jpg">
-							<h1 class="text-uppercase text-center item-link px-3">item-3</h1>
-						</a>
+				<div class="col-10 mx-auto col-sm-6 col-lg-4 my-3" *ngIf="imageList[3*i+2]">
+					<div class="imagebox item-container" (click)="onClick(imageList[3*i+2].key)">
+						<img [src]="imageList[3*i+2].imageUrl" class="img-fluid">
+					
+					  
+						<h1 class="text-uppercase text-center item-link px-3">item-3</h1>
+						
 					</div>
 				</div>
 
-				<div class="col-10 mx-auto col-sm-6 col-lg-4 my-3">
+				<!-- <div class="col-10 mx-auto col-sm-6 col-lg-4 my-3">
 					<div class="item-container">
 						<img src="../../assets/home_images/item-4.jpg" class="img-fluid img-thumbnail item-img" alt="item-4">
 						<a href="../../assets/home_images/item-4.jpg">
@@ -147,165 +153,13 @@
 							<h1 class="text-uppercase text-center item-link px-3">item-6</h1>
 						</a>
 					</div>
-				</div>
+				</div> -->
 			</div>
 		</div>
 	</section>
 	<!-- end of menu items -->
 
 
-	<!-- menu section -->
-	<section id="menu" class="p-5 my-5">
-		<div class="container">
-			<div class="row">
-				<div class="col-md-6">
-					<!-- start of first column -->
-					<!-- title -->
-					<div class="row">
-						<div class="col">
-							<h1 class="primary-color text-uppercase">Soups</h1>
-						</div>
-					</div>
-
-
-					<!-- end of title -->
-					<!-- single item -->
-					<div class="single-item d-flex justify-content-between my-3 p-3">
-						<div class="single-item-text">
-							<h2 class="text-uppercase text-dark">soup</h2>
-							<h4 class="text-muted">Lorem ipsum dolor sit amet.</h4>
-
-						</div>
-						<div class="single-item-price align-self-end">
-							<h1 class="text-uppercase text-dark">$10</h1>
-						</div>
-					</div>
-					<!-- end of single item -->
-					<!-- single item -->
-					<div class="single-item d-flex justify-content-between my-3 p-3 special">
-						<div class="single-item-text">
-							<h2 class="text-uppercase text-dark">soup</h2>
-							<h4 class="text-muted">Lorem ipsum dolor sit amet.</h4>
-
-						</div>
-						<div class="single-item-price align-self-end">
-							<h1 class="text-uppercase text-dark">$10</h1>
-						</div>
-						<h3 class="special-text text-capitalize">chef selection</h3>
-					</div>
-					<!-- end of single item -->
-					<!-- title -->
-					<div class="row">
-						<div class="col">
-							<h1 class="primary-color text-uppercase">Sushi</h1>
-						</div>
-					</div>
-					<!-- end of title -->
-					<!-- single item -->
-					<div class="single-item d-flex justify-content-between my-3 p-3">
-						<div class="single-item-text">
-							<h2 class="text-uppercase text-dark">sushi</h2>
-							<h4 class="text-muted">Lorem ipsum dolor sit amet.</h4>
-						</div>
-						<div class="single-item-price align-self-end">
-							<h1 class="text-uppercase text-dark">$10</h1>
-						</div>
-					</div>
-					<!-- end of single item -->
-					<!-- single item -->
-					<div class="single-item d-flex justify-content-between my-3 p-3 special">
-						<div class="single-item-text">
-							<h2 class="text-uppercase text-dark">sushi</h2>
-							<h4 class="text-muted">Lorem ipsum dolor sit amet.</h4>
-
-						</div>
-						<div class="single-item-price align-self-end">
-							<h1 class="text-uppercase text-dark">$10</h1>
-						</div>
-						<h3 class="special-text text-capitalize">chef selection</h3>
-					</div>
-					<!-- end of single item -->
-
-
-				</div>
-				<!--     end of first column     -->
-				<!-- start of second column -->
-				<div class="col-md-6">
-					<!-- title -->
-					<div class="row">
-						<div class="col">
-							<h1 class="primary-color text-uppercase">Sushimi</h1>
-						</div>
-					</div>
-					<!-- end of title -->
-
-					<!-- single item -->
-					<div class="single-item d-flex justify-content-between my-3 p-3 special">
-						<div class="single-item-text">
-							<h2 class="text-uppercase text-dark">sushimi</h2>
-							<h4 class="text-muted">Lorem ipsum dolor sit amet.</h4>
-
-						</div>
-						<div class="single-item-price align-self-end">
-							<h1 class="text-uppercase text-dark">$10</h1>
-						</div>
-						<h3 class="special-text text-capitalize">chef selection</h3>
-
-
-					</div>
-					<!-- end of single item -->
-					<!-- single item -->
-					<div class="single-item d-flex justify-content-between my-3 p-3">
-						<div class="single-item-text">
-							<h2 class="text-uppercase text-dark">sushi</h2>
-							<h4 class="text-muted">Lorem ipsum dolor sit amet.</h4>
-
-						</div>
-						<div class="single-item-price align-self-end">
-							<h1 class="text-uppercase text-dark">$10</h1>
-						</div>
-					</div>
-					<!-- end of single item -->
-					<!-- title -->
-					<div class="row">
-						<div class="col">
-							<h1 class="primary-color text-uppercase">rolls</h1>
-						</div>
-					</div>
-					<!-- end of title -->
-					<!-- single item -->
-					<div class="single-item d-flex justify-content-between my-3 p-3 special">
-						<div class="single-item-text">
-							<h2 class="text-uppercase text-dark">rolls</h2>
-							<h4 class="text-muted">Lorem ipsum dolor sit amet.</h4>
-
-						</div>
-						<div class="single-item-price align-self-end">
-							<h1 class="text-uppercase text-dark">$10</h1>
-						</div>
-						<h3 class="special-text text-capitalize">chef selection</h3>
-
-					</div>
-					<!-- end of single item -->
-					<!-- single item -->
-					<div class="single-item d-flex justify-content-between my-3 p-3">
-						<div class="single-item-text">
-							<h2 class="text-uppercase text-dark">rolls</h2>
-							<h4 class="text-muted">Lorem ipsum dolor sit amet.</h4>
-
-						</div>
-						<div class="single-item-price align-self-end">
-							<h1 class="text-uppercase text-dark">$10</h1>
-						</div>
-					</div>
-					<!-- end of single item -->
-				</div>
-				<!-- end of second column -->
-			</div>
-		</div>
-
-
-	</section>
 	<!-- end of menu section -->
 
 	<!-- ABOUT US -->
@@ -441,6 +295,13 @@
 
 		</div>
 
+
+
+
+
+
+		
+
 	</section>
 
 	<!-- end of customer review -->
@@ -509,61 +370,7 @@
 		</div>
 	</section>
 	<!-- contact section -->
-	<section id="contact">
-		<div class="container-fluid no-padding">
-			<div class="row">
-				<div class="col-md-6 my-3 ">
-					<div class="embed-responsive embed-responsive-21by9 height-60">
-						<iframe class="embed-responsive-item"
-							src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3768.5065574817786!2d72.95346101500968!3d19.173065087032327!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3be7b8fbd69194ad%3A0x8290cd8e208fc9a9!2sB+MAD+The+Restaurant!5e0!3m2!1sen!2sin!4v1553628592440"
-							width="100%" frameborder="0" style="border:0" allowfullscreen></iframe>
-					</div>
-				</div>
-				<div class="col-md-6 my-3 align-self-center">
-					<div class="card text-center">
-						<div class="card-header ">
-							<h1 class="text-uppercase">contact list</h1>
-						</div>
-						<div class="card-body">
-							<form>
-								<!-- input  group-->
-								<div class="input-group my-3">
-									<div class="input-group-prepend">
-										<span class="input-group-text" id="input-text">
-											<i class="fa fa-user"></i>
-										</span>
-									</div>
-									<input type="text" id="text" class="form-control form-control-lg" placeholder="Enter your name here">
-								</div>
-								<div class="input-group my-3">
-									<div class="input-group-prepend">
-										<span class="input-group-text" id="input-phone">
-											<i class="fa fa-phone"></i>
-										</span>
-									</div>
-									<input type="text" id="phone" class="form-control form-control-lg"
-										placeholder="Enter your phone number here">
-								</div>
-								<div class="input-group my-3">
-									<div class="input-group-prepend">
-										<span class="input-group-text" id="input-email">
-											<i class="fa fa-envelope"></i>
-										</span>
-									</div>
-									<input type="email" id="text" class="form-control form-control-lg"
-										placeholder="Enter your email-id here">
-								</div>
-								<button type="submit" class="btn btn-block btn-lg text-uppercase contact-btn"><i
-										class="far fa-hand-point-right mr-2"></i>click here</button>
-							</form>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</section>
-	<!-- end of contact section -->
-	<!-- social icon -->
+
 	<div class="container-fluid info p-3">
 		<div class="row">
 			<div class="col d-flex justify-content-between align-items-baseline flex-wrap">
@@ -580,11 +387,11 @@
 			</div>
 		</div>
 	</div>
-	<a href="#topdisplay" id="back-to-top" class="p-1"><i class="fa fa-arrow-up primary-color fa-3x"></i></a>
+	<!-- <a href="#topdisplay" id="back-to-top" class="p-1"><i class="fa fa-arrow-up primary-color fa-3x"></i></a> -->
 
 	<!-- end of social icons -->
 	<!-- jquery -->
-	<script src="../../js/home_js/jquery-3.3.1.min.js"></script>
+	<script src="../../js/home_js/jquery-3.3.1.min"></script>
 	<!-- bootstrap -->
 	<script src="../../js/home_js/bootstrap.bundle.min.js"></script>
 	<!-- ripple -->

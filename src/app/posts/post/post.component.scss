@@ -1,15 +1,30 @@
-/*******************************
-* MODAL AS LEFT/RIGHT SIDEBAR
-* Add "left" or "right" in modal parent div, after class="modal".
-* Get free snippets on bootpen.com
-*******************************/
-// margin: 100px auto;
-// width: 40px;
-// height: 40px;
-// position: relative;
-// }
-
+.img_input{
+    display: none;
+}
+.image-upload-container {
+    cursor: pointer;
+  }
+  .btn-bwm {
+    background-color: #F52629;
+    border-color: #F52629;
+    color: white;
+    font-size: 20px;
   
+    &:hover, &:focus, &:active {
+      border-color:  #F52629 !important;
+      background-color:  #F52629 !important;
+    }
+  }
+.card{
+    width:35rem;
+    padding: 20px;
+    margin:0 auto;
+    border-color: transparent;
+    border: 1px solid white;
+    border-radius:15px;
+    box-shadow: 2px 5px 8px 8px silver;
+    
+}
 .spinner{
     top:50%;
     

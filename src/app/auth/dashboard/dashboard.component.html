@@ -1,7 +1,7 @@
 <!-- Top navigation -->
 <nav class="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow">
   <a class="navbar-brand col-sm-3 col-md-2 mr-0" routerLink="/register-user">
-    <img class="brand-logo" src="../../../assets/logo-positronx-white.svg" alt="positronX.io Logo">
+    <img class="brand-logo" src="../../../assets/home_images/desktop-icon.png" alt="Logo">
     <span class="dasboard-text">Dashboard</span>
   </a>
 </nav>
@@ -15,17 +15,17 @@
         <ul class="nav flex-column">
           <li class="nav-item">
             <a class="nav-link active">
-              <i class="fas fa-user"></i>User Profile
+              <i class="fa fa-user"></i>User Profile
             </a>
           </li>
           <li class="nav-item">
             <a class="nav-link active" routerLink="/posts/list">
-              <i class="fas fa-user"></i>Posts
+              <i class="fa fa-user"></i>Posts
             </a>
           </li>
           <li class="nav-item">
             <a class="nav-link active" routerLink="/chefProfile">
-              <i class="fas fa-user"></i>Profile
+              <i class="fa fa-user"></i>Profile
             </a>
           </li>
           <!-- Calling SignOut() Api from AuthService -->
@@ -49,13 +49,15 @@
         <div class="row" *ngIf="authService.userData as user">
           <div class="col-md-12">
             <div class="media">
-              <img class="align-self-start mr-5 img-thumbnail rounded-circle" src="{{(user.photoURL) ? user.photoURL : '../../../assets/dummy-user.png'}}"
-                alt="{{user.displayName}}">
+              <img class="align-self-start mr-5 img-thumbnail rounded-circle"
+                src="{{(user.photoURL) ? user.photoURL : '../../../assets/dummy-user.png'}}" alt="{{user.displayName}}">
               <div class="media-body">
                 <h1>Hello: <strong>{{(user.displayName) ? user.displayName : 'User'}}</strong></h1>
                 <p>User ID: <strong>{{user.uid}}</strong></p>
                 <p>Email: <strong>{{user.email}}</strong></p>
                 <p>Email Verified: <strong>{{user.emailVerified}}</strong></p>
+                <p>latitude is {{latitude}} </p>
+                <p> longitude is {{longitude}} </p>
               </div>
             </div>
           </div>
@@ -65,4 +67,45 @@
     </main>
 
   </div>
+
+  <section class="py-5" id="special-items">
+		<div class="container my-5">
+			<div class="row parent-container " *ngFor="let i of rowIndexArray">
+				<!-- menu-items -->
+				<div class="col-10 mx-auto col-sm-6 col-lg-4 my-3" *ngIf="postList[3*i]">
+					<div class="imagebox item-container" (click)="onClick(postList[3*i].key)" >
+						<img [src]="postList[3*i].imageUrl" class="img-fluid">
+            
+                
+							<h1 class="text-uppercase text-center item-link px-3">{{postList[3*i].description}}</h1>
+						
+					</div>
+				</div>
+
+				<div class="col-10 mx-auto col-sm-6 col-lg-4 my-3" *ngIf="postList[3*i+1]">
+					<div class="imagebox item-container" (click)="onClick(postList[3*i+1].key)">
+						<img [src]="postList[3*i+1].imageUrl" class="img-fluid">
+					
+					  
+							<h1 class="text-uppercase text-center item-link px-3">{{postList[3*i+1].description}}</h1>
+						
+					</div>
+				</div>
+
+				<div class="col-10 mx-auto col-sm-6 col-lg-4 my-3" *ngIf="postList[3*i+2]">
+					<div class="imagebox item-container" (click)="onClick(postList[3*i+2].key)">
+						<img [src]="postList[3*i+2].imageUrl" class="img-fluid">
+					
+					  
+						<h1 class="text-uppercase text-center item-link px-3">{{postList[3*i+2].description}}</h1>
+						
+					</div>
+				</div>
+
+				
+			</div>
+		</div>
+	</section>
+
+
 </div>

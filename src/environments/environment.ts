@@ -5,13 +5,13 @@
 export const environment = {
   production: false,
   firebaseConfig : {
-    apiKey: "AIzaSyArpakJ4KehV9qhRxBgSqROSmt29MxSt3I",
-    authDomain: "foodhousie3.firebaseapp.com",
-    databaseURL: "https://foodhousie3.firebaseio.com",
-    projectId: "foodhousie3",
-    storageBucket: "foodhousie3.appspot.com",
-    messagingSenderId: "201658548133",
-    appId: "1:201658548133:web:24611a39bf88a205"
+    apiKey: "AIzaSyCcRPr-r7B80Hu8nkVEaMgZ4gRa6slJh4M",
+    authDomain: "foodhousie3243.firebaseapp.com",
+    databaseURL: "https://foodhousie3243.firebaseio.com",
+    projectId: "foodhousie3243",
+    storageBucket: "foodhousie3243.appspot.com",
+    messagingSenderId: "104975553988",
+    appId: "1:104975553988:web:d7ec2e764b79f836"
   }
 };
 

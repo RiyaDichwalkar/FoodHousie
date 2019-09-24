@@ -35,42 +35,47 @@ import {environment} from '../environments/environment';
 import { AmazingTimePickerModule} from 'amazing-time-picker';
 import { MatFileUploadModule } from 'angular-material-fileupload';
 import { HelpComponent } from './help/help.component';
-import { TryComponent } from './try/try.component';
 import { PageNotFoundComponent } from './auth/page-not-found/page-not-found.component';
 import { ChefProfileComponent } from './profiles/chef-profile/chef-profile.component';
+import { RecipeComponent } from './recipe/recipe.component';
+import { CartComponent } from './cart/cart.component';
+import { CustomerSignUpComponent } from './auth/sign-up/customer-sign-up/customer-sign-up.component';
 
 const appRoutes: Routes = [
-  { path: '', redirectTo: '/sign-in', pathMatch: 'full'},
-  { path: 'sign-in', component: SignInComponent, canActivate: [SecureInnerPagesGuard]},
-  { path: 'register-user', component: SignUpComponent, canActivate: [SecureInnerPagesGuard]},
-  { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] },
-  { path: 'try', component: TryComponent,canActivate: [AuthGuard]},
-  { path: 'chefProfile', component: ChefProfileComponent},
-  { path: 'forgot-password', component: ForgotPasswordComponent, canActivate: [SecureInnerPagesGuard] },
-  { path: 'verify-email-address', component: VerifyEmailComponent, canActivate: [SecureInnerPagesGuard] }
-,
-  {
-    path:'posts/upload/:key/:isedited',component:PostComponent,canActivate: [AuthGuard]
-  },
-  {
-    path:'',redirectTo:'posts/upload',pathMatch:'full',canActivate: [AuthGuard]
-  },
-  {
-    path:'posts',component:PostsComponent,children:[
-      {path:'upload',component:PostComponent,canActivate: [AuthGuard]},
-      {path:'list',component:PostListComponent ,canActivate: [AuthGuard]}
-    ]
-  },
   {
     path: '',
     component: HomeComponent,
     data: { title: 'Home' }
   },
+  { path: '', redirectTo: '/sign-in', pathMatch: 'full'},
+  { path: 'sign-in', component: SignInComponent, canActivate: [SecureInnerPagesGuard]},
+  { path: 'register-user', component: CustomerSignUpComponent, canActivate: [SecureInnerPagesGuard]},
+  { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard]  },
+ // { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] },
+  { path: 'chefProfile', component: ChefProfileComponent, canActivate: [AuthGuard]},
+  { path: 'forgot-password', component: ForgotPasswordComponent, canActivate: [SecureInnerPagesGuard] },
+  { path: 'verify-email-address', component: VerifyEmailComponent, canActivate: [SecureInnerPagesGuard] }
+,
+  { path: 'recipe/:key',component:RecipeComponent , canActivate: [AuthGuard]},
+  { path: 'cart', component: CartComponent },
+  {
+    path:'posts/upload/:key/:isedited',component:PostComponent, canActivate: [AuthGuard]
+  },
+  {
+    path:'',redirectTo:'posts/upload',pathMatch:'full' , canActivate: [AuthGuard]
+  },
+  {
+    path:'posts',component:PostsComponent,children:[
+      {path:'upload',component:PostComponent , canActivate: [AuthGuard]},
+      {path:'list',component:PostListComponent , canActivate: [AuthGuard]}
+    ]
+  },
+ 
   {
     path: 'help',
     component: HelpComponent,
-    data: { title: 'Help' },
-    canActivate: [AuthGuard]
+    data: { title: 'Help', canActivate: [AuthGuard] },
+  
   },
 {
     path: "home",
@@ -125,9 +130,11 @@ const appRoutes: Routes = [
     DashboardComponent,
     ForgotPasswordComponent,
     VerifyEmailComponent,
-    TryComponent,
     PageNotFoundComponent,
-    ChefProfileComponent
+    ChefProfileComponent,
+    RecipeComponent,
+    CartComponent,
+    CustomerSignUpComponent
   ],
   imports: [
     RouterModule.forRoot(appRoutes),

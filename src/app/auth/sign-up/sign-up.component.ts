@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild, AfterViewInit } from '@angular/core';
 import { AuthService } from "../auth.service";
-
+//import {FormControl,Validators} from '@angular/forms';
 @Component({
   selector: 'app-sign-up',
   templateUrl: './sign-up.component.html',
@@ -8,11 +8,37 @@ import { AuthService } from "../auth.service";
 })
 
 export class SignUpComponent implements OnInit {
-
+  @ViewChild('demo',{static:false})x:ElementRef;
+  loc:string;
+  //displayName= new FormControl('');
   constructor(
     public authService: AuthService
   ) { }
 
-  ngOnInit() { }
+  ngOnInit(){
+    this.getLocation();
+  }
+
+   getLocation() {
+    //debugger;
+    
+
+    if (navigator.geolocation) {
+
+      navigator.geolocation.getCurrentPosition((position)=>{
+       // this.loc= " browsemmr.";
+     console.log("sdddddddd " +this.loc);
+      alert("Latitude: " + position.coords.latitude+  
+      "Longitude: " + position.coords.longitude);
+     this.loc = "Latitude: " + position.coords.latitude + 
+    "Longitude: " + position.coords.longitude;
+    console.log(this.loc);
+      });
+    } else { 
+      this.loc= "Geolocation is not supported by this browser.";
+
+    }
+    
+  }
 
 }
