@@ -1,10 +1,10 @@
 <!-- Top navigation -->
-<nav class="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow">
+<!-- <nav class="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow">
   <a class="navbar-brand col-sm-3 col-md-2 mr-0" routerLink="/register-user">
     <img class="brand-logo" src="../../../assets/home_images/desktop-icon.png" alt="Logo">
     <span class="dasboard-text">Dashboard</span>
   </a>
-</nav>
+</nav> -->
 
 <!-- Sidebar navigation -->
 <div class="container-fluid">
@@ -19,7 +19,7 @@
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link active" routerLink="/posts/list">
+            <a class="nav-link active" *ngIf="this.authService.isChef" routerLink="/posts/upload">
               <i class="fa fa-user"></i>Posts
             </a>
           </li>
@@ -56,8 +56,8 @@
                 <p>User ID: <strong>{{user.uid}}</strong></p>
                 <p>Email: <strong>{{user.email}}</strong></p>
                 <p>Email Verified: <strong>{{user.emailVerified}}</strong></p>
-                <p>latitude is {{latitude}} </p>
-                <p> longitude is {{longitude}} </p>
+                <!-- <p>latitude is {{latitude}} </p>
+                <p> longitude is {{longitude}} </p> -->
               </div>
             </div>
           </div>
@@ -68,11 +68,12 @@
 
   </div>
 
-  <section class="py-5" id="special-items">
-		<div class="container my-5">
-			<div class="row parent-container " *ngFor="let i of rowIndexArray">
+  <section class="py-5" id="special-items" >
+    <table *ngIf="isCustomer">
+		
+			<tr class="row parent-container " *ngFor="let i of rowIndexArray">
 				<!-- menu-items -->
-				<div class="col-10 mx-auto col-sm-6 col-lg-4 my-3" *ngIf="postList[3*i]">
+				<td class="col-10 mx-auto col-sm-6 col-lg-4 my-3" *ngIf="postList[3*i]">
 					<div class="imagebox item-container" (click)="onClick(postList[3*i].key)" >
 						<img [src]="postList[3*i].imageUrl" class="img-fluid">
             
@@ -80,9 +81,9 @@
 							<h1 class="text-uppercase text-center item-link px-3">{{postList[3*i].description}}</h1>
 						
 					</div>
-				</div>
+				</td>
 
-				<div class="col-10 mx-auto col-sm-6 col-lg-4 my-3" *ngIf="postList[3*i+1]">
+				<td class="col-10 mx-auto col-sm-6 col-lg-4 my-3" *ngIf="postList[3*i+1]">
 					<div class="imagebox item-container" (click)="onClick(postList[3*i+1].key)">
 						<img [src]="postList[3*i+1].imageUrl" class="img-fluid">
 					
@@ -90,9 +91,9 @@
 							<h1 class="text-uppercase text-center item-link px-3">{{postList[3*i+1].description}}</h1>
 						
 					</div>
-				</div>
+				</td>
 
-				<div class="col-10 mx-auto col-sm-6 col-lg-4 my-3" *ngIf="postList[3*i+2]">
+				<td class="col-10 mx-auto col-sm-6 col-lg-4 my-3" *ngIf="postList[3*i+2]">
 					<div class="imagebox item-container" (click)="onClick(postList[3*i+2].key)">
 						<img [src]="postList[3*i+2].imageUrl" class="img-fluid">
 					
@@ -100,12 +101,51 @@
 						<h1 class="text-uppercase text-center item-link px-3">{{postList[3*i+2].description}}</h1>
 						
 					</div>
-				</div>
+				</td>
+      </tr>
+      </table>
 
-				
-			</div>
-		</div>
+      <table *ngIf="isChef">
+		
+          <tr class="row parent-container " *ngFor="let i of rowIndexArray">
+            <!-- menu-items -->
+            <td class="col-10 mx-auto col-sm-6 col-lg-4 my-3" *ngIf="postList[3*i]">
+              <div class="imagebox item-container" (click)="onClick(postList[3*i].key)" >
+                <img [src]="postList[3*i].imageUrl" class="img-fluid">
+                
+                    
+                  <h1 class="text-uppercase text-center item-link px-3">{{postList[3*i].description}}</h1>
+                
+              </div>
+            </td>
+    
+            <td class="col-10 mx-auto col-sm-6 col-lg-4 my-3" *ngIf="postList[3*i+1]">
+              <div class="imagebox item-container" (click)="onClick(postList[3*i+1].key)">
+                <img [src]="postList[3*i+1].imageUrl" class="img-fluid">
+              
+                
+                  <h1 class="text-uppercase text-center item-link px-3">{{postList[3*i+1].description}}</h1>
+                
+              </div>
+            </td>
+    
+            <td class="col-10 mx-auto col-sm-6 col-lg-4 my-3" *ngIf="postList[3*i+2]">
+              <div class="imagebox item-container" (click)="onClick(postList[3*i+2].key)">
+                <img [src]="postList[3*i+2].imageUrl" class="img-fluid">
+              
+                
+                <h1 class="text-uppercase text-center item-link px-3">{{postList[3*i+2].description}}</h1>
+                
+              </div>
+            </td>
+          </tr>
+          </table>
 	</section>
 
 
 </div>
+
+
+
+
+

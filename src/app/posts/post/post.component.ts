@@ -68,9 +68,17 @@ export class PostComponent implements OnInit {
    }
 
   ngOnInit() {
+   // debugger;
+    const userrole=JSON.parse(localStorage.getItem("roles"));
+    if(userrole.isCustomer){
+        this.router.navigate(['**']);
+    }
+    else{
+      console.log("kkkkkkkkkkkkkkk");
     this.auth.getUserState().subscribe(user => {
       this.user = user;
       console.log(user.uid);
+
     });
     if(this.isedited)
     {this.setForm(this.selectedKey); 
@@ -82,6 +90,7 @@ export class PostComponent implements OnInit {
     this.selectedDeadLineTime=this.datePipe.transform(this.date, 'HH:mm');
     }
     this.maxDate.setDate(this.date.getDate()+7);
+  }
   }
 
   openStartTime(ev: any){

@@ -17,7 +17,13 @@ isedited:boolean=false;
   constructor(private service:PostService,private _router:Router) { }
 
   ngOnInit() {
+    const userrole=JSON.parse(localStorage.getItem("roles"));
+    if(userrole.isCustomer){
+        this._router.navigate(['**']);
+    }
+    else{
     this.getPostsList();
+    }
   }
   onClick(key:any){
      this.isedited=true;

@@ -13,6 +13,9 @@ import { post } from 'selenium-webdriver/http';
   styleUrls: ["./dashboard.component.css"]
 })
 export class DashboardComponent implements OnInit {
+  chefRef: AngularFirestoreCollection<any> = null;
+  postRefCollection:AngularFirestoreCollection<Post>=null;
+  //isChef:boolean=false;
   constructor(
     public authService: AuthService,
     public postService:PostService,
@@ -20,7 +23,7 @@ export class DashboardComponent implements OnInit {
     public ngZone: NgZone,
     private db: AngularFirestore
   ) {
-    this.chefRefCollection = db.collection("/chef");
+    this.chefRef = db.collection("/chef");
     this.postRefCollection=db.collection("/posts");
   }
   //all chefs
@@ -29,58 +32,80 @@ export class DashboardComponent implements OnInit {
   rowIndexArray:any;
   chefsWithin1km: any;
   private dbPath = "/chef";
-  chefRefCollection: AngularFirestoreCollection<any> = null;
-  postRefCollection:AngularFirestoreCollection<Post>=null;
+  isCustomer:boolean=false;
+  isChef:boolean=false;
   latitude: number;
   longitude: number;
   flag:boolean=false;
   ngOnInit() {
-    if(!this.flag){
+    const userrole=JSON.parse(localStorage.getItem("roles"));
+    if(userrole.isCustomer){
+        this.isCustomer=true;
+    }
+    else{
+      this.isChef=true;
+    }
+    if(!this.flag ){
     if (window.navigator.geolocation) {
       window.navigator.geolocation.getCurrentPosition(
         this.setPosition.bind(this)
       );
       this.flag=true;
     }
+    
   }
+  if(userrole.isCustomer){
     this.getChefData();
+}else{
+  this.getPostData(JSON.parse(localStorage.getItem("roles")).uid);
+ 
+}
+    
   }
   setPosition(position) {
+    debugger;
     this.latitude = position.coords.latitude;
     this.longitude = position.coords.longitude;
-    //console.log(this.longitude, this.latitude);
+    console.log("My Loco is "+this.longitude, this.latitude);
   }
   //get all chef
   getChefData() {
-    this.chefRefCollection
-      .snapshotChanges()
-      .pipe(
-        map(changes =>
-          changes.map(c => ({ key: c.payload.doc.id, ...c.payload.doc.data() }))
+    debugger;
+    this.chefRef.snapshotChanges().pipe(
+      map(changes =>
+        changes.map(c =>
+          ({ key: c.payload.doc.id, ...c.payload.doc.data() })
         )
       )
-      .subscribe(posts => {
+      ).subscribe(posts => {
         this.chefList = posts;
         this.chefsWithin1km = [];
-       // debugger;
-        posts.forEach(doc => {
-          //console.log(doc.latitude, doc.longitude);
+        debugger;
+        this.chefList.forEach(doc => {
+          console.log("####");
+          console.log(doc.fullname,doc.latitude, doc.longitude);
           if (
             this.distance(
               doc.latitude,
               doc.longitude,
               this.latitude,
               this.longitude
-            ) < 1
+            ) < 10
           ) {
-           // debugger;
+            debugger;
+            console.log("****");
             console.log(doc.fullname, doc.latitude, doc.longitude);
             this.chefsWithin1km.push(doc.uid);
         
           }
+          else{
+            // console.log("bad post");
+          }
+
         });
         // console.log(this.chefsWithin1km);
-        this.getPostData(this.chefsWithin1km);
+         debugger;
+         this.getPostData(this.chefsWithin1km);
       });
 
   }
@@ -108,20 +133,16 @@ export class DashboardComponent implements OnInit {
   }
 
   getPostData(chefsWithin1km:Array<any> ) {
-    //debugger;
+    debugger;
     chefsWithin1km.forEach((chefUid)=>{
-    this.db.collection('/posts', ref => ref.where('userid', '==',chefUid)).snapshotChanges().pipe(
-      map(changes =>
-        changes.map(c =>
-          ({ key: c.payload.doc.id, ...c.payload.doc.data() })
-        )
-      )
-    ).subscribe(result => {
+    this.db.collection('posts', ref => ref.where('userid', '==',chefUid)).valueChanges()
+    .subscribe(result => {
       console.log(result);
       if(result.length!=0){
                this.postList=result;
+               console.log("ddddddddd");
                console.log(result);
-               
+               debugger;
                this.rowIndexArray=Array.from(Array(Math.ceil((this.postList.length)/3)).keys());
       }
     });
