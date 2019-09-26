@@ -6,7 +6,7 @@ import { AngularFirestoreCollection } from "@angular/fire/firestore";
 import { map } from "rxjs/operators";
 import { PostService} from '../../shared/post.service';
 import { Post} from '../../shared/models/post.model';
-import { post } from 'selenium-webdriver/http';
+import * as _ from "lodash";
 @Component({
   selector: "app-dashboard",
   templateUrl: "./dashboard.component.html",
@@ -55,22 +55,26 @@ export class DashboardComponent implements OnInit {
     
   }
   if(userrole.isCustomer){
+   // debugger;
     this.getChefData();
 }else{
-  this.getPostData(JSON.parse(localStorage.getItem("roles")).uid);
+ // debugger;
+  console.log(JSON.parse(localStorage.getItem("user")).uid);
+  console.log(JSON.parse(localStorage.getItem("roles")));
+  this.getPostData([JSON.parse(localStorage.getItem("user")).uid]);
  
 }
     
   }
   setPosition(position) {
-    debugger;
+   // debugger;
     this.latitude = position.coords.latitude;
     this.longitude = position.coords.longitude;
     console.log("My Loco is "+this.longitude, this.latitude);
   }
   //get all chef
   getChefData() {
-    debugger;
+   // debugger;
     this.chefRef.snapshotChanges().pipe(
       map(changes =>
         changes.map(c =>
@@ -80,7 +84,7 @@ export class DashboardComponent implements OnInit {
       ).subscribe(posts => {
         this.chefList = posts;
         this.chefsWithin1km = [];
-        debugger;
+      //  debugger;
         this.chefList.forEach(doc => {
           console.log("####");
           console.log(doc.fullname,doc.latitude, doc.longitude);
@@ -90,9 +94,9 @@ export class DashboardComponent implements OnInit {
               doc.longitude,
               this.latitude,
               this.longitude
-            ) < 10
+            ) < 1
           ) {
-            debugger;
+            //debugger;
             console.log("****");
             console.log(doc.fullname, doc.latitude, doc.longitude);
             this.chefsWithin1km.push(doc.uid);
@@ -104,7 +108,7 @@ export class DashboardComponent implements OnInit {
 
         });
         // console.log(this.chefsWithin1km);
-         debugger;
+         //debugger;
          this.getPostData(this.chefsWithin1km);
       });
 
@@ -133,7 +137,7 @@ export class DashboardComponent implements OnInit {
   }
 
   getPostData(chefsWithin1km:Array<any> ) {
-    debugger;
+    //debugger;
     chefsWithin1km.forEach((chefUid)=>{
     this.db.collection('posts', ref => ref.where('userid', '==',chefUid)).valueChanges()
     .subscribe(result => {
@@ -142,7 +146,7 @@ export class DashboardComponent implements OnInit {
                this.postList=result;
                console.log("ddddddddd");
                console.log(result);
-               debugger;
+               //debugger;
                this.rowIndexArray=Array.from(Array(Math.ceil((this.postList.length)/3)).keys());
       }
     });

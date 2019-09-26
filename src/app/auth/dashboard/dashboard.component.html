@@ -23,11 +23,11 @@
               <i class="fa fa-user"></i>Posts
             </a>
           </li>
-          <li class="nav-item">
+          <!-- <li class="nav-item">
             <a class="nav-link active" routerLink="/chefProfile">
               <i class="fa fa-user"></i>Profile
             </a>
-          </li>
+          </li> -->
           <!-- Calling SignOut() Api from AuthService -->
           <li class="nav-item">
             <a class="nav-link" (click)="authService.SignOut()">
@@ -67,8 +67,22 @@
     </main>
 
   </div>
+<div>
+  <h2>Filters</h2>
+  
+  <select [(ngModel)]="label" (change)="filterExact('label', label)">
+    <option value="main course">main course</option>
+    <option value="snacks">snacks</option>
+    <option value="others">others</option>
+  </select>
+  
+  <!-- <button *ngIf="family" (click)="removeFilter('family')">
+  
+    Remove filter
+  </button> -->
 
-  <section class="py-5" id="special-items" >
+</div>
+  <section class="py-5 offset-md-2" id="special-items" >
     <table *ngIf="isCustomer">
 		
 			<tr class="row parent-container " *ngFor="let i of rowIndexArray">
@@ -110,7 +124,7 @@
           <tr class="row parent-container " *ngFor="let i of rowIndexArray">
             <!-- menu-items -->
             <td class="col-10 mx-auto col-sm-6 col-lg-4 my-3" *ngIf="postList[3*i]">
-              <div class="imagebox item-container" (click)="onClick(postList[3*i].key)" >
+              <div class="imagebox item-container" >
                 <img [src]="postList[3*i].imageUrl" class="img-fluid">
                 
                     
@@ -120,7 +134,7 @@
             </td>
     
             <td class="col-10 mx-auto col-sm-6 col-lg-4 my-3" *ngIf="postList[3*i+1]">
-              <div class="imagebox item-container" (click)="onClick(postList[3*i+1].key)">
+              <div class="imagebox item-container" >
                 <img [src]="postList[3*i+1].imageUrl" class="img-fluid">
               
                 
@@ -130,7 +144,7 @@
             </td>
     
             <td class="col-10 mx-auto col-sm-6 col-lg-4 my-3" *ngIf="postList[3*i+2]">
-              <div class="imagebox item-container" (click)="onClick(postList[3*i+2].key)">
+              <div class="imagebox item-container" >
                 <img [src]="postList[3*i+2].imageUrl" class="img-fluid">
               
                 

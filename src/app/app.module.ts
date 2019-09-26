@@ -40,6 +40,7 @@ import { ChefProfileComponent } from './profiles/chef-profile/chef-profile.compo
 import { RecipeComponent } from './recipe/recipe.component';
 import { CartComponent } from './cart/cart.component';
 import { CustomerSignUpComponent } from './auth/sign-up/customer-sign-up/customer-sign-up.component';
+import { TermsAndConditionsComponent } from './help/terms-and-conditions/terms-and-conditions.component';
 
 const appRoutes: Routes = [
   {
@@ -77,6 +78,13 @@ const appRoutes: Routes = [
     data: { title: 'Help', canActivate: [AuthGuard] },
   
   },
+  {
+    path: 'terms_and_conditions',
+    component: TermsAndConditionsComponent,
+    data: { title: 'terms_and_conditions'},
+  
+  },
+  
 {
     path: "home",
     component: HomeComponent
@@ -134,7 +142,8 @@ const appRoutes: Routes = [
     ChefProfileComponent,
     RecipeComponent,
     CartComponent,
-    CustomerSignUpComponent
+    CustomerSignUpComponent,
+    TermsAndConditionsComponent
   ],
   imports: [
     RouterModule.forRoot(appRoutes),

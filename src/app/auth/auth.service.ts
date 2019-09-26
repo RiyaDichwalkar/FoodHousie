@@ -162,9 +162,9 @@ export class AuthService {
 
 
     getRole(){
-      debugger;
+     // debugger;
       this.afAuth.authState.subscribe(user => {
-        debugger;
+       // debugger;
         if (user) {
           //console.log(user);
           this.userData = user;
@@ -175,11 +175,11 @@ export class AuthService {
               this.userData.role = val["0"].role;
               console.log(this.userData.role);
               if (val["0"].role.localeCompare("chef") == 0) {
-                debugger;
+                //debugger;
                 this.isChef = true;
                 this.isCustomer = false;
               } else {
-                debugger;
+               // debugger;
                 this.isCustomer = true;
                 this.isChef = false;
               }
