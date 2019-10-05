@@ -8,7 +8,6 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
 import { SignInComponent } from './auth/sign-in/sign-in.component';
-import { SignUpComponent } from './auth/sign-up/sign-up.component';
 import { DashboardComponent } from './auth/dashboard/dashboard.component';
 import { ForgotPasswordComponent } from './auth/forgot-password/forgot-password.component';
 import { VerifyEmailComponent } from './auth/verify-email/verify-email.component';
@@ -22,7 +21,6 @@ import { FormsModule } from '@angular/forms';
 import { AuthService } from "./auth/auth.service";
 import { FileSelectDirective } from 'ng2-file-upload';
 import { HomeComponent } from './home/home.component';
-import { PostsComponent } from './posts/posts.component';
 import { PostComponent } from './posts/post/post.component';
 import { PostListComponent } from './posts/post-list/post-list.component';
 import { AngularFireModule } from '@angular/fire';
@@ -58,19 +56,15 @@ const appRoutes: Routes = [
   { path: 'verify-email-address', component: VerifyEmailComponent, canActivate: [SecureInnerPagesGuard] }
 ,
   { path: 'recipe/:key',component:RecipeComponent , canActivate: [AuthGuard]},
-  { path: 'cart', component: CartComponent },
+  { path: 'cart/:key', component: CartComponent , canActivate: [AuthGuard]},
   {
     path:'posts/upload/:key/:isedited',component:PostComponent, canActivate: [AuthGuard]
   },
   {
     path:'',redirectTo:'posts/upload',pathMatch:'full' , canActivate: [AuthGuard]
   },
-  {
-    path:'posts',component:PostsComponent,children:[
-      {path:'upload',component:PostComponent , canActivate: [AuthGuard]},
-      {path:'list',component:PostListComponent , canActivate: [AuthGuard]}
-    ]
-  },
+      {path:'posts/upload',component:PostComponent , canActivate: [AuthGuard]},
+      {path:'posts/list',component:PostListComponent , canActivate: [AuthGuard]},
  
   {
     path: 'help',
@@ -128,13 +122,11 @@ const appRoutes: Routes = [
     AppComponent,
     FileSelectDirective,
     HomeComponent,
-    PostsComponent,
     PostComponent,
     PostListComponent,
     HelpComponent,
     ForgotPasswordComponent,
     SignInComponent,
-    SignUpComponent,
     DashboardComponent,
     ForgotPasswordComponent,
     VerifyEmailComponent,

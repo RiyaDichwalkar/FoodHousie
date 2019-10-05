@@ -37,7 +37,8 @@ export class DashboardComponent implements OnInit {
   latitude: number;
   longitude: number;
   flag:boolean=false;
-  ngOnInit() {
+  ngOnInit() { 
+    //getting the role of the user
     const userrole=JSON.parse(localStorage.getItem("roles"));
     if(userrole.isCustomer){
         this.isCustomer=true;
@@ -55,26 +56,18 @@ export class DashboardComponent implements OnInit {
     
   }
   if(userrole.isCustomer){
-   // debugger;
     this.getChefData();
 }else{
- // debugger;
-  console.log(JSON.parse(localStorage.getItem("user")).uid);
-  console.log(JSON.parse(localStorage.getItem("roles")));
   this.getPostData([JSON.parse(localStorage.getItem("user")).uid]);
- 
 }
     
   }
   setPosition(position) {
-   // debugger;
     this.latitude = position.coords.latitude;
     this.longitude = position.coords.longitude;
-    console.log("My Loco is "+this.longitude, this.latitude);
   }
   //get all chef
   getChefData() {
-   // debugger;
     this.chefRef.snapshotChanges().pipe(
       map(changes =>
         changes.map(c =>
@@ -84,31 +77,19 @@ export class DashboardComponent implements OnInit {
       ).subscribe(posts => {
         this.chefList = posts;
         this.chefsWithin1km = [];
-      //  debugger;
         this.chefList.forEach(doc => {
-          console.log("####");
-          console.log(doc.fullname,doc.latitude, doc.longitude);
           if (
             this.distance(
               doc.latitude,
               doc.longitude,
               this.latitude,
               this.longitude
-            ) < 1
+            ) < 100
           ) {
-            //debugger;
-            console.log("****");
-            console.log(doc.fullname, doc.latitude, doc.longitude);
-            this.chefsWithin1km.push(doc.uid);
-        
-          }
-          else{
-            // console.log("bad post");
+            this.chefsWithin1km.push(doc.uid);   
           }
 
         });
-        // console.log(this.chefsWithin1km);
-         //debugger;
          this.getPostData(this.chefsWithin1km);
       });
 
@@ -137,16 +118,12 @@ export class DashboardComponent implements OnInit {
   }
 
   getPostData(chefsWithin1km:Array<any> ) {
-    //debugger;
     chefsWithin1km.forEach((chefUid)=>{
     this.db.collection('posts', ref => ref.where('userid', '==',chefUid)).valueChanges()
     .subscribe(result => {
       console.log(result);
       if(result.length!=0){
                this.postList=result;
-               console.log("ddddddddd");
-               console.log(result);
-               //debugger;
                this.rowIndexArray=Array.from(Array(Math.ceil((this.postList.length)/3)).keys());
       }
     });

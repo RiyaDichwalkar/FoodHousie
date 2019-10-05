@@ -68,13 +68,11 @@ export class PostComponent implements OnInit {
    }
 
   ngOnInit() {
-   // debugger;
     const userrole=JSON.parse(localStorage.getItem("roles"));
     if(userrole.isCustomer){
         this.router.navigate(['**']);
     }
     else{
-      console.log("kkkkkkkkkkkkkkk");
     this.auth.getUserState().subscribe(user => {
       this.user = user;
       console.log(user.uid);
@@ -146,8 +144,6 @@ export class PostComponent implements OnInit {
     if(this.formTemplate.valid && this.valid){
       var filePath =`${formValue.key}/${this.selectedImage.name.split('.').slice(0,-1).join('.')}_${new Date().getTime()}`;
       const fileRef =this.storage.ref(filePath);
-     // console.log("oooooo"+this.price);
-   
        this.storage.upload(filePath,this.selectedImage).snapshotChanges().pipe(
         finalize(()=>{
           fileRef.getDownloadURL().subscribe((url)=>{
@@ -157,7 +153,6 @@ export class PostComponent implements OnInit {
               formValue['pickuptimestart']=this.selectedStartTime;
               formValue['pickuptimeend']=this.selectedEndTime;
               formValue['deadlinetime']=this.selectedDeadLineTime;
-            
               this.service.createPost(formValue);
               this.resetForm();      
           });
@@ -186,15 +181,6 @@ export class PostComponent implements OnInit {
      this.description=this.filledData['0'].description;
      this.date=new Date( this.filledData['0'].date);
      this.price=this.filledData['0'].price;
-    //  this.formTemplate.setValue({
-    //   imageUrl:'',
-    //   description:'',
-    //   price:'',
-    //   date:'',
-    //   pickuptimestart:'',
-    //   pickuptimeend:'',
-    //   deadlinetime:''
-    // });
     });
     this.selectedImage=null;
     this.isSubmitted=false;
@@ -220,21 +206,9 @@ export class PostComponent implements OnInit {
     return this.isValidDate;
   }
  
-
+//reseting the form
   resetForm(){
-  
     this.formTemplate.reset();
-
-    // this.formTemplate.setValue({
-    //   caption:'',
-    //   imageUrl:'',
-    //   description:'',
-    //   category:'Animal',
-    //   availibility_date:'',
-    //   pickuptimestart:'',
-    //   pickuptimeend:'',
-    //   deadlinetime:''
-    // });
     this.imgUrl="../../../assets/post-img/image_placeholder.jpg";
     this.selectedImage=null;
     this.isSubmitted=false;

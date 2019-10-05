@@ -28,6 +28,8 @@ export class PostService {
   }
   
   getPost(key:string):AngularFirestoreCollection<Post>{
+    console.log("yyyyyyyyyyyy");
+    debugger;
     this.result= this.db.collection('/posts', ref => ref.where('key', '==', key));
     return this.result;
   }

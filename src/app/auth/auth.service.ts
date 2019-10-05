@@ -1,11 +1,6 @@
 import { Injectable, NgZone } from "@angular/core";
-import { User } from "../shared/models/user";
-import { auth } from "firebase/app";
 import { AngularFireAuth } from "@angular/fire/auth";
-import {
-  AngularFirestore,
-  AngularFirestoreDocument
-} from "@angular/fire/firestore";
+import {AngularFirestore} from "@angular/fire/firestore";
 import { Router } from "@angular/router";
 
 @Injectable({
@@ -25,7 +20,6 @@ export class AuthService {
     logged in and setting up null when logged out */
     this.afAuth.authState.subscribe(user => {
       if (user) {
-        //console.log(user);
         this.userData = user;
         this.afs
           .collection("roles", ref => ref.where("uid", "==", user.uid))
@@ -47,8 +41,6 @@ export class AuthService {
            };
            localStorage.setItem('roles', JSON.stringify(role));
             localStorage.setItem("user", JSON.stringify(this.userData));
-            console.log(this.userData.role + "is role");
-            //console.log(localStorage.getItem("user").role);
           });
       } else {
         localStorage.setItem("user", null);
@@ -66,7 +58,6 @@ export class AuthService {
         this.ngZone.run(() => {
           this.router.navigate(["dashboard"]);
         });
-        console.log("error");
       })
       .catch(error => {
         window.alert(error.message);
@@ -159,42 +150,4 @@ export class AuthService {
       this.router.navigate(["sign-in"]);
     });
   }
-
-
-    getRole(){
-     // debugger;
-      this.afAuth.authState.subscribe(user => {
-       // debugger;
-        if (user) {
-          //console.log(user);
-          this.userData = user;
-          this.afs
-            .collection("roles", ref => ref.where("uid", "==", user.uid))
-            .valueChanges()
-            .subscribe(val => {
-              this.userData.role = val["0"].role;
-              console.log(this.userData.role);
-              if (val["0"].role.localeCompare("chef") == 0) {
-                //debugger;
-                this.isChef = true;
-                this.isCustomer = false;
-              } else {
-               // debugger;
-                this.isCustomer = true;
-                this.isChef = false;
-              }
-              //localStorage.setItem("user", JSON.stringify(this.userData));
-              console.log(this.userData.role + "is role");
-              //console.log(localStorage.getItem("user").role);
-            });
-        } else {
-         console.log("null");
-          //localStorage.setItem("user", null);
-          //JSON.parse(localStorage.getItem("user"));
-        }
-      });
-    }
-
-
-
 }

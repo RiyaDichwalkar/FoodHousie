@@ -1,3 +1,11 @@
+<div class="row">
+  <div style="margin:0 auto; margin-top: 3%;">
+      <blockquote class="blockquote">
+          <p class="mb-0 h3 display-4">POST YOUR RECIPE</p>
+      </blockquote>
+      <router-outlet></router-outlet>
+  </div>
+</div>
 <div *ngIf="isSubmitted && valid && formTemplate.valid" class="spinner">
     <mat-spinner></mat-spinner>
 </div>
