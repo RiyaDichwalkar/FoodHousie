@@ -6,7 +6,7 @@ import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-
+import {MatSliderModule} from '@angular/material/slider';
 import { SignInComponent } from './auth/sign-in/sign-in.component';
 import { DashboardComponent } from './auth/dashboard/dashboard.component';
 import { ForgotPasswordComponent } from './auth/forgot-password/forgot-password.component';
@@ -135,7 +135,8 @@ const appRoutes: Routes = [
     RecipeComponent,
     CartComponent,
     CustomerSignUpComponent,
-    TermsAndConditionsComponent
+    TermsAndConditionsComponent,
+    
   ],
   imports: [
     RouterModule.forRoot(appRoutes),
@@ -159,7 +160,8 @@ const appRoutes: Routes = [
     AmazingTimePickerModule,
     MatStepperModule,
     MatFileUploadModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    MatSliderModule
   ],
 providers: [{ provide: FirestoreSettingsToken, useValue: {} },AuthService],
   bootstrap: [AppComponent]
