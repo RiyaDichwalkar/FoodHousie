@@ -4,6 +4,7 @@ import { Post } from '../shared/models/post.model';
 import { CartItem } from '../shared/models/cart';
 import { PostService } from '../shared/post.service';
 import { map } from 'rxjs/operators'
+
 @Component({
   selector: 'app-cart',
   templateUrl: './cart.component.html',
@@ -11,8 +12,9 @@ import { map } from 'rxjs/operators'
 })
 export class CartComponent implements OnInit {
    private items:CartItem[]=[];
-   private product_detail:Post;
+   public product_detail:any;
    private total:number=0;
+   public quantity:number=0;
   constructor(
     private _route:ActivatedRoute,
     private postService:PostService
@@ -20,28 +22,15 @@ export class CartComponent implements OnInit {
 
   ngOnInit() {
     debugger;
+    console.log(this.quantity);
     var key=this._route.snapshot.paramMap.get('key');
     if(key){
-      // this.postService.getPost(id).snapshotChanges().pipe(
-      //   map(changes =>
-      //     changes.map(c =>
-      //       ({ key: c.payload.doc.id, ...c.payload.doc.data() })
-      //     )
-      //   )
-      // )
-      // .subscribe(result=>{
-      //   console.log("OOO");
-      //   console.log(result);
-      // this.product_detail= result['0'];
-      // console.log(this.product_detail);
-      // debugger;
-      // });
-
       this.postService.getPost(key).valueChanges().subscribe(result => {
        console.log(result);
-          
+          this.product_detail=result['0'];
+          console.log(this.product_detail);
       });
-  
+     
     }
   }
     //   var item:CartItem={
@@ -108,5 +97,11 @@ export class CartComponent implements OnInit {
 	// 	this.loadCart();
 	// }
 
+  formatLabel(value: number) {
+    if (value >= 1000) {
+      return Math.round(value / 1000) + 'k';
+    }
 
+    return value;
+  }
 }

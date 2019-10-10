@@ -1,16 +1,14 @@
 
 import { Component, OnInit ,Input,NgZone} from '@angular/core';
 import { FormGroup,FormBuilder, FormControl, Validators } from '@angular/forms';
-import { AngularFireAction } from '@angular/fire/database';
 import { AngularFireStorage } from '@angular/fire/storage';
 import { finalize } from 'rxjs/operators';
 import { PostService } from 'src/app/shared/post.service';
 import { Post } from '../../shared/models/post.model';
 import { DatePipe } from '@angular/common';
 import {AmazingTimePickerService } from 'amazing-time-picker';
-import { Router,ActivatedRoute, NavigationStart, Event, NavigationEnd} from '@angular/router';
+import { Router,ActivatedRoute} from '@angular/router';
 import { map } from 'rxjs/operators';
-import { throwMatDialogContentAlreadyAttachedError } from '@angular/material';
 import { AuthService } from "../../auth/auth.service";
 declare var $: any;
 @Component({
@@ -22,7 +20,6 @@ declare var $: any;
 export class PostComponent implements OnInit {
   @Input() post: Post;
   imgUrl: String;
-  isLinear = false;
   selectedImage:any;
   isSubmitted:boolean;
   selectedDate:string;
@@ -30,6 +27,7 @@ export class PostComponent implements OnInit {
   selectedEndTime:string;
   selectedDeadLineTime:string;
   description:string;
+  title:string;
   isSelectStartTime:boolean=false;
   isSelectEndTime:boolean=false;
   price:number;
@@ -40,6 +38,7 @@ export class PostComponent implements OnInit {
   isValidDate:any;
    valid:boolean=true;
   formTemplate= new FormGroup({
+    title:new FormControl(''),
     description:new FormControl(''),
     imageUrl:new FormControl('',Validators.required),
      pickuptimestart: new FormControl(''),
@@ -149,7 +148,7 @@ export class PostComponent implements OnInit {
           fileRef.getDownloadURL().subscribe((url)=>{
               formValue['userid']=this.user.uid,
               formValue['imageUrl']=url;
-              formValue['date']=this.datePipe.transform(this.date, 'MM/dd/yyyy')
+              formValue['date']=this.datePipe.transform(this.date, 'dd/MM/yyyy')
               formValue['pickuptimestart']=this.selectedStartTime;
               formValue['pickuptimeend']=this.selectedEndTime;
               formValue['deadlinetime']=this.selectedDeadLineTime;
@@ -178,6 +177,7 @@ export class PostComponent implements OnInit {
      this.selectedEndTime=this.filledData['0'].pickuptimeend;
      this.selectedDeadLineTime=this.filledData['0'].deadlinetime;
      this.imgUrl=this.filledData['0'].imageUrl;
+     this.title=this.filledData['0'].title;
      this.description=this.filledData['0'].description;
      this.date=new Date( this.filledData['0'].date);
      this.price=this.filledData['0'].price;

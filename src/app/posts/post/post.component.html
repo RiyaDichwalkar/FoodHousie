@@ -23,6 +23,9 @@
         <div class="text-danger" *ngIf="isSubmitted && formControls.imageUrl.errors?.required">This field is required.
         </div>
       </div>
+      <input value="{{title}}"  formControlName="title" placeholder="Title">
+      <div class="text-danger" *ngIf="isSubmitted && formControls.title.errors?.required">This field is required
+       </div>
       <textarea rows="4" cols="57" value="{{description}}"  formControlName="description" placeholder=" Description"></textarea>
           <div class="text-danger" *ngIf="isSubmitted && formControls.description.errors?.required">This field is required
         </div>
