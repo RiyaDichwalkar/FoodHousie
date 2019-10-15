@@ -1,36 +1,34 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit } from "@angular/core";
 import { AuthService } from "../auth/auth.service";
 import { Router } from "@angular/router";
 @Component({
-  selector: 'app-home',
-  templateUrl: './home.component.html',
-  styleUrls: ['./home.component.scss',
-  '../../css/home_css/bootstrap.min.css',
-  '../../css/home_css/main.css',
-  '../../css/home_css/magnific-popup.css'
-  
-   ]
+  selector: "app-home",
+  templateUrl: "./home.component.html",
+  styleUrls: [
+    "./home.component.scss",
+    "../../css/home_css/bootstrap.min.css",
+    "../../css/home_css/main.css",
+    "../../css/home_css/magnific-popup.css"
+  ]
 })
 export class HomeComponent implements OnInit {
   user: firebase.User;
-  constructor(private auth: AuthService, private router: Router) { }
+  constructor(private auth: AuthService, private router: Router) {}
 
   ngOnInit() {
     this.auth.getUserState().subscribe(user => {
       this.user = user;
     });
   }
-  login() {
-    this.router.navigate(["/login"]);
-  }
+  // login() {
+  //   this.router.navigate(["/login"]);
+  // }
 
-  logout() {
-    this.auth.SignOut();
-  }
+  // logout() {
+  //   this.auth.SignOut();
+  // }
 
-  register() {
-    this.router.navigate(["/register"]);
-  }
-
+  // register() {
+  //   this.router.navigate(["/register"]);
+  // }
 }
-

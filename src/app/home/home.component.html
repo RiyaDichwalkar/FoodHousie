@@ -1,28 +1,4 @@
-
-	<!-- social icon -->
-	<div class="container-fluid info p-3" id="topdisplay">
-		<div class="row">
-			<div class="col d-flex justify-content-between align-items-baseline flex-wrap">
-				<div class="info-icons p-2">
-					
-					<a href="#" class="mr-2 primary-color"><i class="fa fa-facebook fa-2x"></i></a>
-					<a href="#" class="mr-2 primary-color"><i class="fa fa-instagram fa-2x"></i></a>
-					<a href="#" class="mr-2 primary-color"><i class="fa fa-twitter fa-2x"></i></a>
-					<a href="#" class="mr-2 primary-color"><i class="fa fa-yelp fa-2x"></i></a>
-				</div>
-
-				<h2 class="primary-color p-2 text-capitalize">BMAD, MG road, Mulund(west), Mumbai-400080</h2>
-				<p *ngIf="user">Logged in as: {{ user?.email }} - {{ user?.displayName }}</p>
-				<button class="btn btn-primary mr-2" *ngIf="!user" (click)="register()">Register</button>
-				<button class="btn btn-primary" *ngIf="user" (click)="logout()">Logout</button>
-				<button class="btn btn-primary" *ngIf="!user" (click)="login()">Login</button>
-			</div>
-		</div>
-	</div>
-	<!-- end of social icons -->
-	<!-- emmet practice ( .container>.row>.col )-->
-	<!-- section.container#main <section class="container" id="main"></section> -->
-
+	<div class="col-md-12 col-lg-2 col-xs-12 col-sm-12 "></div>
 	<!-- header sections -->
 	<header id="header">
 		<div class="container">
@@ -31,10 +7,8 @@
 
 					<div class="banner text-center">
 						<h1 class="display-1 text-capitalize w-50 mx-auto">
-							<small>sushi</small> <strong class="primary-color">monster</strong>
+							<small>FoodHousie</small> 
 						</h1>
-						<a href="" class="btn main-btn sushi-btn  my-4 text-capitalize">order online</a>
-
 					</div>
 
 				</div>
@@ -49,7 +23,6 @@
 
 	<!-- navbar -->
 	<nav class="navbar navbar-expand-lg">
-		<a href="#" class="navbar-brand text-uppercase primary-color">Sushi Monster</a>
 		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#myNavbar">
 			<div class="toggler-btn">
 				<div class="bar bar-1"></div>
@@ -60,15 +33,6 @@
 		<!--     links         -->
 		<div class="collapse navbar-collapse" id="myNavbar">
 			<ul class="navbar-nav mx-auto">
-				<li class="nav-item">
-					<a href="#special-items" class="nav-link text-capitalize">special items</a>
-				</li>
-				<li class="nav-item">
-					<a href="#menu" class="nav-link text-capitalize">menu</a>
-				</li>
-				<li class="nav-item">
-					<a href="#team" class="nav-link text-capitalize">team</a>
-				</li>
 				<li class="nav-item">
 					<a href="#reviews" class="nav-link text-capitalize">reviews</a>
 				</li>
