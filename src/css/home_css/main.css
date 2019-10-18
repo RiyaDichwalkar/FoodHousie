@@ -31,7 +31,7 @@ body {
     min-height: calc(100vh - 94px);
     /*view-height*/
     /*this will not work for mobile or small size browser*/
-    background: linear-gradient(to right, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('../../assets/home_images/back-img.jpg');
+    background: linear-gradient(to right, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('../../assets/home_images/mainBackground.png');
     background-position: center;
     background-size: cover;
     background-attachment: fixed;
@@ -237,7 +237,7 @@ body {
     position: relative;
     /*for the link*/
     overflow: hidden;
-    background: linear-gradient(rgb(0, 0, 0), rgb(0, 0, 0));
+    background:white;
     transition: all 2s ease;
 
 }
@@ -285,7 +285,7 @@ item-img {
 
 /*======menu========*/
 #menu {
-    background: linear-gradient(rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.7)), url('../../assets/home_images/back-img.jpg')center/cover fixed no-repeat;
+    background: linear-gradient(rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.7)), url('../../assets/home_images/mainBackground.png')center/cover fixed no-repeat;
 }
 
 .special {

@@ -11,21 +11,12 @@
             <div  class="imagebox" *ngIf="i!=0" (click)="onClick(imageList[3*i-1].key)">
                     
                 <img [src]="imageList[3*i-1].imageUrl" class="img-fluid">
-                <span class="imagebox-desc">{{imageList[3*i-1].caption}}</span>
                 
             </div>
         </td>
         <td *ngIf="imageList[3*i]">
-            <!-- <div class="imagebox">
+            <div class="imagebox" (click)="onClick(imageList[3*i].key)">  
                 <img [src]="imageList[3*i].imageUrl" class="img-fluid">
-                <span class="imagebox-desc">{{imageList[3*i].caption}}</span>
-            </div> -->
-            <div class="imagebox" (click)="onClick(imageList[3*i].key)">
-                    <!-- <a routerLink="['/posts/upload','imageList[3*i]','true']"> -->
-                       
-                <img [src]="imageList[3*i].imageUrl" class="img-fluid">
-                <span class="imagebox-desc">{{imageList[3*i].caption}}</span>
-            
             </div>
 
         </td>
@@ -33,38 +24,7 @@
             <div class="imagebox" (click)="onClick(imageList[3*i+1].key)">
                  
                 <img [src]="imageList[3*i+1].imageUrl" alt="" class="img-fluid">
-                <span class="imagebox-desc">{{imageList[3*i+1].caption}}</span>
-                
             </div>
         </td>
     </tr>
 </table>
-
-
-
-<!-- <h1>Posts</h1>
-<div *ngFor="let post of posts" style="width: 300px;">
-    <div *ngIf="post">
-        <div>
-            <label>Caption : </label> {{post.caption}}
-        </div>
-        <div>
-            <label>Category : </label> {{post.category}}
-        </div> 
-        ddd
-
-        <div class="imagebox">
-            <img [src]="post.imageUrl" class="img-fluid">
-            <span class="imagebox-desc">{{post.caption}}</span>
-        </div> -->
-        <!-- <span class="button is-small btn-primary" *ngIf='post.active' (click)='updateActive(false)'>Inactive</span>
-       
-        <span class="button is-small btn-primary" *ngIf='!post.active' (click)='updateActive(true)'>Active</span>
-       
-        <span class="button is-small btn-danger" (click)='deletePost()'>Delete</span>
-        -->
-        <!-- </div>
-</div> -->
-<!-- <div style="margin-top:20px;">
-  <button type="button" class="button btn-danger" (click)='deleteCustomers()'>Delete All</button>
-</div> -->

@@ -1,82 +1,129 @@
-import { MatFormFieldModule,MatProgressSpinnerModule,MatButtonModule,MatStepperModule, MatSelectModule,MatDatepickerModule, MatNativeDateModule } from '@angular/material';
-import {MatInputModule} from '@angular/material/input';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
-import { HttpClientModule } from '@angular/common/http';
-import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
+import {
+  MatFormFieldModule,
+  MatProgressSpinnerModule,
+  MatButtonModule,
+  MatStepperModule,
+  MatSelectModule,
+  MatDatepickerModule,
+  MatNativeDateModule
+} from "@angular/material";
+import { MatInputModule } from "@angular/material/input";
+import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
+import { BrowserModule } from "@angular/platform-browser";
+import { NgModule } from "@angular/core";
+import { HttpClientModule } from "@angular/common/http";
+import { AppRoutingModule } from "./app-routing.module";
+import { AppComponent } from "./app.component";
 
-import { SignInComponent } from './auth/sign-in/sign-in.component';
-import { SignUpComponent } from './auth/sign-up/sign-up.component';
-import { DashboardComponent } from './auth/dashboard/dashboard.component';
-import { ForgotPasswordComponent } from './auth/forgot-password/forgot-password.component';
-import { VerifyEmailComponent } from './auth/verify-email/verify-email.component';
+import { SignInComponent } from "./auth/sign-in/sign-in.component";
+import { DashboardComponent } from "./auth/dashboard/dashboard.component";
+import { ForgotPasswordComponent } from "./auth/forgot-password/forgot-password.component";
+import { VerifyEmailComponent } from "./auth/verify-email/verify-email.component";
 
 // Import canActivate guard services
 import { AuthGuard } from "./shared/guard/auth.guard";
 import { SecureInnerPagesGuard } from "./shared/guard/secure-inner-pages.guard.ts.guard";
 
-import { RouterModule, Routes } from '@angular/router';
-import { FormsModule } from '@angular/forms';
+import { RouterModule, Routes } from "@angular/router";
+import { FormsModule } from "@angular/forms";
 import { AuthService } from "./auth/auth.service";
-import { FileSelectDirective } from 'ng2-file-upload';
-import { HomeComponent } from './home/home.component';
-import { PostsComponent } from './posts/posts.component';
-import { PostComponent } from './posts/post/post.component';
-import { PostListComponent } from './posts/post-list/post-list.component';
-import { AngularFireModule } from '@angular/fire';
-import { AngularFireStorageModule } from '@angular/fire/storage'
-import { AngularFireDatabaseModule } from '@angular/fire/database';
+import { FileSelectDirective } from "ng2-file-upload";
+import { HomeComponent } from "./home/home.component";
+import { PostComponent } from "./posts/post/post.component";
+import { PostListComponent } from "./posts/post-list/post-list.component";
+import { AngularFireModule } from "@angular/fire";
+import { AngularFireStorageModule } from "@angular/fire/storage";
+import { AngularFireDatabaseModule } from "@angular/fire/database";
 import { AngularFireAuthModule } from "@angular/fire/auth";
-import { AngularFirestoreModule , FirestoreSettingsToken  } from '@angular/fire/firestore';
-import { ReactiveFormsModule } from '@angular/forms';
-import {environment} from '../environments/environment';
-import { AmazingTimePickerModule} from 'amazing-time-picker';
-import { MatFileUploadModule } from 'angular-material-fileupload';
-import { HelpComponent } from './help/help.component';
-import { TryComponent } from './try/try.component';
-import { PageNotFoundComponent } from './auth/page-not-found/page-not-found.component';
-import { ChefProfileComponent } from './profiles/chef-profile/chef-profile.component';
+import {
+  AngularFirestoreModule,
+  FirestoreSettingsToken
+} from "@angular/fire/firestore";
+import { ReactiveFormsModule } from "@angular/forms";
+import { environment } from "../environments/environment";
+import { AmazingTimePickerModule } from "amazing-time-picker";
+import { MatFileUploadModule } from "angular-material-fileupload";
+import { HelpComponent } from "./help/help.component";
+import { PageNotFoundComponent } from "./auth/page-not-found/page-not-found.component";
+import { ChefProfileComponent } from "./profiles/chef-profile/chef-profile.component";
+import { RecipeComponent } from "./recipe/recipe.component";
+import { CartComponent } from "./cart/cart.component";
+import { CustomerSignUpComponent } from "./auth/sign-up/customer-sign-up/customer-sign-up.component";
+import { TermsAndConditionsComponent } from "./help/terms-and-conditions/terms-and-conditions.component";
 
 const appRoutes: Routes = [
-  { path: '', redirectTo: '/sign-in', pathMatch: 'full'},
-  { path: 'sign-in', component: SignInComponent, canActivate: [SecureInnerPagesGuard]},
-  { path: 'register-user', component: SignUpComponent, canActivate: [SecureInnerPagesGuard]},
-  { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] },
-  { path: 'try', component: TryComponent,canActivate: [AuthGuard]},
-  { path: 'chefProfile', component: ChefProfileComponent},
-  { path: 'forgot-password', component: ForgotPasswordComponent, canActivate: [SecureInnerPagesGuard] },
-  { path: 'verify-email-address', component: VerifyEmailComponent, canActivate: [SecureInnerPagesGuard] }
-,
   {
-    path:'posts/upload/:key/:isedited',component:PostComponent,canActivate: [AuthGuard]
-  },
-  {
-    path:'',redirectTo:'posts/upload',pathMatch:'full',canActivate: [AuthGuard]
-  },
-  {
-    path:'posts',component:PostsComponent,children:[
-      {path:'upload',component:PostComponent,canActivate: [AuthGuard]},
-      {path:'list',component:PostListComponent ,canActivate: [AuthGuard]}
-    ]
-  },
-  {
-    path: '',
+    path: "",
     component: HomeComponent,
-    data: { title: 'Home' }
+    data: { title: "Home" }
+  },
+  { path: "", redirectTo: "/sign-in", pathMatch: "full" },
+  {
+    path: "sign-in",
+    component: SignInComponent,
+    canActivate: [SecureInnerPagesGuard]
   },
   {
-    path: 'help',
-    component: HelpComponent,
-    data: { title: 'Help' },
+    path: "register-user",
+    component: CustomerSignUpComponent,
+    canActivate: [SecureInnerPagesGuard]
+  },
+  {
+    path: "dashboard",
+    component: DashboardComponent,
     canActivate: [AuthGuard]
   },
-{
+  {
+    path: "chefProfile",
+    component: ChefProfileComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: "forgot-password",
+    component: ForgotPasswordComponent,
+    canActivate: [SecureInnerPagesGuard]
+  },
+  {
+    path: "verify-email-address",
+    component: VerifyEmailComponent,
+    canActivate: [SecureInnerPagesGuard]
+  },
+  { path: "recipe/:key", component: RecipeComponent, canActivate: [AuthGuard] },
+  { path: "cart/:key", component: CartComponent, canActivate: [AuthGuard] },
+  {
+    path: "posts/upload/:key/:isedited",
+    component: PostComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: "",
+    redirectTo: "posts/upload",
+    pathMatch: "full",
+    canActivate: [AuthGuard]
+  },
+  { path: "posts/upload", component: PostComponent, canActivate: [AuthGuard] },
+  {
+    path: "posts/list",
+    component: PostListComponent,
+    canActivate: [AuthGuard]
+  },
+
+  {
+    path: "help",
+    component: HelpComponent,
+    data: { title: "Help", canActivate: [AuthGuard] }
+  },
+  {
+    path: "terms_and_conditions",
+    component: TermsAndConditionsComponent,
+    data: { title: "terms_and_conditions" }
+  },
+
+  {
     path: "home",
     component: HomeComponent
   },
-  { path: '**', component: PageNotFoundComponent }
+  { path: "**", component: PageNotFoundComponent }
   // {
   //   path: 'products',
   //   component: ProductComponent,
@@ -101,7 +148,7 @@ const appRoutes: Routes = [
   //   redirectTo: '/products',
   //   pathMatch: 'full'
   // },
-  
+
   // {
   //   path: 'try',
   //   component: TryComponent,
@@ -109,25 +156,25 @@ const appRoutes: Routes = [
   // }
 ];
 
-
 @NgModule({
   declarations: [
     AppComponent,
     FileSelectDirective,
     HomeComponent,
-    PostsComponent,
     PostComponent,
     PostListComponent,
     HelpComponent,
     ForgotPasswordComponent,
     SignInComponent,
-    SignUpComponent,
     DashboardComponent,
     ForgotPasswordComponent,
     VerifyEmailComponent,
-    TryComponent,
     PageNotFoundComponent,
-    ChefProfileComponent
+    ChefProfileComponent,
+    RecipeComponent,
+    CartComponent,
+    CustomerSignUpComponent,
+    TermsAndConditionsComponent
   ],
   imports: [
     RouterModule.forRoot(appRoutes),
@@ -141,10 +188,10 @@ const appRoutes: Routes = [
     AngularFireDatabaseModule,
     AngularFireAuthModule,
     AngularFirestoreModule,
-    ReactiveFormsModule, 
-    MatFormFieldModule,          // <----- this module will be deprecated in the future version.
-    MatDatepickerModule,        // <----- import(must)
-    MatNativeDateModule,        // <----- import for date formating(optional)
+    ReactiveFormsModule,
+    MatFormFieldModule, // <----- this module will be deprecated in the future version.
+    MatDatepickerModule, // <----- import(must)
+    MatNativeDateModule, // <----- import for date formating(optional)
     MatSelectModule,
     MatInputModule,
     MatButtonModule,
@@ -153,7 +200,7 @@ const appRoutes: Routes = [
     MatFileUploadModule,
     MatProgressSpinnerModule
   ],
-providers: [{ provide: FirestoreSettingsToken, useValue: {} },AuthService],
+  providers: [{ provide: FirestoreSettingsToken, useValue: {} }, AuthService],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {}

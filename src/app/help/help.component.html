@@ -1,25 +1,20 @@
-
-<script>document.getElementsByTagName("html")[0].className += " js";</script> 
-  
-
 <header class="cd-header flex flex-column flex-center">
   <div class="text-component text-center">
     <h1>FAQ and Contact Us</h1>
     
   </div>
-</header> 
+</header>
 
 <section class="cd-faq js-cd-faq container max-width-md margin-top-lg margin-bottom-lg">
 	<ul class="cd-faq__categories">
-		<li><a class="cd-faq__category cd-faq__category-selected truncate" href="#basics">FAQ</a></li>
-		<li><a class="cd-faq__category truncate" href="#mobile">Contact Us</a></li>
+		
 	</ul> <!-- cd-faq__categories -->
 
 	<div class="cd-faq__items">
-		<ul id="basics" class="cd-faq__group">
-			<li class="cd-faq__title"><h2>FAQ</h2></li>
+		<ul id="basics" class="cd-faq__group cd-faq__group--selected">
+			<li class="cd-faq__title"><h2>Frequently Asked Questions</h2></li>
 			<li class="cd-faq__item">
-				<a class="cd-faq__trigger" href="#0"><span>Orders</span></a>
+				<h3>ORDERS</h3>
 				<div class="cd-faq__content">
           <div class="text-component"><p>Q1. Can I place order on call?</p>
 	
@@ -34,19 +29,19 @@
 			</li>
 
 			<li class="cd-faq__item">
-				<a class="cd-faq__trigger" href="#0"><span>Returns</span></a>
+        <h3>RETURNS</h3>
 				<div class="cd-faq__content">
           <div class="text-component">
             
-          <h3>Refund Terms</h3>
+          <h5>Refund Terms</h5>
 		  <p>A refund or replacement request should be initiated within 7 days of date of delivery.
         A refund or replacement will be initiated for following cases
-<ul>
+</p><ul>
 <li>Quality issues</li>
 <li>Quantity mismatch</li>
 <li>Items not as per description</li>
 </ul>
-<!-- </p> -->
+<p></p>
 <p>
 
 For refunds, the amount will be credited back within 5 days of pickup confirmation
@@ -61,12 +56,12 @@ Can use any online payment method (card, netbanking, UPI, etc)
 Can use any payment wallets
 Cash on delivery
 Pay directly to your Chef
-</div>
+</p></div>
 				</div> <!-- cd-faq__content -->
 			</li>
 
 			<li class="cd-faq__item">
-				<a class="cd-faq__trigger" href="#0"><span>Payments</span></a>
+        <h3>PAYMENTS</h3>
 				<div class="cd-faq__content">
           <div class="text-component">
             <p>Q1. When I have to pay?</p>
@@ -89,48 +84,90 @@ Pay directly to your Chef
 			</li>
 		</ul> <!-- cd-faq__group -->
 
-		<ul id="Contact Us" class="cd-faq__group">
-			<li class="cd-faq__title"><h2>Contact Us</h2></li>
-			<li class="cd-faq__item">
-				<a class="cd-faq__trigger" href="#0"><span>Contact Us</span></a>
-				<div class="cd-faq__content">
-          <div class="text-component">
-            
-          </div>
-				</div> <!-- cd-faq__content -->
-			<div class="container">  
-  <form id="contact" action="" method="post">
-    <h3>Contact Form</h3>
-    <fieldset>
-      <input placeholder="Your name" type="text" tabindex="1" required autofocus>
-    </fieldset>
-    <fieldset>
-      <input placeholder="Your Email Address" type="email" tabindex="2" required>
-    </fieldset>
-    <fieldset>
-      <input placeholder="Your Phone Number (optional)" type="tel" tabindex="3" required>
-    </fieldset>
-    <fieldset>
-      <input placeholder="Your Web Site (optional)" type="url" tabindex="4" required>
-    </fieldset>
-    <fieldset>
-      <textarea placeholder="Type your message here...." tabindex="5" required></textarea>
-    </fieldset>
-    <fieldset>
-      <button name="submit" type="submit" id="contact-submit" data-submit="...Sending">Submit</button>
-    </fieldset>
+		</div> <!-- cd-faq__items -->
+
+    <div><p>If the Cook or Foody is acting or has acted inappropriately, including but not limited to, anyone who
+       (i) engages in offensive, violent or sexually inappropriate behavior,
+        (ii) you suspect of stealing from you, or 
+        (iii) engages in any other disturbing conduct, you should immediately report such person to the appropriate authorities and then to FoodHousie 
+        by contacting us with your police station and report number at  <a href="localhost:4200">foodhousie@gmail.com</a> provided that your report will not obligate us to take any action beyond that required by law (if any) or cause us to incur any liability to you.</p>
+    </div>
+	
+  <div class="cd-faq__overlay" aria-hidden="true"></div>
+</section>
+
+<form id="contact" action="" method="post">
+  <div class="container">  
+    <h1>Contact Form</h1>
+  </div>
+
+  <!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+body {font-family: Arial, Helvetica, sans-serif;}
+* {box-sizing: border-box;}
+
+input[type=text], select, textarea {
+width: 100%;
+padding: 12px;
+border: 1px solid #ccc;
+border-radius: 4px;
+box-sizing: border-box;
+margin-top: 6px;
+margin-bottom: 16px;
+resize: vertical;
+}
+
+input[type=submit] {
+background-color: #4CAF50;
+color: white;
+padding: 12px 20px;
+border: none;
+border-radius: 4px;
+cursor: pointer;
+}
+
+input[type=submit]:hover {
+background-color: #45a049;
+}
+
+.container {
+border-radius: 5px;
+background-color: #f2f2f2;
+padding: 20px;
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+  <form >
+   
+
+    <div class="form-group">
+      <label>Name</label>
+      <input ngModel name="firstname" type="text" class="form-control" placeholder="Your name..">
+      <div class="alert alert-danger " *ngIf="firstname.touched && !firstname.valid"></div>
+    </div>
+
+    <div class="form-group">
+        <label>Email</label>
+        <input type="email" class="form-control" placeholder="Your email address..">
+      </div>
     
+    <div class="form-group">
+        <label>Your Feedback</label>
+        <textarea id="subject" name="subject" placeholder="Write something.." style="height:200px"></textarea>
+    </div>
+    
+    <div>    
+    <button class="btn btn-primary">Submit</button>
+    </div>
+
+
+   
+ 
   </form>
 </div>
-			</li>
-
-			
-		</ul> <!-- cd-faq__group -->
-	</div> <!-- cd-faq__items -->
-
-	<a href="#0" class="cd-faq__close-panel text-replace">Close</a>
-  
-  <div class="cd-faq__overlay" aria-hidden="true"></div>
-</section> <!-- cd-faq -->
-<script src="../../js/help_js/util.js"></script> <!-- util functions included in the CodyHouse framework -->
-<script src="../../js/help_js/main.js"></script> 

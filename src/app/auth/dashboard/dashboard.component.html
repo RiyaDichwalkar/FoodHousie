@@ -1,33 +1,40 @@
-<!-- Top navigation -->
-<nav class="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow">
-  <a class="navbar-brand col-sm-3 col-md-2 mr-0" routerLink="/register-user">
-    <img class="brand-logo" src="../../../assets/logo-positronx-white.svg" alt="positronX.io Logo">
-    <span class="dasboard-text">Dashboard</span>
-  </a>
-</nav>
-
 <!-- Sidebar navigation -->
 <div class="container-fluid">
   <div class="row">
-
     <nav class="col-md-2 d-md-block bg-light sidebar">
       <div class="sidebar-sticky">
         <ul class="nav flex-column">
           <li class="nav-item">
             <a class="nav-link active">
-              <i class="fas fa-user"></i>User Profile
+              <i class="fa fa-user"></i>User Profile
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link active" routerLink="/posts/list">
-              <i class="fas fa-user"></i>Posts
+            <a class="nav-link active" *ngIf="this.authService.isChef" routerLink="/posts/upload">
+              <i class="fa fa-user"></i>Posts
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" *ngIf="this.authService.isCustomer" routerLink="*">
+              <i class="fa fa-clock-o"></i>Check and Pay for Order
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" (click)="getPastData()" *ngIf="this.authService.isCustomer"
+              routerLink="dashboard">
+              <i class="fa fa-shopping-cart"></i>Past Orders
+            </a>
+          </li>
+          <!-- <li class="nav-item">
+            <a class="nav-link active" *ngIf="this.authService.">
+              <i class="fa fa-user"></i>User Profile
             </a>
           </li>
           <li class="nav-item">
             <a class="nav-link active" routerLink="/chefProfile">
-              <i class="fas fa-user"></i>Profile
+              <i class="fa fa-user"></i>Profile
             </a>
-          </li>
+          </li> -->
           <!-- Calling SignOut() Api from AuthService -->
           <li class="nav-item">
             <a class="nav-link" (click)="authService.SignOut()">
@@ -41,7 +48,6 @@
     <!-- Main content -->
     <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
       <div class="inner-adjust">
-
         <div class="pt-3 pb-2 mb-3 border-bottom">
           <h1 class="h2">User Profile</h1>
         </div>
@@ -49,20 +55,82 @@
         <div class="row" *ngIf="authService.userData as user">
           <div class="col-md-12">
             <div class="media">
-              <img class="align-self-start mr-5 img-thumbnail rounded-circle" src="{{(user.photoURL) ? user.photoURL : '../../../assets/dummy-user.png'}}"
-                alt="{{user.displayName}}">
+              <img class="align-self-start mr-5 img-thumbnail rounded-circle" src="{{
+                  user.photoURL
+                    ? user.photoURL
+                    : '../../../assets/dummy-user.png'
+                }}" alt="{{ user.displayName }}" />
               <div class="media-body">
-                <h1>Hello: <strong>{{(user.displayName) ? user.displayName : 'User'}}</strong></h1>
-                <p>User ID: <strong>{{user.uid}}</strong></p>
-                <p>Email: <strong>{{user.email}}</strong></p>
-                <p>Email Verified: <strong>{{user.emailVerified}}</strong></p>
+                <h1>
+                  Hello:
+                  <strong>{{ user.fullname ? user.fullname : "User" }}</strong>
+                </h1>
+                <p>
+                  Email: <strong>{{ user.email }}</strong>
+                </p>
               </div>
             </div>
           </div>
         </div>
-
+      </div>
+      <div *ngIf="isCustomer" class="row">
+        <div class="col-md">
+          <h6>Type of Recipe</h6>
+          <select [(ngModel)]="label" (change)="filterExact('label', label)">
+            <option value="snacks">Snacks</option>
+            <option value="others">Others</option>
+            <option value="main course">Main Course</option>
+            <option value="sweets">Sweets</option>
+            <option value="all">All</option>
+          </select>
+        </div>
+        <div class="col-md">
+          <h6>Select Veg / Non-Veg</h6>
+          <select [(ngModel)]="type" (change)="filterExact2('type', type)">
+            <option value="veg">Veg</option>
+            <option value="non-veg">Non-Veg</option>
+            <option value="both">Both</option>
+          </select>
+        </div>
+        <div class="col-md">
+          <h6>Order Day</h6>
+          <select [(ngModel)]="day" (change)="filterDateMoreThan('date',day)">
+            <option value="today">Today</option>
+            <option value="otherday">Any Other Day</option>
+          </select>
+        </div>
+      </div>
+      <div class="row" *ngIf="isCustomer">
+        <div class="col-md-4" *ngFor="let recipeData of filterPostList">
+          <div class="thumbnail" style="text-align:center">
+            <div style="margin :0 auto">
+              <h2>{{ recipeData.description }}</h2>
+              <img [src]="recipeData.imageUrl" style="max-width: 200px; height: 200px; " />
+              <h6>Rs {{ recipeData.price }}</h6>
+              <h6>Chef id is: {{ recipeData.userid }}</h6>
+              <h6>Pickup-start time:{{ recipeData.pickuptimestart }}</h6>
+              <h6>Pickup-end time:{{ recipeData.pickuptimeend }}</h6>
+              <h6>Book before: {{ recipeData.deadlinetime }}</h6>
+              <p><button (click)="onClick(recipeData.key)">Book</button></p>
+            </div>
+          </div>
+        </div>
+        <!--  -->
+      </div>
+      <div class="row" *ngIf="isChef">
+        <div class="col-md-4" *ngFor="let recipeData of postList">
+          <div class="thumbnail">
+            <h2 style="text-align:center">{{ recipeData.description }}</h2>
+            <img [src]="recipeData.imageUrl" style="max-width: 200px; height: 200px;" />
+            <h6>Rs {{ recipeData.price }}</h6>
+            <!-- <h6>Chef id is: {{recipeData.userid}}</h6> -->
+            <h6>Pickup-start time:{{ recipeData.pickuptimestart }}</h6>
+            <h6>Pickup-end time:{{ recipeData.pickuptimeend }}</h6>
+            <h6>Book before: {{ recipeData.deadlinetime }}</h6>
+            <!-- <p><button>Book</button></p> -->
+          </div>
+        </div>
       </div>
     </main>
-
   </div>
 </div>

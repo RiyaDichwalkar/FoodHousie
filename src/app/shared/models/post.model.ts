@@ -1,8 +1,12 @@
 export class Post {
     key: string;
-    caption:string;
-    category: string;
+    userid:string;
     imageUrl:string;
-    starttime : string;
-    //endtime:string;
+    price:number;
+    description:string;
+    category: string;
+    availibility_date:string;
+    pickuptimestart: string;
+    pickuptimeend:string;
+    deadlinetime:string;
   }
