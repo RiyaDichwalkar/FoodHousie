@@ -6,10 +6,12 @@ import { PostService } from "../shared/post.service";
 import { AngularFirestore, DocumentReference } from "@angular/fire/firestore";
 import { map } from "rxjs/operators";
 import { Router } from "@angular/router";
+import { DatePipe } from '@angular/common';
 @Component({
   selector: "app-cart",
   templateUrl: "./cart.component.html",
-  styleUrls: ["./cart.component.scss"]
+  styleUrls: ["./cart.component.scss"],
+  providers: [DatePipe]
 })
 export class CartComponent implements OnInit {
   //private items: CartItem[] = [];
@@ -17,13 +19,15 @@ export class CartComponent implements OnInit {
     private _route: ActivatedRoute,
     private router: Router,
     private postService: PostService,
-    private db: AngularFirestore
+    private db: AngularFirestore,
+    private datePipe: DatePipe
   ) {}
   recipeData: any;
   quantity: number = 1;
   note: String;
   chefDetail: any;
   total: number = 0;
+  todaysdate:string;
   ngOnInit() {
     var key = this._route.snapshot.paramMap.get("key");
     console.log(key);
@@ -48,6 +52,11 @@ export class CartComponent implements OnInit {
     // const ref = this.db.collection("order").doc();
     // console.log(ref);
     // ref.set({ id: ref.id });
+
+    this.todaysdate =this.datePipe.transform(
+      new Date(),
+      "dd/MM/yyyy"
+    );
     var calculatedPrice: number = this.quantity * +this.recipeData.price;
     var id = this.db.createId();
     this.db
@@ -62,6 +71,7 @@ export class CartComponent implements OnInit {
         orderstatus: "pending",
         date: new Date(),
         customerid: JSON.parse(localStorage.getItem("user")).uid,
+        customername:JSON.parse(localStorage.getItem("user")).fullname,
         note: this.note
       });
     this.router.navigate(["dashboard"]);

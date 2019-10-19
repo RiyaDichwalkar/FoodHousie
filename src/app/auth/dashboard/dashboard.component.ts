@@ -7,11 +7,12 @@ import { map } from "rxjs/operators";
 import { PostService } from "../../shared/post.service";
 import { Post } from "../../shared/models/post.model";
 import * as _ from "lodash";
-
+import { DatePipe } from '@angular/common';
 @Component({
   selector: "app-dashboard",
   templateUrl: "./dashboard.component.html",
-  styleUrls: ["./dashboard.component.css"]
+  styleUrls: ["./dashboard.component.css"],
+  providers: [DatePipe]
 })
 export class DashboardComponent implements OnInit {
   constructor(
@@ -19,10 +20,12 @@ export class DashboardComponent implements OnInit {
     public postService: PostService,
     public router: Router,
     public ngZone: NgZone,
-    private db: AngularFirestore
+    private db: AngularFirestore,
+    private datePipe: DatePipe
   ) {}
   chefList: any;
   postList: any;
+  pastOrdersList:any;
   pastOrderList: any;
   postListForBook: any; //we have to add in this only if (date >= todays date) (for customer used for book button, and for chef active);
   postListForRequest: any; //here elements would be added only if postlist for book is empty.(for chef for request button, and for chef inactive)
@@ -178,7 +181,7 @@ export class DashboardComponent implements OnInit {
             //console.log(this.postList[0].date);
             console.log(this.postList);
             let len = result.length;
-            result.forEach(post => {
+            result.forEach((post:any)=> {
               var date = post.date;
               var parts = date.split("/");
               //console.log(parts);
@@ -200,5 +203,36 @@ export class DashboardComponent implements OnInit {
     this.router.navigate(["cart", key]);
   }
 
-  getPastData() {}
+  getPastOrders() {
+    let today= new Date(this.datePipe.transform(
+      new Date(),
+      "yyyy-MM-dd"
+    ));
+  //   console.log(today);
+  // console.log(typeof(today));
+    this.db.collection('order',ref=> ref.where("orderstatus","==","completed")
+    ).valueChanges().subscribe(result=>
+      {
+        console.log(result);}
+    )
+
+  }
+  viewChefProfile(id:string){
+    this.router.navigate(["chefprofile",id]);
+  }
+//   getTodayOrders(){
+//     // let today= new Date(this.datePipe.transform(
+//     //   new Date(),
+//     //   "yyyy-MM-dd"
+//     // ));
+//     let today=new Date('2019-10-19');
+//     this.db.collection('order',ref=> ref.where("date","==",today)
+//     ).valueChanges().subscribe(result=>
+//       {//where("orderstatus","==","paid").
+      
+//         console.log(result);}
+//  // 
+//     )
+//   }
+
 }

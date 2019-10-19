@@ -74,7 +74,12 @@ const appRoutes: Routes = [
     canActivate: [AuthGuard]
   },
   {
-    path: "chefProfile",
+    path: "chefprofile",
+    component: ChefProfileComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: "chefprofile/:key",
     component: ChefProfileComponent,
     canActivate: [AuthGuard]
   },
