@@ -5,7 +5,6 @@ import {
   FormControl,
   Validators
 } from "@angular/forms";
-import { AngularFireAction } from "@angular/fire/database";
 import { AngularFireStorage } from "@angular/fire/storage";
 import { finalize } from "rxjs/operators";
 import { PostService } from "src/app/shared/post.service";
@@ -15,12 +14,8 @@ import { AmazingTimePickerService } from "amazing-time-picker";
 import {
   Router,
   ActivatedRoute,
-  NavigationStart,
-  Event,
-  NavigationEnd
 } from "@angular/router";
 import { map } from "rxjs/operators";
-import { throwMatDialogContentAlreadyAttachedError } from "@angular/material";
 import { AuthService } from "../../auth/auth.service";
 declare var $: any;
 @Component({
@@ -52,15 +47,18 @@ export class PostComponent implements OnInit {
   isValidDate: any;
   valid: boolean = true;
   formTemplate = new FormGroup({
-    title: new FormControl(""),
-    description: new FormControl(""),
+    title: new FormControl("", Validators.required),
+    description: new FormControl("",Validators.required),
     imageUrl: new FormControl("", Validators.required),
-    label: new FormControl(""),
-    type: new FormControl(""),
+    label: new FormControl("", Validators.required),
+    type: new FormControl("", Validators.required),
     pickuptimestart: new FormControl(""),
     pickuptimeend: new FormControl(""),
     deadlinetime: new FormControl(""),
-    price: new FormControl("")
+    price: new FormControl("" ,  Validators.compose([
+      Validators.required,
+      Validators.min(1),
+      Validators.pattern('^[0-9]*$')]))
   });
   showLoadingIndicator = true;
   private selectedKey: string;
@@ -107,12 +105,6 @@ export class PostComponent implements OnInit {
     amazingTimePicker.afterClose().subscribe(time => {
       this.selectedStartTime = time;
       this.isSelectStartTime = true;
-      if (this.isSelectEndTime) {
-        this.isValidDate = this.validateDates(
-          this.selectedStartTime,
-          this.selectedEndTime
-        );
-      }
     });
   }
   openEndTime(ev: any) {
@@ -120,12 +112,6 @@ export class PostComponent implements OnInit {
     amazingTimePicker.afterClose().subscribe(time => {
       this.selectedEndTime = time;
       this.isSelectEndTime = true;
-      if (this.isSelectStartTime) {
-        this.isValidDate = this.validateDates(
-          this.selectedStartTime,
-          this.selectedEndTime
-        );
-      }
     });
   }
   openDeadLineTime(ev: any) {
@@ -152,8 +138,10 @@ export class PostComponent implements OnInit {
   onSubmit(formValue) {
     this.isSubmitted = true;
     this.valid = true;
+
     if (
-      !this.validateDates(this.selectedDeadLineTime, this.selectedStartTime)
+      
+      !this.validateDates(this.selectedStartTime, this.selectedEndTime) ||  !this.validateDeadLineDates(this.selectedDeadLineTime, this.selectedStartTime) 
     ) {
       this.valid = false;
     }
@@ -175,7 +163,7 @@ export class PostComponent implements OnInit {
                 (formValue["imageUrl"] = url);
               formValue["date"] = this.datePipe.transform(
                 this.date,
-                "MM/dd/yyyy"
+                "dd/MM/yyyy"
               );
               formValue["pickuptimestart"] = this.selectedStartTime;
               formValue["pickuptimeend"] = this.selectedEndTime;
@@ -218,7 +206,39 @@ export class PostComponent implements OnInit {
     this.isSubmitted = false;
   }
 
+  validateDeadLineDates(sDate: string, eDate: string) { 
+    this.isValidDate = true;
+    if (sDate == null || eDate == null) {
+      this.error = {
+        isError: true,
+        errorMessage: "Start date and Deadline date are required."
+      };
+
+      this.isValidDate = false;
+      alert(this.error.errorMessage);
+    }
+    if (sDate == eDate) {
+      this.error = {
+        isError: true,
+        errorMessage: "Start date and Deadline date could not be same"
+      };
+
+      this.isValidDate = false;
+      alert(this.error.errorMessage);
+    }
+    if (sDate != null && eDate != null && eDate < sDate) {
+      this.error = {
+        isError: true,
+        errorMessage: "Start date should be greater then Deadline date."
+      };
+      this.isValidDate = false;
+      alert(this.error.errorMessage);
+    }
+
+    return this.isValidDate;
+  }
   validateDates(sDate: string, eDate: string) {
+  
     this.isValidDate = true;
 
     if (sDate == null || eDate == null) {
@@ -230,11 +250,19 @@ export class PostComponent implements OnInit {
       this.isValidDate = false;
       alert(this.error.errorMessage);
     }
+    if (sDate == eDate) {
+      this.error = {
+        isError: true,
+        errorMessage: "Start date and end date could not be same"
+      };
 
+      this.isValidDate = false;
+      alert(this.error.errorMessage);
+    }
     if (sDate != null && eDate != null && eDate < sDate) {
       this.error = {
         isError: true,
-        errorMessage: "End date should be grater then start date."
+        errorMessage: "End date should be greater then start date."
       };
       this.isValidDate = false;
       alert(this.error.errorMessage);

@@ -23,13 +23,14 @@
         <div class="text-danger" *ngIf="isSubmitted && formControls.imageUrl.errors?.required">This field is required.
         </div>
       </div>
+      <div>
       <input value="{{title}}" formControlName="title" placeholder=" title">
       <div class="text-danger" *ngIf="isSubmitted && formControls.title.errors?.required">This field is required
       </div>
-
+      </div>
       <br>
       <textarea rows="4" cols="57" value="{{description}}" formControlName="description"
-        placeholder=" Description"></textarea>
+        placeholder=" Description Ex. Samosa served with tamarind Chutney"></textarea>
       <div class="text-danger" *ngIf="isSubmitted && formControls.description.errors?.required">This field is required
       </div>
 
@@ -38,26 +39,33 @@
         <input value="{{price}}" formControlName="price" placeholder="0">
         <div class="text-danger" *ngIf="isSubmitted && formControls.price.errors?.required">This field is required
         </div>
+        <div class="text-danger" *ngIf="isSubmitted && formControls.price.errors?.min">Non zero price
+          </div>
+        <div class="text-danger" *ngIf="isSubmitted && formControls.price.errors?.pattern">Numeric value is required
+          </div>
       </div>
       {{price}}
 
 
       <div>
         <label>Label</label>
-        <select formControlName="label">
+        <select formControlName="label" >
           <option value="snacks">Snacks</option>
-          <option value="others">Others</option>
+          <option value="others" >Others</option>
           <option value="main course">Main Course</option>
           <option value="sweets">Sweets</option>
         </select>
+        <div class="text-danger" *ngIf="isSubmitted && formControls.label.errors?.required">This field is required
+          </div>
       </div>
-      {{label}}
       <div>
-        <label>Label</label>
+        <label>Type</label>
         <select formControlName="type">
           <option value="veg">Veg</option>
           <option value="non-veg">Non Veg</option>
         </select>
+        <div class="text-danger" *ngIf="isSubmitted && formControls.type.errors?.required">This field is required
+          </div>
       </div>
 
 

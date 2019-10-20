@@ -25,7 +25,8 @@ export class ChefProfileComponent implements OnInit {
     private storage:AngularFireStorage) { }
     
   ngOnInit() {
-    if(this.authService.isChef)
+    if(JSON.parse(localStorage.getItem("roles")).isChef)
+    
      { this.chefData=JSON.parse(localStorage.getItem("user"));
      this.imgUrl=this.chefData.photo;
      this.bio=this.chefData.bio;
