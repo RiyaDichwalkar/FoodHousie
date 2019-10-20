@@ -2,10 +2,7 @@ import { Component, OnInit, NgZone } from "@angular/core";
 import { AuthService } from "../auth.service";
 import { Router } from "@angular/router";
 import { AngularFirestore } from "@angular/fire/firestore";
-import { AngularFirestoreCollection } from "@angular/fire/firestore";
-import { map } from "rxjs/operators";
 import { PostService } from "../../shared/post.service";
-import { Post } from "../../shared/models/post.model";
 import * as _ from "lodash";
 
 @Component({
@@ -122,7 +119,7 @@ export class DashboardComponent implements OnInit {
             this.chefsWithin1km.push(doc.uid);
           }
         });
-        //console.log(this.chefsWithin1km);
+        console.log(this.chefsWithin1km);
         this.getPostData(this.chefsWithin1km);
       });
   }
@@ -164,6 +161,7 @@ export class DashboardComponent implements OnInit {
     var todayDate = yyyy + mm + dd;
     this.todayDate = dd + "/" + mm + "/" + yyyy;
     console.log(todayDate);
+
     //I assume date are from database in dd/mm/yyyy format.
     for (let index = 0; index < length; index++) {
       this.db
@@ -175,10 +173,10 @@ export class DashboardComponent implements OnInit {
           var a = result.length;
           if (a > 0) {
             this.postList = this.postList.concat(result);
-            //console.log(this.postList[0].date);
+            console.log(this.postList[0].date);
             console.log(this.postList);
             let len = result.length;
-            result.forEach(post => {
+            result.forEach((post: any) => {
               var date = post.date;
               var parts = date.split("/");
               //console.log(parts);
@@ -196,9 +194,10 @@ export class DashboardComponent implements OnInit {
         });
     }
   }
+
+  //now making two different arrays of past orders and pending orders
+
   onClick(key: any) {
     this.router.navigate(["cart", key]);
   }
-
-  getPastData() {}
 }
