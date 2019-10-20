@@ -1,0 +1,14 @@
+<div class="col-md-4" *ngFor="let recipeData of postListForBook">
+  <div class="thumbnail" style="text-align:center">
+    <div style="margin :0 auto">
+      <h3>{{ recipeData.description }}</h3>
+      <img [src]="recipeData.imageUrl" style="max-width: 200px; height: 200px; " />
+      <h6>Rs {{ recipeData.price }}</h6>
+      <h6>Chef id is: {{ recipeData.userid }}</h6>
+      <h6>Pickup-start time:{{ recipeData.pickuptimestart }}</h6>
+      <h6>Pickup-end time:{{ recipeData.pickuptimeend }}</h6>
+      <h6>Book before: {{ recipeData.deadlinetime }}</h6>
+      <p><button (click)="onClick(recipeData.key)">Book</button></p>
+    </div>
+  </div>
+</div>

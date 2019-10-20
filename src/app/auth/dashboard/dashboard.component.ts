@@ -4,6 +4,7 @@ import { Router } from "@angular/router";
 import { AngularFirestore } from "@angular/fire/firestore";
 import { PostService } from "../../shared/post.service";
 import * as _ from "lodash";
+import { firestore } from "firebase/app";
 
 @Component({
   selector: "app-dashboard",
@@ -18,9 +19,12 @@ export class DashboardComponent implements OnInit {
     public ngZone: NgZone,
     private db: AngularFirestore
   ) {}
+
   chefList: any;
   postList: any;
   pastOrderList: any;
+  inProcessOrderList: any;
+  collectOrderList: any;
   postListForBook: any; //we have to add in this only if (date >= todays date) (for customer used for book button, and for chef active);
   postListForRequest: any; //here elements would be added only if postlist for book is empty.(for chef for request button, and for chef inactive)
   chefsWithin1km: any;
@@ -31,7 +35,10 @@ export class DashboardComponent implements OnInit {
   flag: boolean = false;
   filterPostList: any;
   todayDate: string;
+  currentChefId: string;
+  ordersToBeConfirmed: any;
   filters = {};
+
   ngOnInit() {
     const userrole = JSON.parse(localStorage.getItem("roles"));
     if (userrole.isCustomer) {
@@ -50,9 +57,12 @@ export class DashboardComponent implements OnInit {
     if (userrole.isCustomer) {
       this.getChefData();
     } else {
-      this.getPostData([JSON.parse(localStorage.getItem("user")).uid]);
+      this.currentChefId = JSON.parse(localStorage.getItem("user")).uid;
+      this.getPostData([this.currentChefId]);
+      this.getOrdersToConfirm();
     }
   }
+
   //to apply filter from lodash
   private applyFilters() {
     this.filterPostList = _.filter(this.postList, _.conforms(this.filters));
@@ -154,14 +164,8 @@ export class DashboardComponent implements OnInit {
     this.postListForRequest = [];
     let length = chefsWithin1km.length;
     //getting todays date for book and request array.
-    var today = new Date();
-    var dd = String(today.getDate()).padStart(2, "0");
-    var mm = String(today.getMonth() + 1).padStart(2, "0"); //January is 0!
-    var yyyy = today.getFullYear();
-    var todayDate = yyyy + mm + dd;
-    this.todayDate = dd + "/" + mm + "/" + yyyy;
-    console.log(todayDate);
-
+    let todayDate = this.getTodayDate();
+    //console.log(todayDate);
     //I assume date are from database in dd/mm/yyyy format.
     for (let index = 0; index < length; index++) {
       this.db
@@ -173,9 +177,7 @@ export class DashboardComponent implements OnInit {
           var a = result.length;
           if (a > 0) {
             this.postList = this.postList.concat(result);
-            console.log(this.postList[0].date);
             console.log(this.postList);
-            let len = result.length;
             result.forEach((post: any) => {
               var date = post.date;
               var parts = date.split("/");
@@ -189,13 +191,185 @@ export class DashboardComponent implements OnInit {
                 console.log(todayDate + " > orderdate is " + date);
               }
             });
-            this.applyFilters();
+            if (this.isCustomer) this.applyFilters();
           }
         });
     }
   }
 
-  //now making two different arrays of past orders and pending orders
+  //chef has to see orders to confirm in dashboard.
+  getOrdersToConfirm() {
+    let todayDate = this.getTodayDate();
+    this.ordersToBeConfirmed = [];
+    this.db
+      .collection("order", ref =>
+        ref
+          .where("chefid", "==", this.currentChefId)
+          .where("orderstatus", "==", "pending")
+      )
+      .valueChanges()
+      .subscribe(result => {
+        if (result.length > 0) {
+          result.forEach((order: any) => {
+            var date = order.pickupdate;
+            var parts = date.split("/");
+            var date = parts[2] + parts[1] + parts[0];
+            if (date.localeCompare(todayDate) >= 0) {
+              this.ordersToBeConfirmed.push(order);
+            }
+          });
+        }
+        console.log(this.ordersToBeConfirmed);
+      });
+  }
+
+  chefConfirmsOrder(id: string) {
+    this.db
+      .collection("order")
+      .doc(id)
+      .update({
+        orderstatus: "confirmed"
+      });
+    window.alert("Thank you for accepting order");
+    this.ordersToBeConfirmed = this.ordersToBeConfirmed.filter(
+      item => item.ordid !== id
+    );
+  }
+
+  getTodayDate() {
+    var today = new Date();
+    var dd = String(today.getDate()).padStart(2, "0");
+    var mm = String(today.getMonth() + 1).padStart(2, "0"); //January is 0!
+    var yyyy = today.getFullYear();
+    var todayDate = yyyy + mm + dd;
+    return todayDate;
+  }
+
+  //order is paid and post date less than today.
+  pastOrder(customerid: string) {
+    let todayDate = this.getTodayDate();
+    this.pastOrderList = [];
+    this.db
+      .collection("order", ref =>
+        ref
+          .where("customerid", "==", customerid)
+          .where("orderstatus", "==", "paid")
+      )
+      .valueChanges()
+      .subscribe(result => {
+        if (result.length > 0) {
+          result.forEach((order: any) => {
+            var date = order.pickupdate;
+            var parts = date.split("/");
+            var date = parts[2] + parts[1] + parts[0];
+            if (date.localeCompare(todayDate) < 0) {
+              this.pastOrderList.push(order);
+            }
+          });
+        }
+      });
+  }
+  //order is confirmed(so now proceeed to pay),order is not confirmed(pending) and post date more than today.
+  inProcessOrder(customerid: string) {
+    let todayDate = this.getTodayDate();
+    this.inProcessOrderList = [];
+    this.db
+      .collection("order", ref =>
+        ref
+          .where("customerid", "==", customerid)
+          .where("orderstatus", "==", "pending")
+      )
+      .valueChanges()
+      .subscribe(result => {
+        if (result.length > 0) {
+          result.forEach((order: any) => {
+            var date = order.pickupdate;
+            var parts = date.split("/");
+            var date = parts[2] + parts[1] + parts[0];
+            if (date.localeCompare(todayDate) >= 0) {
+              this.inProcessOrderList.push(order);
+            }
+          });
+        }
+      });
+    this.db
+      .collection("order", ref =>
+        ref
+          .where("customerid", "==", customerid)
+          .where("orderstatus", "==", "confirmed")
+      )
+      .valueChanges()
+      .subscribe(result => {
+        if (result.length > 0) {
+          result.forEach((order: any) => {
+            var date = order.pickupdate;
+            var parts = date.split("/");
+            var date = parts[2] + parts[1] + parts[0];
+            if (date.localeCompare(todayDate) >= 0) {
+              this.inProcessOrderList.push(order);
+            }
+          });
+        }
+      });
+  }
+
+  //order is paid(means customer has selected COD or done Online both equivalent to paid now) and post date more than equal to today.
+  collectOrder(customerid: string) {
+    let todayDate = this.getTodayDate();
+    this.collectOrderList = [];
+    this.db
+      .collection("order", ref =>
+        ref
+          .where("customerid", "==", customerid)
+          .where("orderstatus", "==", "paid")
+      )
+      .valueChanges()
+      .subscribe(result => {
+        if (result.length > 0) {
+          result.forEach((order: any) => {
+            var date = order.pickupdate;
+            var parts = date.split("/");
+            var date = parts[2] + parts[1] + parts[0];
+            if (date.localeCompare(todayDate) >= 0) {
+              this.collectOrderList.push(order);
+            }
+          });
+        }
+      });
+  }
+  //on pay button order is sent as argument.
+  payForOrder(order: any) {
+    let id = order.ordid;
+    let postId = order.postid;
+    let chefId = order.chefid;
+    let increment = order.quantity;
+    this.db
+      .collection("order")
+      .doc(id)
+      .update({
+        orderstatus: "paid"
+      });
+    //increase post dishsold
+    this.db
+      .collection("post")
+      .doc(postId)
+      .update({
+        dishsold: firestore.FieldValue.increment(increment)
+      });
+    //increase chef totaldishsold
+    this.db
+      .collection("chef")
+      .doc(chefId)
+      .update({
+        totaldishsold: firestore.FieldValue.increment(increment)
+      });
+
+    window.alert("Thank you for paying order");
+    this.inProcessOrderList = this.ordersToBeConfirmed.filter(
+      item => item.ordid !== id
+    );
+    this.collectOrderList.push(order);
+  }
 
   onClick(key: any) {
     this.router.navigate(["cart", key]);

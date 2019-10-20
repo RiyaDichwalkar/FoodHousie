@@ -50,6 +50,8 @@ import { RecipeComponent } from "./recipe/recipe.component";
 import { CartComponent } from "./cart/cart.component";
 import { CustomerSignUpComponent } from "./auth/sign-up/customer-sign-up/customer-sign-up.component";
 import { TermsAndConditionsComponent } from "./help/terms-and-conditions/terms-and-conditions.component";
+import { ActivepostComponent } from "./activepost/activepost.component";
+import { InactivepostComponent } from "./inactivepost/inactivepost.component";
 
 const appRoutes: Routes = [
   {
@@ -67,6 +69,16 @@ const appRoutes: Routes = [
     path: "register-user",
     component: CustomerSignUpComponent,
     canActivate: [SecureInnerPagesGuard]
+  },
+  {
+    path: "active-post",
+    component: ActivepostComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: "inactive-post",
+    component: InactivepostComponent,
+    canActivate: [AuthGuard]
   },
   {
     path: "dashboard",
@@ -174,7 +186,9 @@ const appRoutes: Routes = [
     RecipeComponent,
     CartComponent,
     CustomerSignUpComponent,
-    TermsAndConditionsComponent
+    TermsAndConditionsComponent,
+    ActivepostComponent,
+    InactivepostComponent
   ],
   imports: [
     RouterModule.forRoot(appRoutes),

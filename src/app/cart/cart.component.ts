@@ -1,10 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
-import { Post } from "../shared/models/post.model";
-import { CartItem } from "../shared/models/cart";
-import { PostService } from "../shared/post.service";
 import { AngularFirestore, DocumentReference } from "@angular/fire/firestore";
-import { map } from "rxjs/operators";
 import { Router } from "@angular/router";
 @Component({
   selector: "app-cart",
@@ -16,7 +12,6 @@ export class CartComponent implements OnInit {
   constructor(
     private _route: ActivatedRoute,
     private router: Router,
-    private postService: PostService,
     private db: AngularFirestore
   ) {}
   recipeData: any;
@@ -45,9 +40,6 @@ export class CartComponent implements OnInit {
   }
   OrderSubmit() {
     console.log("*******");
-    // const ref = this.db.collection("order").doc();
-    // console.log(ref);
-    // ref.set({ id: ref.id });
     var calculatedPrice: number = this.quantity * +this.recipeData.price;
     var id = this.db.createId();
     this.db
@@ -56,11 +48,13 @@ export class CartComponent implements OnInit {
       .set({
         ordid: id,
         item: this.recipeData.title,
+        recipeid: this.recipeData.key,
         quantity: this.quantity,
         price: calculatedPrice,
         chefid: this.recipeData.userid,
         orderstatus: "pending",
         date: new Date(),
+        pickupdate: this.recipeData.date,
         customerid: JSON.parse(localStorage.getItem("user")).uid,
         note: this.note
       });

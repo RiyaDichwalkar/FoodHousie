@@ -11,7 +11,17 @@
           </li>
           <li class="nav-item">
             <a class="nav-link active" *ngIf="this.authService.isChef" routerLink="/posts/upload">
-              <i class="fa fa-user"></i>Posts
+              <i class="fa fa-plus-circle"></i>Post New Recipe
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" *ngIf="this.authService.isChef" routerLink="/active-post">
+              <i class="fa fa-bell"></i>Active Posts
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" *ngIf="this.authService.isChef" routerLink="/inactive-post">
+              <i class="fa fa-bell-slash"></i>Inactive Posts
             </a>
           </li>
           <li class="nav-item">
@@ -25,16 +35,6 @@
               <i class="fa fa-shopping-cart"></i>Past Orders
             </a>
           </li>
-          <!-- <li class="nav-item">
-            <a class="nav-link active" *ngIf="this.authService.">
-              <i class="fa fa-user"></i>User Profile
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link active" routerLink="/chefProfile">
-              <i class="fa fa-user"></i>Profile
-            </a>
-          </li> -->
           <!-- Calling SignOut() Api from AuthService -->
           <li class="nav-item">
             <a class="nav-link" (click)="authService.SignOut()">
@@ -104,7 +104,7 @@
         <div class="col-md-4" *ngFor="let recipeData of filterPostList">
           <div class="thumbnail" style="text-align:center">
             <div style="margin :0 auto">
-              <h2>{{ recipeData.description }}</h2>
+              <h3>{{ recipeData.description }}</h3>
               <img [src]="recipeData.imageUrl" style="max-width: 200px; height: 200px; " />
               <h6>Rs {{ recipeData.price }}</h6>
               <h6>Chef id is: {{ recipeData.userid }}</h6>
@@ -115,22 +115,30 @@
             </div>
           </div>
         </div>
-        <!--  -->
       </div>
-      <div class="row" *ngIf="isChef">
-        <div class="col-md-4" *ngFor="let recipeData of postList">
-          <div class="thumbnail">
-            <h2 style="text-align:center">{{ recipeData.description }}</h2>
-            <img [src]="recipeData.imageUrl" style="max-width: 200px; height: 200px;" />
-            <h6>Rs {{ recipeData.price }}</h6>
-            <!-- <h6>Chef id is: {{recipeData.userid}}</h6> -->
-            <h6>Pickup-start time:{{ recipeData.pickuptimestart }}</h6>
-            <h6>Pickup-end time:{{ recipeData.pickuptimeend }}</h6>
-            <h6>Book before: {{ recipeData.deadlinetime }}</h6>
-            <!-- <p><button>Book</button></p> -->
+
+      <div *ngIf="isChef">
+        <div>
+          <h1>You have recieved new orders</h1>
+        </div>
+        <div div class="row">
+          <div class="col-md-4" *ngFor="let order of ordersToBeConfirmed">
+            <div class="thumbnail" style="text-align:center">
+              <div style="margin :0 auto">
+                <h3>{{ order.item }}</h3>
+                <h6>Quantity: {{order.quantity}}</h6>
+                <h6>Total Amount: {{ order.price }}</h6>
+                <h6>Customer name: {{order.customername}}</h6>
+                <h6>Cooking Note: {{order.note}}</h6>
+                <!-- <h6>Order Time: {{order.date}}</h6> -->
+                <p><button class="btn btn-primary" (click)="chefConfirmsOrder(order.ordid)">Confirm Order</button></p>
+              </div>
+            </div>
           </div>
         </div>
       </div>
+
+
     </main>
   </div>
 </div>
