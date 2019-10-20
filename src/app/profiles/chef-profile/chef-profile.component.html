@@ -6,90 +6,56 @@
 in.js"></script>
 
 <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css" rel="stylesheet">
+
 <div class="container" style="padding-top:5%">
 	<div class="row">
 		<div class="col-md-offset-2 col-md-8 col-lg-offset-0 col-lg-12">
     	 <div class=" well profile" >
-            <div class="col-sm-12" *ngIf="authService.userData as user">
+            <div class="col-sm-12" *ngIf="chefData as user">
                 <div class="col-xs-12 col-sm-8" >
-                    <h2>{{user.Name}}</h2>
+                    <h2>{{user.fullname}}</h2>
                     <p>User ID: <strong>{{user.uid}}</strong></p>
                 <p>Email: <strong>{{user.email}}</strong></p>
-                <p>Email Verified: <strong>{{user.emailVerified}}</strong></p>
-                <p>Gender: <strong>{{user.gender}}</strong></p>
-                <p>Address:<br> <strong>{{user.AddressLine1}} , {{user.AddressLine2}} , {{user.Pincode}}</strong></p>
-                <p>Mobile No: <strong>{{user.mobileno}}</strong></p>
-                
-                    <!-- <p><strong>About: </strong> Web Designer / UI. </p>
-                    <p><strong>Hobbies: </strong> Read, out with friends, listen to music, draw and learn new things. </p>
-                    <p><strong>Skills: </strong>
-                        <span class="tags">html5</span> 
-                        <span class="tags">css3</span>
-                        <span class="tags">jquery</span>
-                        <span class="tags">bootstrap3</span>
-                    </p> -->
+                <p>Address:<br> <strong>{{user.address}}</strong></p>
+                <p>Mobile No: <strong>{{user.mobile}}</strong></p>
+                <p>Total no. of dishes sold: <strong>{{user.totaldishsold}}</strong></p>
+                <p *ngIf="this.authService.isCustomer">Bio:  <strong>{{user.bio}}</strong></p>
+                <div *ngIf="this.authService.isChef">
+                <textarea rows="4" cols="57" [(ngModel)]="bio" placeholder="Bio" ></textarea>
+                <p>Click the check to save bio</p>
+                <i class="fa fa-check" (click)="save()"  aria-hidden="true"></i>
+                </div>
                 </div>             
                 <div class="col-xs-12 col-sm-4 text-center">
                     <figure>
-                        <img class="align-self-start mr-5 img-thumbnail rounded-circle" src="{{(user.photoURL) ? user.photoURL : '../../../assets/dummy-user.png'}}"
-                        alt="{{user.Name}}">
-                        <figcaption class="ratings">
-                            <p>Ratings
-                            <a href="#">
-                                <span class="fa fa-star"></span>
-                            </a>
-                            <a href="#">
-                                <span class="fa fa-star"></span>
-                            </a>
-                            <a href="#">
-                                <span class="fa fa-star"></span>
-                            </a>
-                            <a href="#">
-                                <span class="fa fa-star"></span>
-                            </a>
-                            <a href="#">
-                                 <span class="fa fa-star-o"></span>
-                            </a> 
-                            </p>
-                        </figcaption>
+                            <div class="text-center" *ngIf="this.authService.isCustomer" >
+                                    <img [src]="imgUrl" width="200px" height="200px">
+                                  </div>  
+                        <div class="text-center" *ngIf="this.authService.isChef" >
+                            <img [src]="imgUrl" width="200px" height="200px">
+                          </div>
+                          <div  style="margin: 5%" *ngIf="this.authService.isChef" >
+                            <label class=" image-upload-container btn btn-bwm">Select image
+                              <input type="file" accept="image/*" class="img_input " #fileUploader [(ngModel)]="imageUrl"
+                                (change)="showPreview($event)">
+                            </label>
+                          </div>
+                          <p><button (click)="photoUpload()" *ngIf="this.authService.isChef">Save</button></p>
+                        
                     </figure>
                      
                 </div>
             </div>            
-            <div class="col-xs-12 divider text-center">
-                <div class="col-xs-12 col-sm-4 emphasis">
-                    <h2><strong> 20,7K </strong></h2>                    
-                    <p><small>Followers</small></p>
-                    <button class="btn btn-success btn-block"><span class="fa fa-plus-circle"></span> Follow </button>
-                </div>
-                <div class="col-xs-12 col-sm-4 emphasis">
-                    <h2><strong>245</strong></h2>                    
-                    <p><small>Following</small></p>
-                    <button class="btn btn-info btn-block"><span class="fa fa-user"></span> View Profile </button>
-                </div>
-                <div class="col-xs-12 col-sm-4 emphasis">
-                    <h2><strong>43</strong></h2>                    
-                    <p><small>Snippets</small></p>
-                    <div class="btn-group dropup btn-block">
-                      <button type="button" class="btn btn-primary"><span class="fa fa-gear"></span> Options </button>
-                      <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown"> 
-                        <!-- <span class="caret"></span>
-                        <span class="sr-only">Toggle Dropdown</span> -->
-                      </button>
-                      <div class="dropdown-menu">
-                      <ul class="dropdown-menu text-left" role="menu">
-                        <li><a href="#"><span class="fa fa-envelope pull-right"></span> Send an email </a></li>
-                        <li><a href="#"><span class="fa fa-list pull-right"></span> Add or remove from a list  </a></li>
-                        <li class="divider"></li>
-                        <li><a href="#"><span class="fa fa-warning pull-right"></span>Report this user for spam</a></li>
-                        <li class="divider"></li>
-                        <li><a href="#" class="btn disabled" role="button"> Unfollow </a></li>
-                      </ul> 
-                    </div>
-                    </div>
-                </div>
-            </div>
     	 </div>                 
 		</div>
 	</div>
 </div>
+<div>Top 3 dishes</div>
+<div class="row" >
+    <div class="col-md-4" *ngFor="let recipeData of postList">
+      <div class="thumbnail">
+        <h2 style="text-align:center">{{ recipeData.title }}</h2>
+        <img [src]="recipeData.imageUrl" style="max-width: 200px; height: 200px;" />
+      </div>
+    </div>
+  </div>

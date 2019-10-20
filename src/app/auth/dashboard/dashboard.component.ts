@@ -22,6 +22,7 @@ export class DashboardComponent implements OnInit {
 
   chefList: any;
   postList: any;
+  pastOrdersList: any;
   pastOrderList: any;
   inProcessOrderList: any;
   collectOrderList: any;
@@ -373,5 +374,9 @@ export class DashboardComponent implements OnInit {
 
   onClick(key: any) {
     this.router.navigate(["cart", key]);
+  }
+
+  viewChefProfile(id: string) {
+    this.router.navigate(["chefprofile", id]);
   }
 }

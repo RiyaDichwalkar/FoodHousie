@@ -125,10 +125,11 @@ export class AuthService {
               mobile: data.mobile,
               address: data.address,
               bio: "",
+              photo:"",
               isKYCDone: false,
               latitude: data.latitude,
               longitude: data.longitude,
-              chefPosts: "" //doubtful whether to make recipe here or just recipe ids!
+              totaldishsold: 0 //total number of dishes sold
             });
         }
       })

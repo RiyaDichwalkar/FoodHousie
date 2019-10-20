@@ -5,8 +5,13 @@
       <div class="sidebar-sticky">
         <ul class="nav flex-column">
           <li class="nav-item">
-            <a class="nav-link active">
+            <a class="nav-link active" *ngIf="this.authService.isCustomer">
               <i class="fa fa-user"></i>User Profile
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" *ngIf="this.authService.isChef" routerLink="/chefprofile">
+              <i class="fa fa-user"></i>Chef Profile
             </a>
           </li>
           <li class="nav-item">
@@ -30,8 +35,13 @@
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link active" (click)="getPastData()" *ngIf="this.authService.isCustomer"
-              routerLink="dashboard">
+            <a class="nav-link active" (click)="getTodayOrders()" *ngIf="this.authService.isCustomer"
+              >
+              <i class="fa fa-shopping-cart"></i>Todays Orders
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" (click)="getPastOrders()" *ngIf="this.authService.isCustomer">
               <i class="fa fa-shopping-cart"></i>Past Orders
             </a>
           </li>
@@ -107,7 +117,7 @@
               <h3>{{ recipeData.description }}</h3>
               <img [src]="recipeData.imageUrl" style="max-width: 200px; height: 200px; " />
               <h6>Rs {{ recipeData.price }}</h6>
-              <h6>Chef id is: {{ recipeData.userid }}</h6>
+              <h6>Chef id is: <a (click)="viewChefProfile(recipeData.userid)">{{ recipeData.userid }}</a> </h6>
               <h6>Pickup-start time:{{ recipeData.pickuptimestart }}</h6>
               <h6>Pickup-end time:{{ recipeData.pickuptimeend }}</h6>
               <h6>Book before: {{ recipeData.deadlinetime }}</h6>

@@ -1,4 +1,22 @@
 @import url(http://fonts.googleapis.com/css?family=Lato:400,700);
+.img_input{
+    display: none;
+}
+.image-upload-container {
+    cursor: pointer;
+  }
+  .btn-bwm {
+    background-color: #F52629;
+    border-color: #F52629;
+    color: white;
+    font-size: 20px;
+  
+    &:hover, &:focus, &:active {
+      border-color:  #F52629 !important;
+      background-color:  #F52629 !important;
+    }
+  }
+
 body
 {
     font-family: 'Lato', 'sans-serif';
