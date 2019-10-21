@@ -20,7 +20,8 @@ export class PostService {
   createPost(post: Post): void {
     var idBefore = this.db.createId();
     post.key = idBefore;
-    this.postsRef.add({ ...post });
+   // this.postsRef.add({ ...post });
+    this.postsRef.doc(idBefore).set(post);
   }
 
   updatePost(key: string, value: any): Promise<void> {
