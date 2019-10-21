@@ -37,7 +37,10 @@ export class CartComponent implements OnInit {
               ref.where("uid", "==", result["0"].userid)
             )
             .valueChanges()
-            .subscribe(chef => (this.chefDetail = chef));
+            .subscribe(chef => {
+              this.chefDetail = chef["0"];
+              console.log(chef);
+            });
         });
     }
   }

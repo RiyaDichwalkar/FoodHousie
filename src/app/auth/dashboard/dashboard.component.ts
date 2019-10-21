@@ -21,8 +21,6 @@ export class DashboardComponent implements OnInit {
   ) {}
 
   chefList: any;
-  postList: any;
-  pastOrdersList: any;
   pastOrderList: any;
   inProcessOrderList: any;
   collectOrderList: any;
@@ -38,6 +36,17 @@ export class DashboardComponent implements OnInit {
   todayDate: string;
   currentChefId: string;
   ordersToBeConfirmed: any;
+
+  //now for manipulating ui with ngif's making new boolean
+  //boolean for customer
+  showCustomerDashboard: boolean = true;
+  showInProcessOrder: boolean = false;
+  showCollectOrder: boolean = false;
+  showPastOrder: boolean = false;
+  //boolean for chef
+  showChefDashboard: boolean = true;
+  showActiveRecipes: boolean = false;
+  showInactiveRecipes: boolean = false;
   filters = {};
 
   ngOnInit() {
@@ -47,7 +56,7 @@ export class DashboardComponent implements OnInit {
     } else {
       this.isChef = true;
     }
-    if (!this.flag) {
+    if (this.isCustomer && !this.flag) {
       if (window.navigator.geolocation) {
         window.navigator.geolocation.getCurrentPosition(
           this.setPosition.bind(this)
@@ -55,7 +64,7 @@ export class DashboardComponent implements OnInit {
         this.flag = true;
       }
     }
-    if (userrole.isCustomer) {
+    if (this.isCustomer) {
       this.getChefData();
     } else {
       this.currentChefId = JSON.parse(localStorage.getItem("user")).uid;
@@ -63,10 +72,13 @@ export class DashboardComponent implements OnInit {
       this.getOrdersToConfirm();
     }
   }
-
+  //Filter functions
   //to apply filter from lodash
   private applyFilters() {
-    this.filterPostList = _.filter(this.postList, _.conforms(this.filters));
+    this.filterPostList = _.filter(
+      this.postListForBook,
+      _.conforms(this.filters)
+    );
   }
 
   removeFilter(property: string) {
@@ -84,8 +96,6 @@ export class DashboardComponent implements OnInit {
   }
 
   filterExact2(property: string, rule: any) {
-    console.log(typeof rule);
-    console.log(rule);
     if (rule.localeCompare("both") != 0) {
       this.filters[property] = val => val == rule;
     } else {
@@ -114,8 +124,8 @@ export class DashboardComponent implements OnInit {
     this.db
       .collection("chef")
       .valueChanges()
-      .subscribe(posts => {
-        this.chefList = posts;
+      .subscribe(chef => {
+        this.chefList = chef;
         this.chefsWithin1km = [];
         this.chefList.forEach(doc => {
           var a = this.distance(
@@ -160,14 +170,15 @@ export class DashboardComponent implements OnInit {
 
   getPostData(chefsWithin1km: Array<any>) {
     //console.log(chefsWithin1km.length);
-    this.postList = [];
     this.postListForBook = [];
     this.postListForRequest = [];
     let length = chefsWithin1km.length;
     //getting todays date for book and request array.
     let todayDate = this.getTodayDate();
-    //console.log(todayDate);
-    //I assume date are from database in dd/mm/yyyy format.
+    let currentTime = new Date().toLocaleTimeString([], {
+      hour: "2-digit",
+      minute: "2-digit"
+    });
     for (let index = 0; index < length; index++) {
       this.db
         .collection("posts", ref =>
@@ -177,16 +188,21 @@ export class DashboardComponent implements OnInit {
         .subscribe(result => {
           var a = result.length;
           if (a > 0) {
-            this.postList = this.postList.concat(result);
-            console.log(this.postList);
+            // this.postList = this.postList.concat(result);
+            // console.log(this.postList);
             result.forEach((post: any) => {
               var date = post.date;
               var parts = date.split("/");
               //console.log(parts);
               var date = parts[2] + parts[1] + parts[0];
               if (date.localeCompare(todayDate) >= 0) {
-                console.log(todayDate + " < orderdate is " + date);
-                this.postListForBook.push(post);
+                if (date.localeCompare(todayDate) > 0)
+                  this.postListForBook.push(post);
+                else {
+                  if (post.deadlinetime.localeCompare(currentTime) >= 0)
+                    this.postListForBook.push(post);
+                  else this.postListForRequest.push(post);
+                }
               } else {
                 this.postListForRequest.push(post);
                 console.log(todayDate + " > orderdate is " + date);
@@ -201,6 +217,10 @@ export class DashboardComponent implements OnInit {
   //chef has to see orders to confirm in dashboard.
   getOrdersToConfirm() {
     let todayDate = this.getTodayDate();
+    let currentTime = new Date().toLocaleTimeString([], {
+      hour: "2-digit",
+      minute: "2-digit"
+    });
     this.ordersToBeConfirmed = [];
     this.db
       .collection("order", ref =>
@@ -216,11 +236,16 @@ export class DashboardComponent implements OnInit {
             var parts = date.split("/");
             var date = parts[2] + parts[1] + parts[0];
             if (date.localeCompare(todayDate) >= 0) {
-              this.ordersToBeConfirmed.push(order);
+              if (date.localeCompare(todayDate) > 0)
+                this.ordersToBeConfirmed.push(order);
+              else {
+                if (order.deadlinetime.localeCompare(currentTime) >= 0)
+                  this.ordersToBeConfirmed.push(order);
+              }
             }
           });
         }
-        console.log(this.ordersToBeConfirmed);
+        //console.log(this.ordersToBeConfirmed);
       });
   }
 
@@ -243,11 +268,25 @@ export class DashboardComponent implements OnInit {
     var mm = String(today.getMonth() + 1).padStart(2, "0"); //January is 0!
     var yyyy = today.getFullYear();
     var todayDate = yyyy + mm + dd;
+    this.todayDate = dd + "/" + mm + "/" + yyyy;
     return todayDate;
   }
-
+  //show customerdashboard of bookmeal
+  bookMeal() {
+    this.showPastOrder = false;
+    this.showInProcessOrder = false;
+    this.showCustomerDashboard = true;
+    this.showCollectOrder = false;
+  }
   //order is paid and post date less than today.
-  pastOrder(customerid: string) {
+  pastOrder() {
+    this.showPastOrder = true;
+    this.showInProcessOrder = false;
+    this.showCustomerDashboard = false;
+    this.showCollectOrder = false;
+    //run this method onlyif
+    if (this.pastOrderList == undefined || this.pastOrderList.length==0){
+    var customerid = this.authService.userData.uid;
     let todayDate = this.getTodayDate();
     this.pastOrderList = [];
     this.db
@@ -269,9 +308,15 @@ export class DashboardComponent implements OnInit {
           });
         }
       });
+    }
   }
   //order is confirmed(so now proceeed to pay),order is not confirmed(pending) and post date more than today.
-  inProcessOrder(customerid: string) {
+  inProcessOrder() {
+    this.showInProcessOrder = true;
+    this.showCustomerDashboard = false;
+    this.showCollectOrder = false;
+    this.showPastOrder = false;
+    var customerid = this.authService.userData.uid;
     let todayDate = this.getTodayDate();
     this.inProcessOrderList = [];
     this.db
@@ -292,6 +337,7 @@ export class DashboardComponent implements OnInit {
             }
           });
         }
+        //console.log(this.inProcessOrderList);
       });
     this.db
       .collection("order", ref =>
@@ -311,12 +357,19 @@ export class DashboardComponent implements OnInit {
             }
           });
         }
+        //console.log(this.inProcessOrderList);
       });
   }
 
   //order is paid(means customer has selected COD or done Online both equivalent to paid now) and post date more than equal to today.
-  collectOrder(customerid: string) {
+  collectOrder() {
+    this.showCollectOrder = true;
+    this.showInProcessOrder = false;
+    this.showCustomerDashboard = false;
+    this.showPastOrder = false;
+    var customerid = this.authService.userData.uid;
     let todayDate = this.getTodayDate();
+    if (this.collectOrderList == undefined || this.collectOrderList.length == 0){
     this.collectOrderList = [];
     this.db
       .collection("order", ref =>
@@ -332,27 +385,49 @@ export class DashboardComponent implements OnInit {
             var parts = date.split("/");
             var date = parts[2] + parts[1] + parts[0];
             if (date.localeCompare(todayDate) >= 0) {
+              //put chef name,address and mobile for order.
+
+              this.db
+                .collection("chef", ref => ref.where("uid", "==", order.chefid))
+                .valueChanges()
+                .subscribe(result => {
+                  order.chefname = result["0"].fullname;
+                  order.chefaddress = result["0"].address;
+                  order.chefmobile = result["0"].mobile;
+                });
+              this.db
+                .collection("posts", ref =>
+                  ref.where("key", "==", order.recipeid)
+                )
+                .valueChanges()
+                .subscribe(result => {
+                  order.pickuptimestart = result["0"].pickuptimestart;
+                  order.pickuptimeend = result["0"].pickuptimeend;
+                });
+
               this.collectOrderList.push(order);
             }
           });
         }
       });
+    }
   }
-  //on pay button order is sent as argument.
-  payForOrder(order: any) {
+  //on pay button "order" is sent as argument.
+  payForOrder(order: any, paymentmode: string) {
     let id = order.ordid;
-    let postId = order.postid;
+    let postId = order.recipeid;
     let chefId = order.chefid;
     let increment = order.quantity;
     this.db
       .collection("order")
       .doc(id)
       .update({
-        orderstatus: "paid"
+        orderstatus: "paid",
+        paymentmode: paymentmode
       });
     //increase post dishsold
     this.db
-      .collection("post")
+      .collection("posts")
       .doc(postId)
       .update({
         dishsold: firestore.FieldValue.increment(increment)
@@ -366,9 +441,11 @@ export class DashboardComponent implements OnInit {
       });
 
     window.alert("Thank you for paying order");
-    this.inProcessOrderList = this.ordersToBeConfirmed.filter(
+    this.inProcessOrderList = this.inProcessOrderList.filter(
       item => item.ordid !== id
     );
+    if (typeof this.collectOrderList === "undefined")
+      this.collectOrderList = [];
     this.collectOrderList.push(order);
   }
 

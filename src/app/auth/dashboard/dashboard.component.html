@@ -5,11 +5,6 @@
       <div class="sidebar-sticky">
         <ul class="nav flex-column">
           <li class="nav-item">
-            <a class="nav-link active" *ngIf="this.authService.isCustomer">
-              <i class="fa fa-user"></i>User Profile
-            </a>
-          </li>
-          <li class="nav-item">
             <a class="nav-link active" *ngIf="this.authService.isChef" routerLink="/chefprofile">
               <i class="fa fa-user"></i>Chef Profile
             </a>
@@ -20,29 +15,49 @@
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link active" *ngIf="this.authService.isChef" routerLink="/active-post">
+            <a class="nav-link active" *ngIf="this.authService.isChef">
+              <i class="fa fa-check"></i>Confirm new orders
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" *ngIf="this.authService.isChef">
               <i class="fa fa-bell"></i>Active Posts
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link active" *ngIf="this.authService.isChef" routerLink="/inactive-post">
+            <a class="nav-link active" *ngIf="this.authService.isChef">
               <i class="fa fa-bell-slash"></i>Inactive Posts
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link active" *ngIf="this.authService.isCustomer" routerLink="*">
-              <i class="fa fa-clock-o"></i>Check and Pay for Order
+            <a class="nav-link active" *ngIf="this.authService.isChef">
+              <i class="fa fa-book"></i>You will Serve
+            </a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link active" *ngIf="this.authService.isCustomer">
+              <i class="fa fa-user"></i>User Profile
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link active" (click)="getTodayOrders()" *ngIf="this.authService.isCustomer"
-              >
-              <i class="fa fa-shopping-cart"></i>Todays Orders
+            <a class="nav-link active" (click)="bookMeal()" *ngIf="this.authService.isCustomer">
+              <i class="fa fa-cart-plus"></i>Book your Meal
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link active" (click)="getPastOrders()" *ngIf="this.authService.isCustomer">
-              <i class="fa fa-shopping-cart"></i>Past Orders
+            <a class="nav-link active" (click)="collectOrder()" *ngIf="this.authService.isCustomer">
+              <i class="fa fa-clock-o"></i>Collect Your Order
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" (click)="inProcessOrder()" *ngIf="this.authService.isCustomer">
+              <i class="fa fa-spinner"></i>Inprocess Order
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" (click)="pastOrder()" *ngIf="this.authService.isCustomer">
+              <i class="fa fa-shopping-cart"></i>Past Order
             </a>
           </li>
           <!-- Calling SignOut() Api from AuthService -->
@@ -58,96 +73,156 @@
     <!-- Main content -->
     <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
       <div class="inner-adjust">
-        <div class="pt-3 pb-2 mb-3 border-bottom">
-          <h1 class="h2">User Profile</h1>
-        </div>
-        <!-- Show user data when logged in -->
         <div class="row" *ngIf="authService.userData as user">
           <div class="col-md-12">
             <div class="media">
               <img class="align-self-start mr-5 img-thumbnail rounded-circle" src="{{
-                  user.photoURL
-                    ? user.photoURL
+                  user.photo
+                    ? user.photo
                     : '../../../assets/dummy-user.png'
                 }}" alt="{{ user.displayName }}" />
               <div class="media-body">
                 <h1>
-                  Hello:
-                  <strong>{{ user.fullname ? user.fullname : "User" }}</strong>
+                  Hello:{{ user.fullname ? user.fullname : "User" }}
                 </h1>
-                <p>
-                  Email: <strong>{{ user.email }}</strong>
-                </p>
               </div>
             </div>
           </div>
         </div>
       </div>
-      <div *ngIf="isCustomer" class="row">
-        <div class="col-md">
-          <h6>Type of Recipe</h6>
-          <select [(ngModel)]="label" (change)="filterExact('label', label)">
-            <option value="snacks">Snacks</option>
-            <option value="others">Others</option>
-            <option value="main course">Main Course</option>
-            <option value="sweets">Sweets</option>
-            <option value="all">All</option>
-          </select>
+      <div *ngIf="isCustomer">
+        <div *ngIf="showCustomerDashboard">
+          <div class="row">
+            <div class="col-md">
+              <h6>Type of Recipe</h6>
+              <select [(ngModel)]="label" (change)="filterExact('label', label)">
+                <option value="snacks">Snacks</option>
+                <option value="others">Others</option>
+                <option value="main course">Main Course</option>
+                <option value="sweets">Sweets</option>
+                <option value="all">All</option>
+              </select>
+            </div>
+            <div class="col-md">
+              <h6>Select Veg / Non-Veg</h6>
+              <select [(ngModel)]="type" (change)="filterExact2('type', type)">
+                <option value="veg">Veg</option>
+                <option value="non-veg">Non-Veg</option>
+                <option value="both">Both</option>
+              </select>
+            </div>
+            <div class="col-md">
+              <h6>Order Day</h6>
+              <select [(ngModel)]="day" (change)="filterDateMoreThan('date',day)">
+                <option value="today">Today</option>
+                <option value="otherday">Any Other Day</option>
+              </select>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-4" *ngFor="let recipeData of filterPostList">
+              <div class="thumbnail" style="text-align:center">
+                <div style="margin :0 auto">
+                  <h3>{{ recipeData.title }}</h3>
+                  <img [src]="recipeData.imageUrl" style="max-width: 200px; height: 200px; " />
+                  <h6>{{recipeData.description}}</h6>
+                  <h6>Rs {{ recipeData.price }}</h6>
+                  <h6>Made by Chef <a (click)="viewChefProfile(recipeData.userid)">{{ recipeData.username }}</a> </h6>
+                  <h6>Dish will be prepared on {{recipeData.date}}</h6>
+                  <h6>Pickup-start time:{{ recipeData.pickuptimestart }}</h6>
+                  <h6>Pickup-end time:{{ recipeData.pickuptimeend }}</h6>
+                  <h6>Book before: {{ recipeData.deadlinetime }} on {{recipeData.date}}</h6>
+                  <p><button class="btn btn-primary" (click)="onClick(recipeData.key)">Book</button></p>
+                </div>
+              </div>
+            </div>
+            <!-- if nothing to book ,request will come -->
+          </div>
+
         </div>
-        <div class="col-md">
-          <h6>Select Veg / Non-Veg</h6>
-          <select [(ngModel)]="type" (change)="filterExact2('type', type)">
-            <option value="veg">Veg</option>
-            <option value="non-veg">Non-Veg</option>
-            <option value="both">Both</option>
-          </select>
+        <div *ngIf="showInProcessOrder">
+          <div class="row">
+            <div class="col-md-4" *ngFor="let order of inProcessOrderList">
+              <div class="thumbnail" style="text-align:center">
+                <div style="margin :0 auto">
+                  <h3>{{ order.item }}</h3>
+                  <h6>Quantity :{{order.quantity}}</h6>
+                  <h6>Total amount = Rs {{ order.price }}</h6>
+                  <h6>Dish will be prepared on {{order.pickupdate}}</h6>
+                  <h6 *ngIf="order.orderstatus == 'pending' else pay">Order is Pending to confirm</h6>
+                  <ng-template #pay>
+                    <!-- dropdown for COD and online payment. -->
+                    <p><button class="btn btn-primary" (click)="payForOrder(order,'COD')">Pay Now</button></p>
+                  </ng-template>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-        <div class="col-md">
-          <h6>Order Day</h6>
-          <select [(ngModel)]="day" (change)="filterDateMoreThan('date',day)">
-            <option value="today">Today</option>
-            <option value="otherday">Any Other Day</option>
-          </select>
+        <div *ngIf="showCollectOrder">
+          <div class="row">
+            <div class="col-md-4" *ngFor="let order of collectOrderList">
+              <div class="thumbnail" style="text-align:center">
+                <div style="margin :0 auto">
+                  <h3>{{ order.item }}</h3>
+                  <h6>Quantity :{{order.quantity}}</h6>
+                  <h6>Total amount = Rs {{ order.price }}</h6>
+                  <h6>Order is to be picked up on {{order.pickupdate}}</h6>
+                  <h6>Pick-up time start {{order.pickuptimestart}}</h6>
+                  <h6>Pick-up time end {{order.pickuptimeend}}</h6>
+                  <h6>Chef name : {{order.chefname}}</h6>
+                  <h6>Chef Address : {{order.chefaddress}}</h6>
+                  <h6>Chef Mobile Number : {{order.chefmobile}}</h6>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-      </div>
-      <div class="row" *ngIf="isCustomer">
-        <div class="col-md-4" *ngFor="let recipeData of filterPostList">
-          <div class="thumbnail" style="text-align:center">
-            <div style="margin :0 auto">
-              <h3>{{ recipeData.description }}</h3>
-              <img [src]="recipeData.imageUrl" style="max-width: 200px; height: 200px; " />
-              <h6>Rs {{ recipeData.price }}</h6>
-              <h6>Chef id is: <a (click)="viewChefProfile(recipeData.userid)">{{ recipeData.userid }}</a> </h6>
-              <h6>Pickup-start time:{{ recipeData.pickuptimestart }}</h6>
-              <h6>Pickup-end time:{{ recipeData.pickuptimeend }}</h6>
-              <h6>Book before: {{ recipeData.deadlinetime }}</h6>
-              <p><button (click)="onClick(recipeData.key)">Book</button></p>
+        <div *ngIf="showPastOrder">
+          <div class="row">
+            <div class="col-md-4" *ngFor="let order of pastOrderList">
+              <div class="thumbnail" style="text-align:center">
+                <div style="margin :0 auto">
+                  <h3>{{ order.item }}</h3>
+                  <h6>Quantity :{{order.quantity}}</h6>
+                  <h6>Total amount = Rs {{ order.price }}</h6>
+                  <h6>Order picked up on {{order.pickupdate}}</h6>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </div>
 
       <div *ngIf="isChef">
-        <div>
-          <h1>You have recieved new orders</h1>
-        </div>
-        <div div class="row">
-          <div class="col-md-4" *ngFor="let order of ordersToBeConfirmed">
-            <div class="thumbnail" style="text-align:center">
-              <div style="margin :0 auto">
-                <h3>{{ order.item }}</h3>
-                <h6>Quantity: {{order.quantity}}</h6>
-                <h6>Total Amount: {{ order.price }}</h6>
-                <h6>Customer name: {{order.customername}}</h6>
-                <h6>Cooking Note: {{order.note}}</h6>
-                <!-- <h6>Order Time: {{order.date}}</h6> -->
-                <p><button class="btn btn-primary" (click)="chefConfirmsOrder(order.ordid)">Confirm Order</button></p>
+        <div *ngIf="showChefDashboard">
+          <div *ngIf="ordersToBeConfirmed.length !==0 else noOrders">
+            <h3>You have recieved new orders</h3>
+            <div div class="row">
+              <div class="col-md-4" *ngFor="let order of ordersToBeConfirmed">
+                <div class="thumbnail" style="text-align:center">
+                  <div style="margin :0 auto">
+                    <h3>{{ order.item }}</h3>
+                    <h6>Quantity: {{order.quantity}}</h6>
+                    <h6>Total Amount: {{ order.price }}</h6>
+                    <h6>Customer name: {{order.customername}}</h6>
+                    <h6>Cooking Note: {{order.note}}</h6>
+                    <p><button class="btn btn-primary" (click)="chefConfirmsOrder(order.ordid)">Confirm Order</button>
+                    </p>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
+          <ng-template #noOrders>
+            <div>
+              <h3>No new orders to confirm</h3>
+            </div>
+          </ng-template>
         </div>
+        <div *ngIf="showActiveRecipes"></div>
+        <div *ngIf="showInactiveRecipes"></div>
       </div>
-
 
     </main>
   </div>

@@ -3,10 +3,17 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
 
     <body class="container">
-
       <div class="panel panel-default" *ngIf="recipeData">
         <div class="panel-body">
           <form ng-submit="add()" class="form-horizontal">
+            <div class="form-group">
+              <label class="col-sm-2 control-label">Made by Chef :</label>
+              {{chefDetail.fullname}}
+            </div>
+            <div class="form-group">
+              <label class="col-sm-2 control-label">Chef Address :</label>
+              {{chefDetail.address}}
+            </div>
             <div class="form-group">
               <label class="col-sm-2 control-label">Item</label>
               {{recipeData.title}}
@@ -41,24 +48,4 @@
 
         </div>
       </div>
-
-      <!-- <table class="table" ng-show="$scope.cartData.length > 0">
-        <thead>
-          <tr>
-            <th>Item</th>
-            <th>Price</th>
-            <th colspan="2">Quantity</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr ng-repeat="item in $scope.cartData">
-            <td>{{item.name}}</td>
-            <td>{{item.price | currency}}</td>
-            <td>{{item.quantity}}</td>
-            <td>
-              <button ng-click="remove($index)" class="btn btn-default">Remove</button>
-            </td>
-          </tr>
-        </tbody>
-      </table> -->
     </body>
