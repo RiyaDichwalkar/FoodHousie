@@ -92,6 +92,7 @@
       </div>
       <div *ngIf="isCustomer">
         <div *ngIf="showCustomerDashboard">
+          <h1>Recipes posted by your beloved neighbour chefs</h1>
           <div class="row">
             <div class="col-md">
               <h6>Type of Recipe</h6>
@@ -128,6 +129,7 @@
                   <h6>{{recipeData.description}}</h6>
                   <h6>Rs {{ recipeData.price }}</h6>
                   <h6>Made by Chef <a (click)="viewChefProfile(recipeData.userid)">{{ recipeData.username }}</a> </h6>
+                  <h6>{{recipeData.dishsold}} dishes of {{recipeData.title}} sold</h6>
                   <h6>Dish will be served on {{recipeData.date}}</h6>
                   <h6>Pickup-start time:{{ recipeData.pickuptimestart }}</h6>
                   <h6>Pickup-end time:{{ recipeData.pickuptimeend }}</h6>
@@ -141,6 +143,7 @@
 
         </div>
         <div *ngIf="showInProcessOrder">
+          <h1>Your inprocess orders(not confirmed by chef / not paid)</h1>
           <div class="row">
             <div class="col-md-4" *ngFor="let order of inProcessOrderList">
               <div class="thumbnail" style="text-align:center">
@@ -160,6 +163,7 @@
           </div>
         </div>
         <div *ngIf="showCollectOrder">
+          <h1>Your orders to be collected</h1>
           <div class="row">
             <div class="col-md-4" *ngFor="let order of collectOrderList">
               <div class="thumbnail" style="text-align:center">
@@ -179,6 +183,7 @@
           </div>
         </div>
         <div *ngIf="showPastOrder">
+          <h1>Your past orders</h1>
           <div class="row">
             <div class="col-md-4" *ngFor="let order of pastOrderList">
               <div class="thumbnail" style="text-align:center">
@@ -221,6 +226,7 @@
           </ng-template>
         </div>
         <div *ngIf="showActiveRecipe">
+          <h1>Your active recipes are.</h1>
           <div class="row">
             <div class="col-md-4" *ngFor="let recipeData of postListForBook">
               <div class="thumbnail" style="text-align:center">
@@ -239,7 +245,7 @@
           </div>
         </div>
         <div *ngIf="showInactiveRecipe">
-          <h1>Your active orders are.</h1>
+          <h1>Your inactive recipes are.</h1>
           <div class="row">
             <div class="col-md-4" *ngFor="let recipeData of postListForRequest">
               <div class="thumbnail" style="text-align:center">
@@ -256,6 +262,7 @@
           </div>
         </div>
         <div *ngIf="showserveList">
+          <h1>List of orders you have to serve</h1>
           <div class="row">
             <div class="col-md-4" *ngFor="let order of ordersToBeServed">
               <div class="thumbnail" style="text-align:center">
