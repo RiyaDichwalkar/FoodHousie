@@ -36,7 +36,7 @@ export class DashboardComponent implements OnInit {
   todayDate: string;
   currentChefId: string;
   ordersToBeConfirmed: any;
-
+  ordersToBeServed: any;
   //now for manipulating ui with ngif's making new boolean
   //boolean for customer
   showCustomerDashboard: boolean = true;
@@ -45,8 +45,9 @@ export class DashboardComponent implements OnInit {
   showPastOrder: boolean = false;
   //boolean for chef
   showChefDashboard: boolean = true;
-  showActiveRecipes: boolean = false;
-  showInactiveRecipes: boolean = false;
+  showActiveRecipe: boolean = false;
+  showInactiveRecipe: boolean = false;
+  showserveList: boolean = false;
   filters = {};
 
   ngOnInit() {
@@ -277,6 +278,7 @@ export class DashboardComponent implements OnInit {
     this.showInProcessOrder = false;
     this.showCustomerDashboard = true;
     this.showCollectOrder = false;
+    //this.getPostData(this.chefsWithin1km);
   }
   //order is paid and post date less than today.
   pastOrder() {
@@ -285,29 +287,29 @@ export class DashboardComponent implements OnInit {
     this.showCustomerDashboard = false;
     this.showCollectOrder = false;
     //run this method onlyif
-    if (this.pastOrderList == undefined || this.pastOrderList.length==0){
-    var customerid = this.authService.userData.uid;
-    let todayDate = this.getTodayDate();
-    this.pastOrderList = [];
-    this.db
-      .collection("order", ref =>
-        ref
-          .where("customerid", "==", customerid)
-          .where("orderstatus", "==", "paid")
-      )
-      .valueChanges()
-      .subscribe(result => {
-        if (result.length > 0) {
-          result.forEach((order: any) => {
-            var date = order.pickupdate;
-            var parts = date.split("/");
-            var date = parts[2] + parts[1] + parts[0];
-            if (date.localeCompare(todayDate) < 0) {
-              this.pastOrderList.push(order);
-            }
-          });
-        }
-      });
+    if (this.pastOrderList == undefined || this.pastOrderList.length == 0) {
+      var customerid = this.authService.userData.uid;
+      let todayDate = this.getTodayDate();
+      this.pastOrderList = [];
+      this.db
+        .collection("order", ref =>
+          ref
+            .where("customerid", "==", customerid)
+            .where("orderstatus", "==", "paid")
+        )
+        .valueChanges()
+        .subscribe(result => {
+          if (result.length > 0) {
+            result.forEach((order: any) => {
+              var date = order.pickupdate;
+              var parts = date.split("/");
+              var date = parts[2] + parts[1] + parts[0];
+              if (date.localeCompare(todayDate) < 0) {
+                this.pastOrderList.push(order);
+              }
+            });
+          }
+        });
     }
   }
   //order is confirmed(so now proceeed to pay),order is not confirmed(pending) and post date more than today.
@@ -369,47 +371,52 @@ export class DashboardComponent implements OnInit {
     this.showPastOrder = false;
     var customerid = this.authService.userData.uid;
     let todayDate = this.getTodayDate();
-    if (this.collectOrderList == undefined || this.collectOrderList.length == 0){
-    this.collectOrderList = [];
-    this.db
-      .collection("order", ref =>
-        ref
-          .where("customerid", "==", customerid)
-          .where("orderstatus", "==", "paid")
-      )
-      .valueChanges()
-      .subscribe(result => {
-        if (result.length > 0) {
-          result.forEach((order: any) => {
-            var date = order.pickupdate;
-            var parts = date.split("/");
-            var date = parts[2] + parts[1] + parts[0];
-            if (date.localeCompare(todayDate) >= 0) {
-              //put chef name,address and mobile for order.
+    if (
+      this.collectOrderList == undefined ||
+      this.collectOrderList.length == 0
+    ) {
+      this.collectOrderList = [];
+      this.db
+        .collection("order", ref =>
+          ref
+            .where("customerid", "==", customerid)
+            .where("orderstatus", "==", "paid")
+        )
+        .valueChanges()
+        .subscribe(result => {
+          if (result.length > 0) {
+            result.forEach((order: any) => {
+              var date = order.pickupdate;
+              var parts = date.split("/");
+              var date = parts[2] + parts[1] + parts[0];
+              if (date.localeCompare(todayDate) >= 0) {
+                //put chef name,address and mobile for order.
+                this.db
+                  .collection("chef", ref =>
+                    ref.where("uid", "==", order.chefid)
+                  )
+                  .valueChanges()
+                  .subscribe(result => {
+                    order.chefname = result["0"].fullname;
+                    order.chefaddress = result["0"].address;
+                    order.chefmobile = result["0"].mobile;
+                  });
+                //put recipe pickup,deadline for order.
+                this.db
+                  .collection("posts", ref =>
+                    ref.where("key", "==", order.recipeid)
+                  )
+                  .valueChanges()
+                  .subscribe(result => {
+                    order.pickuptimestart = result["0"].pickuptimestart;
+                    order.pickuptimeend = result["0"].pickuptimeend;
+                  });
 
-              this.db
-                .collection("chef", ref => ref.where("uid", "==", order.chefid))
-                .valueChanges()
-                .subscribe(result => {
-                  order.chefname = result["0"].fullname;
-                  order.chefaddress = result["0"].address;
-                  order.chefmobile = result["0"].mobile;
-                });
-              this.db
-                .collection("posts", ref =>
-                  ref.where("key", "==", order.recipeid)
-                )
-                .valueChanges()
-                .subscribe(result => {
-                  order.pickuptimestart = result["0"].pickuptimestart;
-                  order.pickuptimeend = result["0"].pickuptimeend;
-                });
-
-              this.collectOrderList.push(order);
-            }
-          });
-        }
-      });
+                this.collectOrderList.push(order);
+              }
+            });
+          }
+        });
     }
   }
   //on pay button "order" is sent as argument.
@@ -449,10 +456,62 @@ export class DashboardComponent implements OnInit {
     this.collectOrderList.push(order);
   }
 
+  confirmOrder() {
+    this.showActiveRecipe = false;
+    this.showChefDashboard = true;
+    this.showInactiveRecipe = false;
+    this.showserveList = false;
+    this.getOrdersToConfirm();
+  }
+  activeRecipe() {
+    this.showActiveRecipe = true;
+    this.showChefDashboard = false;
+    this.showInactiveRecipe = false;
+    this.showserveList = false;
+  }
+  inactiveRecipe() {
+    console.log(this.postListForRequest);
+    this.showActiveRecipe = false;
+    this.showChefDashboard = false;
+    this.showInactiveRecipe = true;
+    this.showserveList = false;
+  }
+  serveList() {
+    var todayDate = this.getTodayDate();
+    this.showserveList = true;
+    this.showActiveRecipe = false;
+    this.showChefDashboard = false;
+    this.showInactiveRecipe = false;
+    this.ordersToBeServed = [];
+    console.log(this.currentChefId);
+    this.db
+      .collection("order", ref =>
+        ref
+          .where("chefid", "==", this.currentChefId)
+          .where("orderstatus", "==", "paid")
+      )
+      .valueChanges()
+      .subscribe(result => {
+        if (result.length > 0) {
+          result.forEach((order: any) => {
+            //console.log(order);
+            var date = order.pickupdate;
+            var parts = date.split("/");
+            var date = parts[2] + parts[1] + parts[0];
+            if (date.localeCompare(todayDate) >= 0) {
+              this.ordersToBeServed.push(order);
+            }
+          });
+        }
+        //console.log(this.ordersToBeServed);
+      });
+  }
   onClick(key: any) {
     this.router.navigate(["cart", key]);
   }
-
+  activateRecipe(key:string){
+    
+  }
   viewChefProfile(id: string) {
     this.router.navigate(["chefprofile", id]);
   }

@@ -15,31 +15,31 @@
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link active" *ngIf="this.authService.isChef">
-              <i class="fa fa-check"></i>Confirm new orders
+            <a class="nav-link active" (click)="confirmOrder()" *ngIf="this.authService.isChef">
+              <i class="fa fa-check"></i>Confirm New Orders
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link active" *ngIf="this.authService.isChef">
-              <i class="fa fa-bell"></i>Active Posts
+            <a class="nav-link active" (click)="activeRecipe()" *ngIf="this.authService.isChef">
+              <i class="fa fa-bell"></i>Active Recipes
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link active" *ngIf="this.authService.isChef">
-              <i class="fa fa-bell-slash"></i>Inactive Posts
+            <a class="nav-link active" (click)="inactiveRecipe()" *ngIf="this.authService.isChef">
+              <i class="fa fa-bell-slash"></i>Inactive Recipes
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link active" *ngIf="this.authService.isChef">
-              <i class="fa fa-book"></i>You will Serve
+            <a class="nav-link active" (click)="serveList()" *ngIf="this.authService.isChef">
+              <i class="fa fa-book"></i>You Will Serve
             </a>
           </li>
 
-          <li class="nav-item">
+          <!-- <li class="nav-item">
             <a class="nav-link active" *ngIf="this.authService.isCustomer">
               <i class="fa fa-user"></i>User Profile
             </a>
-          </li>
+          </li> -->
           <li class="nav-item">
             <a class="nav-link active" (click)="bookMeal()" *ngIf="this.authService.isCustomer">
               <i class="fa fa-cart-plus"></i>Book your Meal
@@ -128,7 +128,7 @@
                   <h6>{{recipeData.description}}</h6>
                   <h6>Rs {{ recipeData.price }}</h6>
                   <h6>Made by Chef <a (click)="viewChefProfile(recipeData.userid)">{{ recipeData.username }}</a> </h6>
-                  <h6>Dish will be prepared on {{recipeData.date}}</h6>
+                  <h6>Dish will be served on {{recipeData.date}}</h6>
                   <h6>Pickup-start time:{{ recipeData.pickuptimestart }}</h6>
                   <h6>Pickup-end time:{{ recipeData.pickuptimeend }}</h6>
                   <h6>Book before: {{ recipeData.deadlinetime }} on {{recipeData.date}}</h6>
@@ -148,7 +148,7 @@
                   <h3>{{ order.item }}</h3>
                   <h6>Quantity :{{order.quantity}}</h6>
                   <h6>Total amount = Rs {{ order.price }}</h6>
-                  <h6>Dish will be prepared on {{order.pickupdate}}</h6>
+                  <h6>Dish will be served on {{order.pickupdate}}</h6>
                   <h6 *ngIf="order.orderstatus == 'pending' else pay">Order is Pending to confirm</h6>
                   <ng-template #pay>
                     <!-- dropdown for COD and online payment. -->
@@ -220,8 +220,57 @@
             </div>
           </ng-template>
         </div>
-        <div *ngIf="showActiveRecipes"></div>
-        <div *ngIf="showInactiveRecipes"></div>
+        <div *ngIf="showActiveRecipe">
+          <div class="row">
+            <div class="col-md-4" *ngFor="let recipeData of postListForBook">
+              <div class="thumbnail" style="text-align:center">
+                <div style="margin :0 auto">
+                  <h3>{{ recipeData.title }}</h3>
+                  <img [src]="recipeData.imageUrl" style="max-width: 200px; height: 200px;" />
+                  <h6>{{recipeData.description}}</h6>
+                  <h6>Rs {{ recipeData.price }}</h6>
+                  <h6>Will be served on {{recipeData.date}}</h6>
+                  <h6>Pickup-start time:{{ recipeData.pickuptimestart }}</h6>
+                  <h6>Pickup-end time:{{ recipeData.pickuptimeend }}</h6>
+                  <h6>Book before: {{ recipeData.deadlinetime }} on {{recipeData.date}}</h6>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="showInactiveRecipe">
+          <h1>Your active orders are.</h1>
+          <div class="row">
+            <div class="col-md-4" *ngFor="let recipeData of postListForRequest">
+              <div class="thumbnail" style="text-align:center">
+                <div style="margin :0 auto">
+                  <h3>{{ recipeData.title }}</h3>
+                  <img [src]="recipeData.imageUrl" style="max-width: 200px; height: 200px;" />
+                  <h6>{{recipeData.description}}</h6>
+                  <h6>Rs {{ recipeData.price }}</h6>
+                  <h6>Last Active on {{recipeData.date}}, {{recipeData.deadlinetime}}</h6>
+                  <p><button class="btn btn-primary" (click)="activateRecipe(recipeData.key)">Activate</button></p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="showserveList">
+          <div class="row">
+            <div class="col-md-4" *ngFor="let order of ordersToBeServed">
+              <div class="thumbnail" style="text-align:center">
+                <div style="margin :0 auto">
+                  <h3>{{ order.item }}</h3>
+                  <h3>To be served on {{order.pickupdate}}</h3>
+                  <h5>Customer: {{order.customername}}</h5>
+                  <h5>Quantity: {{order.quantity}}</h5>
+                  <h5>Collect: Rs {{ order.price }}</h5>
+                  <h5>Note for chef: {{order.note}}</h5>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
 
     </main>
