@@ -1,5 +1,5 @@
 <div class="row">
-<div class="col-md-7">
+  <div class="col-md-7">
 
     <form #form="ngForm" (submit)="onSubmit(form)">
       <fieldset class="form-group">
@@ -7,8 +7,8 @@
           <legend class="col-form-label col-sm-2 pt-0">User Role</legend>
           <div class="col-sm-10">
             <div class="form-check">
-              <input class="form-check-input" type="radio" name="role" value="customer" checked #role="ngModel"
-                [(ngModel)]="registerService.formData.role">
+              <input class="form-check-input" type="radio" name="role" value="customer" checked="checked"
+                #role="ngModel" [(ngModel)]="registerService.formData.role">
               <label class="form-check-label">
                 Customer
               </label>
@@ -38,14 +38,15 @@
         <input type="password" class="form-control" name="password" #password="ngModel"
           [(ngModel)]="registerService.formData.password" placeholder="Enter Password" required
           pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,15}">
-        <small class="form-text text-muted">Your password must have 8 to 15 or more characters,that contains at least one
+        <small class="form-text text-muted">Your password must have 8 to 15 or more characters,that contains at least
+          one
           digit at least one lowercase character and at least one uppercase character:
         </small>
       </div>
       <div class="form-group">
         <label for="mobile">Mobile Number</label>
-        <input class="form-control" name="mobile" #mobile="ngModel" [(ngModel)]="registerService.formData.mobile"
-          placeholder="Enter Mobile Number" required>
+        <input class="form-control" name="mobile" pattern="(^[6-9])(\d{9}$)" #mobile="ngModel"
+          [(ngModel)]="registerService.formData.mobile" placeholder="Enter Mobile Number" required>
       </div>
       <div class="form-group">
         <label for="address">Address</label>
@@ -54,10 +55,9 @@
       </div>
       <div class="form-group">
         <div class="form-check">
-          <input class="form-check-input" type="checkbox" value="" id="invalidCheck2" required>
+          <input class="form-check-input" type="checkbox" id="invalidCheck2" required checked="checked">
           <label class="form-check-label" for="invalidCheck2">
             <a href="/terms_and_conditions">Agree to terms and conditions</a>
-            
           </label>
         </div>
       </div>
@@ -65,10 +65,9 @@
         <button type="submit" [disabled]="form.invalid" class="btn btn-lg btn-block btn-info">SUBMIT</button>
       </div>
     </form>
-  
+
   </div>
   <div class="col-md-5">
     <img src="../../../../assets/home_images/made-to-order.png">
-  
   </div>
 </div>
