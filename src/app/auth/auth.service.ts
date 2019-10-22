@@ -112,6 +112,9 @@ export class AuthService {
               pastorders: 0,
               latitude: data.latitude,
               longitude: data.longitude
+            })
+            .then(() => {
+              this.SignOut();
             });
         } else {
           return this.afs
@@ -125,11 +128,14 @@ export class AuthService {
               mobile: data.mobile,
               address: data.address,
               bio: "",
-              photo:"",
+              photo: "",
               isKYCDone: false,
               latitude: data.latitude,
               longitude: data.longitude,
               totaldishsold: 0 //total number of dishes sold
+            })
+            .then(() => {
+              this.SignOut();
             });
         }
       })
@@ -161,7 +167,15 @@ export class AuthService {
 
   get isLoggedIn(): boolean {
     const user = JSON.parse(localStorage.getItem("user"));
-    return user !== null; // && user.emailVerified; //!== false ? true : false
+    if (user !== null && !user.emailVerified) {
+      window.alert("Your email is not verified");
+      this.SendVerificationMail();
+    } else if (this.isChef && !user.isKYCDone) {
+      window.alert("Admin will activate you soon");
+      return user !== null && user.emailVerified && user.isKYCDone;
+    }
+    return user !== null && user.emailVerified;
+    //!== false ? true : false
   }
 
   SignOut() {

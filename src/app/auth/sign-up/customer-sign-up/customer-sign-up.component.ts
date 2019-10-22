@@ -1,15 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit } from "@angular/core";
 import { AuthService } from "../../auth.service";
 import { RegisterService } from "../../newuser/register.service";
 import { NgForm } from "@angular/forms";
 import { AngularFirestore } from "@angular/fire/firestore";
 @Component({
-  selector: 'app-customer-sign-up',
-  templateUrl: './customer-sign-up.component.html',
-  styleUrls: ['./customer-sign-up.component.scss']
+  selector: "app-customer-sign-up",
+  templateUrl: "./customer-sign-up.component.html",
+  styleUrls: ["./customer-sign-up.component.scss"]
 })
 export class CustomerSignUpComponent implements OnInit {
-
   constructor(
     public authService: AuthService,
     private firestore: AngularFirestore,
@@ -30,7 +29,7 @@ export class CustomerSignUpComponent implements OnInit {
     this.registerService.formData = {
       id: null,
       fullName: "",
-      role: "",
+      role: "customer",
       email: "",
       password: "",
       address: "",
