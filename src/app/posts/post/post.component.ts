@@ -149,6 +149,7 @@ export class PostComponent implements OnInit {
     if(this.title){
     formValue["title"]=this.title;
      }
+
     this.valid = true;
     if (
       
@@ -236,7 +237,7 @@ export class PostComponent implements OnInit {
     if (sDate == null || eDate == null) {
       this.error = {
         isError: true,
-        errorMessage: "Start date and Deadline date are required."
+        errorMessage: "Starting of Pick Up Time and Deadline time are required."
       };
 
       this.isValidDate = false;
@@ -245,7 +246,7 @@ export class PostComponent implements OnInit {
     if (sDate == eDate) {
       this.error = {
         isError: true,
-        errorMessage: "Start date and Deadline date could not be same"
+        errorMessage: "Starting of Pick Up Time and Deadline time should not be same"
       };
 
       this.isValidDate = false;
@@ -254,7 +255,7 @@ export class PostComponent implements OnInit {
     if (sDate != null && eDate != null && eDate < sDate) {
       this.error = {
         isError: true,
-        errorMessage: "Start date should be greater then Deadline date."
+        errorMessage: "Starting of Pick Up Time should be greater than Deadline time"
       };
       this.isValidDate = false;
       alert(this.error.errorMessage);
@@ -269,7 +270,7 @@ export class PostComponent implements OnInit {
     if (sDate == null || eDate == null) {
       this.error = {
         isError: true,
-        errorMessage: "Start date and end date are required."
+        errorMessage: "Pick Up Time Start and of Pick Up Time End are required."
       };
 
       this.isValidDate = false;
@@ -278,7 +279,7 @@ export class PostComponent implements OnInit {
     if (sDate == eDate) {
       this.error = {
         isError: true,
-        errorMessage: "Start date and end date could not be same"
+        errorMessage: "Pick Up Time Start and of Pick Up Time End should not be same"
       };
 
       this.isValidDate = false;
@@ -287,7 +288,7 @@ export class PostComponent implements OnInit {
     if (sDate != null && eDate != null && eDate < sDate) {
       this.error = {
         isError: true,
-        errorMessage: "End date should be greater then start date."
+        errorMessage: "Pick Up Time End should be greater than Pick Up Time Start"
       };
       this.isValidDate = false;
       alert(this.error.errorMessage);

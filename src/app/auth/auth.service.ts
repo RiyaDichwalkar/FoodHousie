@@ -170,10 +170,12 @@ export class AuthService {
     if (user !== null && !user.emailVerified) {
       window.alert("Your email is not verified");
       this.SendVerificationMail();
-    } else if (this.isChef && !user.isKYCDone) {
+    } else if(user!==null){
+    if (this.isChef && !user.isKYCDone) {
       window.alert("Admin will activate you soon");
       return user !== null && user.emailVerified && user.isKYCDone;
     }
+  }
     return user !== null && user.emailVerified;
     //!== false ? true : false
   }
