@@ -60,6 +60,11 @@
               <i class="fa fa-shopping-cart"></i>Past Order
             </a>
           </li>
+          <li class="nav-item">
+            <a class="nav-link active" (click)="helpAndContact(authService.userData.uid)">
+              <i class="fa fa-question-circle"></i>Help and Contact us
+            </a>
+          </li>
           <!-- Calling SignOut() Api from AuthService -->
           <li class="nav-item">
             <a class="nav-link" (click)="authService.SignOut()">
@@ -125,7 +130,7 @@
               <div class="thumbnail" style="text-align:center">
                 <div style="margin :0 auto">
                   <h3>{{ recipeData.title }}</h3>
-                  <img [src]="recipeData.imageUrl" style="max-width: 200px; height: 200px; "/>
+                  <img [src]="recipeData.imageUrl" style="max-width: 200px; height: 200px; " />
                   <h6>{{recipeData.description}}</h6>
                   <h6>Rs {{ recipeData.price }}</h6>
                   <h6>Made by Chef <a (click)="viewChefProfile(recipeData.userid)">{{ recipeData.username }}</a> </h6>

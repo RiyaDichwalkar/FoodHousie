@@ -169,10 +169,13 @@ export class AuthService {
     const user = JSON.parse(localStorage.getItem("user"));
     if (user !== null && !user.emailVerified) {
       window.alert("Your email is not verified");
-      this.SendVerificationMail();
-    } else if (this.isChef && !user.isKYCDone) {
-      window.alert("Admin will activate you soon");
-      return user !== null && user.emailVerified && user.isKYCDone;
+    } else if (user != null) {
+      if (this.isChef && !user.isKYCDone) {
+        window.alert("Admin will activate you soon");
+        console.log("Admin will activate");
+        console.log(user !== null && user.emailVerified && user.isKYCDone);
+        return user !== null && user.emailVerified && user.isKYCDone;
+      }
     }
     return user !== null && user.emailVerified;
     //!== false ? true : false

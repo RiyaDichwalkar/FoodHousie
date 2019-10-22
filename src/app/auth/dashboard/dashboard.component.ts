@@ -509,10 +509,13 @@ export class DashboardComponent implements OnInit {
   onClick(key: any) {
     this.router.navigate(["cart", key]);
   }
-  activateRecipe(key:string){
-    this.router.navigate(["posts/upload/",key]);
+  activateRecipe(key: string) {
+    this.router.navigate(["posts/upload/", key]);
   }
   viewChefProfile(id: string) {
     this.router.navigate(["chefprofile", id]);
+  }
+  helpAndContact() {
+    this.router.navigate(["help"]);
   }
 }
