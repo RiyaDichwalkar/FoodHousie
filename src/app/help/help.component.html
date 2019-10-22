@@ -146,7 +146,7 @@ padding: 20px;
   <form >
    
 
-    <div class="form-group">
+    <!-- <div class="form-group">
       <label>Name</label>
       <input ngModel name="firstname" type="text" class="form-control" placeholder="Your name..">
       <div class="alert alert-danger " *ngIf="firstname.touched && !firstname.valid"></div>
@@ -156,14 +156,14 @@ padding: 20px;
         <label>Email</label>
         <input type="email" class="form-control" placeholder="Your email address..">
       </div>
-    
-    <div class="form-group">
+     -->
+    <div >
         <label>Your Feedback</label>
-        <textarea id="subject" name="subject" placeholder="Write something.." style="height:200px"></textarea>
+        <textarea id="subject" name="subject" [(ngModel)]="feedback" placeholder="Write something.." style="height:200px"></textarea>
     </div>
     
     <div>    
-    <button class="btn btn-primary">Submit</button>
+    <button class="btn btn-primary" (click)="onSubmitHelp()">Submit</button>
     </div>
 
 
