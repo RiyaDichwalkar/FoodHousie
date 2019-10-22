@@ -20,7 +20,7 @@
           <input type="file" accept="image/*" class="img_input form-control" #fileUploader formControlName="imageUrl"
             (change)="showPreview($event)">
         </label>
-        <div class="text-danger" *ngIf="formControls.imageUrl.errors?.required">This field is required.
+        <div class="text-danger" *ngIf=" formControls.imageUrl.errors?.required">This field is required.
         </div>
       </div>
       <div>
