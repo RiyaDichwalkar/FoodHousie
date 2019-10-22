@@ -167,8 +167,13 @@ export class AuthService {
 
   get isLoggedIn(): boolean {
     const user = JSON.parse(localStorage.getItem("user"));
-    if (user !== null && !user.emailVerified)
+    if (user !== null && !user.emailVerified) {
       window.alert("Your email is not verified");
+      this.SendVerificationMail();
+    } else if (this.isChef && !user.isKYCDone) {
+      window.alert("Admin will activate you soon");
+      return user !== null && user.emailVerified && user.isKYCDone;
+    }
     return user !== null && user.emailVerified;
     //!== false ? true : false
   }
