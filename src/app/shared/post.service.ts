@@ -24,9 +24,9 @@ export class PostService {
     this.postsRef.doc(idBefore).set(post);
   }
 
-  updatePost(key: string, value: any): Promise<void> {
-    return this.postsRef.doc(key).update(value);
-  }
+  // updatePost(key: string, value: any): Promise<void> {
+  //   return this.postsRef.doc(key).update(value);
+  // }
   deletePost(key: string): Promise<void> {
     return this.postsRef.doc(key).delete();
   }
@@ -40,6 +40,7 @@ export class PostService {
     return this.result;
   }
 
+ 
   getPostsList(): AngularFirestoreCollection<Post> {
     return this.postsRef;
   }

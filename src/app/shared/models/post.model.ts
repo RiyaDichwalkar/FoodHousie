@@ -5,8 +5,10 @@ export class Post {
     price:number;
     description:string;
     category: string;
-    availibility_date:string;
     pickuptimestart: string;
     pickuptimeend:string;
     deadlinetime:string;
+    date:string;
+    label:string;
+    type:string;
   }

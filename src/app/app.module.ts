@@ -108,7 +108,7 @@ const appRoutes: Routes = [
   { path: "recipe/:key", component: RecipeComponent, canActivate: [AuthGuard] },
   { path: "cart/:key", component: CartComponent, canActivate: [AuthGuard] },
   {
-    path: "posts/upload/:key/:isedited",
+    path: "posts/upload/:key",
     component: PostComponent,
     canActivate: [AuthGuard]
   },

@@ -510,7 +510,7 @@ export class DashboardComponent implements OnInit {
     this.router.navigate(["cart", key]);
   }
   activateRecipe(key:string){
-    
+    this.router.navigate(["posts/upload/",key]);
   }
   viewChefProfile(id: string) {
     this.router.navigate(["chefprofile", id]);

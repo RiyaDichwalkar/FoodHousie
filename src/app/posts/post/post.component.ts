@@ -3,7 +3,7 @@ import {
   FormGroup,
   FormBuilder,
   FormControl,
-  Validators
+  Validators, AbstractControl 
 } from "@angular/forms";
 import { AngularFireStorage } from "@angular/fire/storage";
 import { finalize } from "rxjs/operators";
@@ -17,6 +17,7 @@ import {
 } from "@angular/router";
 import { map } from "rxjs/operators";
 import { AuthService } from "../../auth/auth.service";
+import { AngularFirestore } from '@angular/fire/firestore';
 declare var $: any;
 @Component({
   selector: "app-post",
@@ -28,7 +29,7 @@ export class PostComponent implements OnInit {
   @Input() post: Post;
   imgUrl: String;
   label: String;
-  title: String;
+  title: String="";
   type: String;
   selectedImage: any;
   isSubmitted: boolean;
@@ -45,9 +46,10 @@ export class PostComponent implements OnInit {
   minDate = new Date(this.date);
   error: any = { isError: false, errorMessage: "" };
   isValidDate: any;
+  isEditable:boolean=true;
   valid: boolean = true;
   formTemplate = new FormGroup({
-    title: new FormControl("", Validators.required),
+    title: new FormControl("",Validators.required),
     description: new FormControl("",Validators.required),
     imageUrl: new FormControl("", Validators.required),
     label: new FormControl("", Validators.required),
@@ -62,7 +64,7 @@ export class PostComponent implements OnInit {
   });
   showLoadingIndicator = true;
   private selectedKey: string;
-  private isedited: boolean = false;
+ // private isedited: boolean = false;
   private filledData: any;
 
   user: any;
@@ -76,22 +78,28 @@ export class PostComponent implements OnInit {
     private storage: AngularFireStorage,
     private atp: AmazingTimePickerService,
     private service: PostService,
-    private datePipe: DatePipe
+    private datePipe: DatePipe,
+    private db:AngularFirestore,
   ) {
+    this.isEditable=true;
     this.selectedKey = this._route.snapshot.paramMap.get("key");
-    this.isedited = this._route.snapshot.paramMap.get("isedited") == "true";
+    //this.isedited = this._route.snapshot.paramMap.get("isedited") == "true";
   }
 
   ngOnInit() {
+
     const userrole = JSON.parse(localStorage.getItem("roles"));
     if (userrole.isCustomer) {
       this.router.navigate(["**"]);
     } else {
       this.user = JSON.parse(localStorage.getItem("user"));
-      if (this.isedited) {
+      if (this.selectedKey) {
+        this.isEditable=false;
         this.setForm(this.selectedKey);
+        
       } else {
         this.resetForm();
+        this.isEditable=true;
         this.selectedStartTime = this.datePipe.transform(this.date, "HH:mm");
         this.selectedEndTime = this.datePipe.transform(this.date, "HH:mm");
         this.selectedDeadLineTime = this.datePipe.transform(this.date, "HH:mm");
@@ -99,7 +107,7 @@ export class PostComponent implements OnInit {
       this.maxDate.setDate(this.date.getDate() + 7);
     }
   }
-
+ 
   openStartTime(ev: any) {
     const amazingTimePicker = this.atp.open();
     amazingTimePicker.afterClose().subscribe(time => {
@@ -136,14 +144,20 @@ export class PostComponent implements OnInit {
     }
   }
   onSubmit(formValue) {
-    this.isSubmitted = true;
-    this.valid = true;
 
+    this.isSubmitted = true;
+    if(this.title){
+    formValue["title"]=this.title;
+     }
+    this.valid = true;
     if (
       
       !this.validateDates(this.selectedStartTime, this.selectedEndTime) ||  !this.validateDeadLineDates(this.selectedDeadLineTime, this.selectedStartTime) 
     ) {
       this.valid = false;
+    }
+    if(this.selectedKey){
+    this.formControls.title.setErrors(null);
     }
     if (this.formTemplate.valid && this.valid) {
       var filePath = `${formValue.key}/${this.selectedImage.name
@@ -168,8 +182,24 @@ export class PostComponent implements OnInit {
               formValue["pickuptimestart"] = this.selectedStartTime;
               formValue["pickuptimeend"] = this.selectedEndTime;
               formValue["deadlinetime"] = this.selectedDeadLineTime;
+
+              if(this.selectedKey){
+                this.db. collection("posts").doc(this.selectedKey).update({
+                  imageUrl: formValue['imageUrl'],
+                  date:formValue['date'],
+                  deaalinetime:formValue["deadlinetime"],
+                  label: formValue["label"],
+                  type: formValue["type"],
+                  pickuptimestart: formValue["pickuptimestart"],
+                  pickuptimeend:formValue["pickuptimeend"],
+                  description: formValue["description"],
+                  price: formValue["price"]
+                });
+              }else{
               this.service.createPost(formValue);
+              }
               this.resetForm();
+             this.router.navigate(["dashboard"]);
             });
           })
         )
@@ -191,16 +221,11 @@ export class PostComponent implements OnInit {
       )
       .subscribe(result => {
         this.filledData = result;
-        this.selectedStartTime = this.filledData["0"].pickuptimestart;
-        this.selectedEndTime = this.filledData["0"].pickuptimeend;
-        this.selectedDeadLineTime = this.filledData["0"].deadlinetime;
+         this.selectedStartTime = this.filledData["0"].pickuptimestart;
+         this.selectedEndTime = this.filledData["0"].pickuptimeend;
+         this.selectedDeadLineTime = this.filledData["0"].deadlinetime;
         this.imgUrl = this.filledData["0"].imageUrl;
-        this.description = this.filledData["0"].description;
-        (this.title = this.filledData["0"].title),
-          (this.label = this.filledData["0"].label),
-          (this.type = this.type["0"].type),
-          (this.date = new Date(this.filledData["0"].date));
-        this.price = this.filledData["0"].price;
+        this.title = this.filledData["0"].title;
       });
     this.selectedImage = null;
     this.isSubmitted = false;
