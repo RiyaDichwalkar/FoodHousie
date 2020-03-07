@@ -193,7 +193,8 @@ const appRoutes: Routes = [
     CustomerSignUpComponent,
     TermsAndConditionsComponent,
     ActivepostComponent,
-    InactivepostComponent
+    InactivepostComponent,
+   
   ],
   imports: [
     RouterModule.forRoot(appRoutes),
@@ -208,6 +209,7 @@ const appRoutes: Routes = [
     AngularFireAuthModule,
     AngularFirestoreModule,
     ReactiveFormsModule,
+    MatFileUploadModule,
     MatFormFieldModule, // <----- this module will be deprecated in the future version.
     MatDatepickerModule, // <----- import(must)
     MatNativeDateModule, // <----- import for date formating(optional)
@@ -216,7 +218,6 @@ const appRoutes: Routes = [
     MatButtonModule,
     AmazingTimePickerModule,
     MatStepperModule,
-    MatFileUploadModule,
     MatProgressSpinnerModule
   ],
   providers: [{ provide: FirestoreSettingsToken, useValue: {} }, AuthService],

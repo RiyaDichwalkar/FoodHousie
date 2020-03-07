@@ -1,0 +1,2 @@
+angular-material-fileupload
+ng build --prod --aot=false --build-optimizer=false
